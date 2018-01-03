@@ -3,7 +3,7 @@
 #include<list>
 
 //Tworzenie nowego pola PCB
-int ProcessManagement::CreateProcess(std::string Name, std::string Path, int BasePriority) {
+int ProcessManagement::CreateProcess(std::string Name, std::string Path, int BasePriority = 5) {
 	if (CheckNameUniqe(Name))
 	{
 		//B£¥D, POWIELONA NAZWA
@@ -23,7 +23,6 @@ int ProcessManagement::CreateProcess(std::string Name, std::string Path, int Bas
 		temp.basePriority = BasePriority;
 		temp.commandCounter = 0;
 		temp.blocked = 0;
-		//temp.setState(PCB::processState::ready);
 		Processes.push_back(temp);
 		SetState(ID, PCB::processState::ready);
 	}
@@ -32,6 +31,7 @@ int ProcessManagement::CreateProcess(std::string Name, std::string Path, int Bas
 	//PATH - NAZWA LUB SCIEZKA PLIKU ZRODLOWEGO
 
 }
+
 
 bool ProcessManagement::CheckNameUniqe(std::string Name)
 {
@@ -270,6 +270,11 @@ void ProcessManagement::WakeUp(int ID) {
 	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
 		if(iter->ID == ID) {
 			iter->wakeup();
+			
+			
+			//ZMIENIC
+
+
 			break;
 		}
 	}
