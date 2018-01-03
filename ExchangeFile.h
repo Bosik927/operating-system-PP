@@ -3,8 +3,15 @@
 #include <fstream>
 #include "PageTable.h"
 #include <vector>
+#include <array>
 
 using namespace std;
+
+struct pom
+{
+	std::string procName;
+	char *data = new char[16];
+};
 
 int ile_potrzeba_ramek(int ile) //zwraca liczbê wymaganych ramek/stronnic wymaganych do przechowania zadanej iloœci znaków
 {
@@ -24,62 +31,69 @@ class ExchangeFile {
 public:
 	std::fstream exchange;
 	std::string fileName = "exchangefile.txt";
-	std::vector<string> exchangeFile;
-	const char * tab;
+	std::vector<pom> exchangeFile;
+	std::vector<string> pomoc;
+
 
 	int writeTo(std::string &processName, std::string &fileName)
 	{
-
-		int pageIndex = 0;
 		int licznikRozkazow = 0;
 		std::ifstream program;
 		program.open(fileName);
 		std::string wiersz;
 		while (std::getline(program, wiersz))
 		{
-			exchangeFile.push_back(wiersz);
+			pomoc.push_back(wiersz);
 			licznikRozkazow++;
-			pageIndex++;
 		}
 		while (exchangeFile.size() % 16 != 0)
 		{
-			exchangeFile.push_back(" ");
+				pomoc.push_back(" ");
 		}
 		int ilosc_stron = ile_potrzeba_ramek(exchangeFile.size());
+		pom nowa;
+		for (int i = 0; i < ilosc_stron; i++)
+		{
+			for (int j = 0; j < 16; j++)
+			{
+				nowa.procName = processName;
+				nowa.data += wiersz[i];
+				exchangeFile.push_back(nowa);
+			}
+		}
 		return licznikRozkazow;
 	}
 
-	std::string readFrom(std::string &processName, int pageIndex, int indexInPage) {
-			int a = pageIndex * 16 + pageIndex;
-			return exchangeFile[a];
+	char readFrom(std::string &processName, int pageIndex, int indexInPage) 
+	{
+			return exchangeFile[pageIndex].data[indexInPage];
 
 			// ???? JESZCZE OBS£UGA B£ÊDU ????
-		}
+	}
 
-	void saveTo(std::string &processName, std::string &data, int pageIndex) { //zapisywanie ca³ej strony
+	void saveTo(std::string &processName, char data[16], int pageIndex) 
+	{ //zapisywanie ca³ej strony
 
-		if (data.size() == 16) // ???? ustaw rozmiar na 16 bajtów
-		{
-			int a = pageIndex * 16;
-			exchangeFile.erase(exchangeFile.begin() + a, exchangeFile.begin() + a + 16);
-			exchangeFile.insert(exchangeFile.begin() + a, data);
-		} 
-		else std::cout << ("Niepoprawny rozmiar danych, opracja zapisu danych do pliku wymiany nieudana ");
+		exchangeFile[pageIndex].data = data;
 
 		// ???? JESZCZE OBS£UGA B£ÊDU ????
 	}
 
-	void showContent() {
+	void showContent() 
+	{
 		std::cout << "Zawartosc pliku wymiany: ";
-		for (std::string i : exchangeFile)
+		for (pom i : exchangeFile)
 		{
-			std::cout << i;
+			std::cout << i.data;
 		}
 	}
 
-	void deleteData(std::string &processName, int howManyPages, int pageIndex) {
+	void deleteData(std::string &processName, int howManyPages, int pageIndex)
+	{
 		std::cout << "Usuwanie z pliku wymiany: " << howManyPages << " stron procesu: " << processName;
-		int a = pageIndex * 16;
-		exchangeFile.erase(exchangeFile.begin() + a, exchangeFile.begin() + a + (howManyPages * 16));
+		while (exchangeFile[pageIndex].procName == processName)
+		{
+			exchangeFile.erase(exchangeFile.begin() + pageIndex, exchangeFile.begin() + pageIndex + howManyPages);
+		}
 	}
 };
