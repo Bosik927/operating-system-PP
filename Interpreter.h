@@ -1,8 +1,13 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "plikiFAT.h"
 #include "ProcessManagement.h"
+#include "ID_Manager.h"
+#include "PCB.h"
+#include "Process.h"
+#include "Scheduler.h"
+#include "plikiFAT.h"
+#include "Komunikacja.h"
 using namespace std;
 
 enum Rozkazy {
@@ -43,11 +48,11 @@ private:
 	// private PCB PCBbox; <--- PCBbox przechowuje nazwe procesu
 	// private RAM ram;    <--- nasze rozkazy
 	Disc disc; //<--- pliki
-	// ProcessManagement processmanagement; //<--- proces
-	// Komunikacja komunikacja; <--- komunikacja
+	ProcessManagement processmanagement; //<--- proces
+
+	Komunikacja komunikacja; // <--- komunikacja
 	Rozkazy rozkaz;
-	string program; // rozkaz pobierany z ramu
+	string program="AAAAAAAAAAAAAAAAAA"; // rozkaz pobierany z ramu
 public:
-	bool run(string &program);
-	Interpreter(/*RAM &ram, FileSystem &filesystem, ProcessManagement &processmanagement*/);
+	bool run(PCB* PCBbox);
 };
