@@ -1,11 +1,4 @@
 #pragma once
-#include <iostream>
-#include <string>
-#include "ProcessManagement.h"
-#include "PCB.h"
-#include "Scheduler.h"
-#include "plikiFAT.h"
-#include "Komunikacja.h"
 #include "Interpreter.h"
 #define MAKSYMALNY_PRIORYTET 15
 Rozkazy convert(const string& operacja) // Funkcja dla konwersji rozkazow dla switcha
