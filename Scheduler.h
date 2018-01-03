@@ -29,6 +29,7 @@ protected:
 
 public:
 
+	//Wykorzystywane przez zarzadce procesami
 	Scheduler();
 	void addFirstProcess(PCB *process);
 	void addProcess(PCB *process);
@@ -37,6 +38,7 @@ public:
 	void unsleep(int ID);
 	void sleep(int ID);
 
+	//Wykorzystywane przeze mnie 
 	void calculateFirstTimeCurrentPriority(Process &process);
 	void calculateCurrentPriority(Process &process);
 	void translate(Process &process);

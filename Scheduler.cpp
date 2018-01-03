@@ -1,13 +1,8 @@
-#include "Scheduler.h"
-
-#pragma once
 #include <array>
 #include <queue>
 #include <iostream>
 #include <string>
 #include "Scheduler.h"
-
-//BARDZO WAZNA RZECZ TRZEBA DODAC RECZNIE PROCES BEZCZYNNOSCI
 
 //Konstruktor wyzerowanie mapy bitowej
 Scheduler::Scheduler() {
@@ -53,7 +48,7 @@ void Scheduler::unsleep(int ID)
 			if (bitsMapActive[waitingProcesses[i].process->priority] == 0) { bitsMapActive[waitingProcesses[i].process->priority] = 1; }
 			activeProcesses[waitingProcesses[i].process->priority].push(waitingProcesses[i]);
 
-			//waitingProcesses.erase(waitingProcesses.begin+i);
+			// waitingProcesses.erase(waitingProcesses.begin+i);
 		}
 	}
 
@@ -268,7 +263,7 @@ void Scheduler::assignProcessor() // arg Interpreter &inter
 
 	if (runningProcess.process->name == "idle" && !isTerminatedEmpty() && !isActiveEmpty())
 	{
-		// run(); //proces bezczynnosci
+		/// bool run(runningProcess.process); //proces bezczynnosci
 	}
 	else{
 		//Sprawdza czy nie trzeba zmienic procesu
@@ -283,6 +278,8 @@ void Scheduler::assignProcessor() // arg Interpreter &inter
 			endOfEpoch();
 			reschedProcess();
 		}
+
+		/// bool run(runningProcess.process);
 
 		runningProcess.decRestTime();
 
