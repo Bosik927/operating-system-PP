@@ -1,6 +1,12 @@
+#pragma once
+#include <iostream>
+#include <string>
+#include "ProcessManagement.h"
+#include "PCB.h"
+#include "Scheduler.h"
+#include "plikiFAT.h"
+#include "Komunikacja.h"
 #include "Interpreter.h"
-#include<conio.h>
-#include<vector>
 #define MAKSYMALNY_PRIORYTET 15
 Rozkazy convert(const string& operacja) // Funkcja dla konwersji rozkazow dla switcha
 {
@@ -303,7 +309,7 @@ bool Interpreter::run(PCB* PCBbox)
 				string name, path;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy
 				path = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie sciezki																								// processmanagement.CreateProcess(name,path);
-				processmanagement.CreateProcess(name,path);
+				processmanagement.CreateProcess(name,path,5);
 			}
 			else
 			{
