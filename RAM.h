@@ -45,7 +45,7 @@ public:
 		}
 	}
 
-	std::string odczytaj_ramkê(int ramka) //odczytuje ramkê o zadanym numerze i zwraca jej zawartoœæ w stringu
+	char *odczytaj_ramkê(int ramka) //odczytuje ramkê o zadanym numerze i zwraca jej zawartoœæ w stringu
 	{
 		char *bufor = new char[16]; //tworzê bufor na odczytane dane
 
@@ -53,8 +53,6 @@ public:
 		{
 			bufor[i] = ram[ramka * 16 + i]; //odczytujê ca³¹ ramkê
 		}
-
-		std::string *zwracanie = new string(bufor); //tworzê stringa z tablicy charów (by³y problemy z funkcj¹ ToString)
 		return bufor; //zwracam stringa
 	}
 
@@ -83,7 +81,11 @@ public:
 	{
 		freeFrames.push(ramka); //oznaczam ramkê jako woln¹
 								//z kolejki FIFO muszê teraz usun¹æ tê ramkê:
+
+		if (framesTable[ramka].bit_modyfikacji == 1) exchangeFile.saveTo(processNameInFrame[ramka], odczytaj_ramkê(ramka), pageTables[].getIndex); // tutaj do poprawienia nadpisywanie pliku wymiany
 		std::queue<int> bufor; //tworzê tymczasow¹ kolejkê pomocnicz¹
+		framesTable[ramka].bit_modyfikacji = 0;
+		framesTable[ramka].bit_odniesienia = 0;
 		while (FIFO.size() > 0)
 		{
 			if (FIFO.front() != ramka)
@@ -131,11 +133,15 @@ public:
 		}
 	}
 
+	void writeToRam(int index, char content[16]) {
+		for (int i = 0; i < 16; i++) {
+			ram[index * 16 + i] = content[i];
+		}
+	}
+
 	void strona_w_ramke(int nrStrony, std::string procName)
 	{
-		if (freeFrames.size() <= 0)
-			zwolnij_ramkê(ktora_ramke_zwolnic());
-		else
+		if (freeFrames.size() <= 0) zwolnij_ramkê(ktora_ramke_zwolnic());
 			for (int i = 0; i < pageTables.size(); i++)
 			{
 				if (pageTables[i].processName == procName)
@@ -143,51 +149,28 @@ public:
 					pageTables[i].framesNumber[nrStrony] = freeFrames.top();
 					pageTables[i].inRAM[nrStrony] = true;
 					freeFrames.pop();
+					writeToRam(pageTables[i].framesNumber[nrStrony], exchangeFile.readFrom(procName, nrStrony, 0));
 				}
 			}
-
 	}
 
 	std::string getCommand(int programCounter, std::string processName, PageTable pt)
 	{
-		int jakaszmiennaktoraprzechowujeidprocesu;
+		PageTable *ktora_tablica;
 		int pageIndex;
 		if ((programCounter + 1) % 16 == 0) pageIndex = ((programCounter + 1) / 16) - 1;
 		else pageIndex = ((programCounter + 1) / 16);
-
-		if (pageTables[jakaszmiennaktoraprzechowujeidprocesu].inRAM[pageIndex])
+		for (auto &a : pageTables)
 		{
-			return odczytaj_ramkê(pageTables[jakaszmiennaktoraprzechowujeidprocesu].getPositionInRam);
+			if (processName == a.processName) ktora_tablica = &a;
+		}
+		if (ktora_tablica->inRAM[pageIndex])
+		{
+			return odczytaj_ramkê(ktora_tablica->getPositionInRam);
 		}
 
-		else strona_w_ramke(pageIndex, pageTables[jakaszmiennaktoraprzechowujeidprocesu].processName);
+		else strona_w_ramke(pageIndex, ktora_tablica->processName);
 	}
-
-	//char getCommand(int programCounter, std::string processName) {
-	//	// szukany znak
-	//	char search;
-	//	// index tablicy stron szukanego procesu w kolekcji pagetables
-	//	int pageTableIndex = -1;
-	//	// szukanie tablicy stron z odpowiednim procesem
-	//	for (int i = 0; i < pageTables.size(); i++) {
-	//		if (pageTables[i].processName == (processName))
-	//			pageTableIndex = i;
-	//	}
-
-	//	// wyznaczenie nr strony ktora musi byc w ramie przed zwroceniem
-	//	// odpowiedniego znaku
-	//	int pageNumber = programCounter / 16;
-
-	//	// sprawdzenie w ktorej ramce sa dane, zwraca -1 gdy nie ma w ramie
-	//	// odpowiedniej strony
-	//	int framePosition = pageTables[pageTableIndex].getPositionInRam(pageNumber);
-
-	//	// zaladowanie strony do ramu jesli jej tam nie ma
-	//	if (framePosition == -1) {
-	//		std::string dane = exchangeFile.getFrame(processName, pageNumber);
-
-	//	}
-	//}
 
 	// usuwanie danego procesu z pamieci
 	void deleteProcessData(std::string processName) {
@@ -221,7 +204,7 @@ public:
 	{
 		for (adres; adres < adres + rozmiar; adres++)
 		{
-			std::cout << adres[ram];
+			std::cout << ram[adres];
 		}
 	}
 
