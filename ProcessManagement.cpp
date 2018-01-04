@@ -1,9 +1,11 @@
-#include "ProcessManagement.h"
+#include"ProcessManagement.h"
 #include<string>
 #include<list>
+#include<random>
+#include<time.h>
 
 //Tworzenie nowego pola PCB
-int ProcessManagement::CreateProcess(std::string Name, std::string Path, int BasePriority = 5) {
+int ProcessManagement::CreateProcess(std::string Name, std::string Path, int BasePriority) {
 	if (CheckNameUniqe(Name))
 	{
 		//B£•D, POWIELONA NAZWA
@@ -30,6 +32,12 @@ int ProcessManagement::CreateProcess(std::string Name, std::string Path, int Bas
 	//TRZEBA JAKOå DODAC KOD PROGRAMU DO RAMU
 	//PATH - NAZWA LUB SCIEZKA PLIKU ZRODLOWEGO
 
+}
+
+int ProcessManagement::RandomPriority()
+{
+	srand(time(0));
+	return rand()%8;
 }
 
 
@@ -103,6 +111,7 @@ void ProcessManagement::SetState(int ID, PCB::processState newState) {
 			switch (newState)
 			{
 			case PCB::processState::ready:
+			{
 				if (iter->blocked)
 				{
 					break;
@@ -113,14 +122,29 @@ void ProcessManagement::SetState(int ID, PCB::processState newState) {
 					//sprawdzanie czy proces nie ma stanu gotowy
 					if (iter->state != PCB::processState::ready)
 					{
+						//wrzucanie do kolejki procesÛw gotowych
 						scheduler.addProcess(this->getPCB(ID));
 					}
 					//nadawanie nowego stanu
 					iter->state = newState;
-					
+
 				}
 				break;
-
+			}
+			case PCB::processState::waiting:
+			{
+				if (iter->state == PCB::processState::ready)
+				{
+					scheduler.sleep(ID);
+					iter->state = newState;
+					
+				}
+				else
+				{
+					iter->state = newState;
+				}
+				break;
+			}
 			default:
 				iter->state = newState;
 				break;
@@ -256,28 +280,16 @@ int ProcessManagement::getIdFromName(std::string name) {
 	return -1;
 }
 //Usypia proces
-void ProcessManagement::Sleep(int ID) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
-			iter->sleep();
-			scheduler.sleep(ID);
-			break;
-		}
-	}
+void ProcessManagement::Sleep(int ID) 
+{
+	SetState(ID, PCB::processState::waiting);
+
 }
 //Budzi proces
-void ProcessManagement::WakeUp(int ID) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
-			iter->wakeup();
-			
-			
-			//ZMIENIC
+void ProcessManagement::WakeUp(int ID) 
+{
+	SetState(ID, PCB::processState::ready);
 
-
-			break;
-		}
-	}
 }
 //Zwraca wskaünik do PCB
 PCB * ProcessManagement::getPCB(int ID) {

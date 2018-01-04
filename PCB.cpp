@@ -6,10 +6,11 @@ void PCB::print() {
 }
 //Uspyianie procesu - pole blocked uniemo¿liwia ustawienie stanu ready
 void PCB::sleep() {
-	this->state = PCB::processState::waiting;
-	this->blocked = 1;
+	//this->state = PCB::processState::waiting;
+	//this->blocked = 1;
 }
 //Budzenie procesu
 void PCB::wakeup() {
-	this->blocked = 0;
+	//this->blocked = 0;
+
 }

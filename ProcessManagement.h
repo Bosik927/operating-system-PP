@@ -34,6 +34,7 @@ public:
 	bool CheckNameUniqe(std::string name);
 
 	PCB* getPCB(int ID);
+	int RandomPriority();
 
 	//SCHEDULER
 	void Run();
@@ -41,5 +42,5 @@ public:
 	void Sleep(int ID);
 	void WakeUp(int ID);
 	void DeleteProcess(int ID);
-	int CreateProcess(std::string Name, std::string Path, int BasePriority);
+	int CreateProcess(std::string Name, std::string Path, int BasePriority = 5);
 };
