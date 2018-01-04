@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include "Process.h"
+//#include "Interpreter.h"
+
 
 //BARDZO WAZNA RZECZ TRZEBA DODAC RECZNIE PROCES BEZCZYNNOSCI
 class Scheduler {
