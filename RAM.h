@@ -81,8 +81,11 @@ public:
 	{
 		freeFrames.push(ramka); //oznaczam ramkê jako woln¹
 								//z kolejki FIFO muszê teraz usun¹æ tê ramkê:
-
-		if (framesTable[ramka].bit_modyfikacji == 1) exchangeFile.saveTo(processNameInFrame[ramka], odczytaj_ramkê(ramka), pageTables[].getIndex); // tutaj do poprawienia nadpisywanie pliku wymiany
+		for (int i = 0; i < pageTables.size(); i++)
+		{
+			if (pageTables[i].processName == processNameInFrame[ramka])
+				if (framesTable[ramka].bit_modyfikacji == 1) exchangeFile.saveTo(processNameInFrame[ramka], odczytaj_ramkê(ramka), pageTables[i].getIndex(ramka));
+		}// tutaj do poprawienia nadpisywanie pliku wymiany
 		std::queue<int> bufor; //tworzê tymczasow¹ kolejkê pomocnicz¹
 		framesTable[ramka].bit_modyfikacji = 0;
 		framesTable[ramka].bit_odniesienia = 0;
@@ -154,7 +157,7 @@ public:
 			}
 	}
 
-	std::string getCommand(int programCounter, std::string processName, PageTable pt)
+	std::string getCommand(int programCounter, std::string processName)
 	{
 		PageTable *ktora_tablica;
 		int pageIndex;
@@ -170,6 +173,7 @@ public:
 		}
 
 		else strona_w_ramke(pageIndex, ktora_tablica->processName);
+		return odczytaj_ramkê(ktora_tablica->getPositionInRam);
 	}
 
 	// usuwanie danego procesu z pamieci
