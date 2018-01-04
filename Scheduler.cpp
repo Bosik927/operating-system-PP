@@ -65,6 +65,7 @@ void Scheduler::sleep(int ID)
 			{
 				waitingProcesses.push_back(process);
 				e.pop();
+				if (bitsMapActive[process.process->priority] == 1) { bitsMapActive[process.process->priority] = 0; }
 			}
 		}
 	}
