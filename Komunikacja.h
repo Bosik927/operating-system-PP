@@ -72,6 +72,7 @@ public:
 	ProcessManagement * Proces;
 	Mutex* lock;
 public:
+	Komunikacja();
 	Komunikacja(ProcessManagement *Proces);
 	vector<string> tab;
 	mkfifo mkfifo;

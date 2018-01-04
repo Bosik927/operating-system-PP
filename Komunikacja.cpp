@@ -1,5 +1,7 @@
 #include "Komunikacja.h"
 
+Komunikacja::Komunikacja() {}
+
 Komunikacja::Komunikacja(ProcessManagement *Proces)
 {
 	this->Proces = Proces;
