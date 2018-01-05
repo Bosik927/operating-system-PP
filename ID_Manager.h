@@ -1,6 +1,6 @@
 #pragma once
-#include<array>
 
+#include<array>
 
 class ID_Manager //Menad¿er numerów ID, zawiera tablica bitow¹ zawieraj¹c¹ informacje czy konkretne ID jest dostêpne; 0 - dostêpne, 1 - niedostêpne
 {
