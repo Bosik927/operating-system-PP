@@ -48,7 +48,7 @@ void Scheduler::unsleep(int ID)
 			if (bitsMapActive[waitingProcesses[i].process->priority] == 0) { bitsMapActive[waitingProcesses[i].process->priority] = 1; }
 			activeProcesses[waitingProcesses[i].process->priority].push(waitingProcesses[i]);
 
-			waitingProcesses.erase(waitingProcesses.begin()+i);
+			waitingProcesses.erase(waitingProcesses.begin() + i);
 		}
 	}
 

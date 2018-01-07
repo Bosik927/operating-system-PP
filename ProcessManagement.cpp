@@ -37,7 +37,7 @@ int ProcessManagement::CreateProcess(std::string Name, std::string Path, int Bas
 int ProcessManagement::RandomPriority()
 {
 	srand(time(0));
-	return rand()%8;
+	return rand() % 8;
 }
 
 
@@ -75,29 +75,29 @@ void ProcessManagement::addFirstProcess(std::string path)
 
 //Usuwanie wybranego procesu z listy procesów
 void ProcessManagement::DeleteProcess(int ID) {
-	if(ID == 0) {
+	if (ID == 0) {
 		//B£¥D NIE MOZNA USUNAC PROCESU BEZCZYNNOSCI
 	}
 	else {
 		bool deleted = 0;
-		for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-			if(iter->ID == ID) {
+		for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+			if (iter->ID == ID) {
 				ID_Manager.ClearID(ID);
 				Processes.erase(iter);
 				deleted = 1;
 				break;
 			}
 		}
-		if(!deleted) {
+		if (!deleted) {
 			//B£¥D, BRAK PROCESU O PODANYM ID
 		}
 	}
 }
 //Pobieranie stanu wybranego procesu
-PCB::processState ProcessManagement::GetState(int ID) 
+PCB::processState ProcessManagement::GetState(int ID)
 {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			return iter->state;
 		}
 	}
@@ -105,8 +105,8 @@ PCB::processState ProcessManagement::GetState(int ID)
 
 //Nadawanie stanu procesu
 void ProcessManagement::SetState(int ID, PCB::processState newState) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) 
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID)
 		{
 			switch (newState)
 			{
@@ -137,7 +137,7 @@ void ProcessManagement::SetState(int ID, PCB::processState newState) {
 				{
 					scheduler.sleep(ID);
 					iter->state = newState;
-					
+
 				}
 				else
 				{
@@ -156,8 +156,8 @@ void ProcessManagement::SetState(int ID, PCB::processState newState) {
 
 //Drukowanie zawartoœci PCB procesu o podanym ID
 void ProcessManagement::print(int ID) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			iter->print();
 			break;
 		}
@@ -165,8 +165,8 @@ void ProcessManagement::print(int ID) {
 }
 //Pobieranie priorytetu bazowego
 int ProcessManagement::GetBasePriority(int ID) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			return iter->basePriority;
 		}
 	}
@@ -174,8 +174,8 @@ int ProcessManagement::GetBasePriority(int ID) {
 }
 //Pobieranie aktualnego priorytetu
 int ProcessManagement::GetCurrentPriority(int ID) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			return iter->priority;
 		}
 	}
@@ -183,35 +183,35 @@ int ProcessManagement::GetCurrentPriority(int ID) {
 }
 //Nadawanie priorytetu
 void ProcessManagement::SetPriority(int ID, int Priority) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			iter->priority = Priority;
 		}
 	}
 }
 //Pobieranie zawartoœci rejestrów
 int ProcessManagement::GetReg(int ID, char reg) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
-			switch(reg) {
-				case 'A':
-					return iter->A;
-					break;
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
+			switch (reg) {
+			case 'A':
+				return iter->A;
+				break;
 
-				case 'B':
-					return iter->B;
-					break;
+			case 'B':
+				return iter->B;
+				break;
 
-				case 'C':
-					return iter->C;
-					break;
-				case 'D':
-					return iter->D;
-					break;
+			case 'C':
+				return iter->C;
+				break;
+			case 'D':
+				return iter->D;
+				break;
 
-				default:
-					return -1;
-					break;
+			default:
+				return -1;
+				break;
 			}
 		}
 	}
@@ -219,35 +219,35 @@ int ProcessManagement::GetReg(int ID, char reg) {
 }
 //Nadawanie zawartoœci rejestrom
 void ProcessManagement::SetReg(int ID, char reg, int Value) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
-			switch(reg) {
-				case 'A':
-					iter->A = Value;
-					break;
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
+			switch (reg) {
+			case 'A':
+				iter->A = Value;
+				break;
 
-				case 'B':
-					iter->B = Value;
-					break;
+			case 'B':
+				iter->B = Value;
+				break;
 
-				case 'C':
-					iter->C = Value;
-					break;
+			case 'C':
+				iter->C = Value;
+				break;
 
-				case 'D':
-					iter->D = Value;
-					break;
+			case 'D':
+				iter->D = Value;
+				break;
 
-				default:
-					break;
+			default:
+				break;
 			}
 		}
 	}
 }
 //Pobieranie wartoœci licznika komend
 int ProcessManagement::GetCommandCounter(int ID) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			return iter->commandCounter;
 		}
 	}
@@ -255,16 +255,16 @@ int ProcessManagement::GetCommandCounter(int ID) {
 }
 //Ustawia wartoœæ licznika komend
 void ProcessManagement::SetCommandCounter(int ID, int Val) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			iter->commandCounter = Val;
 		}
 	}
 }
 //Zwraca nazwê na podstawie identyfikatora
 std::string ProcessManagement::getNameFromId(int ID) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			return iter->name;
 		}
 	}
@@ -272,21 +272,21 @@ std::string ProcessManagement::getNameFromId(int ID) {
 }
 //Zwraca identyfikator procesu na podstawie nazwy
 int ProcessManagement::getIdFromName(std::string name) {
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->name == name) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->name == name) {
 			return iter->ID;
 		}
 	}
 	return -1;
 }
 //Usypia proces
-void ProcessManagement::Sleep(int ID) 
+void ProcessManagement::Sleep(int ID)
 {
 	SetState(ID, PCB::processState::waiting);
 
 }
 //Budzi proces
-void ProcessManagement::WakeUp(int ID) 
+void ProcessManagement::WakeUp(int ID)
 {
 	SetState(ID, PCB::processState::ready);
 
@@ -294,8 +294,8 @@ void ProcessManagement::WakeUp(int ID)
 //Zwraca wskaŸnik do PCB
 PCB * ProcessManagement::getPCB(int ID) {
 	PCB* temp = nullptr;
-	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-		if(iter->ID == ID) {
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
 			temp = &(*iter);
 		}
 	}

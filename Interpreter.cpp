@@ -38,9 +38,9 @@ bool Interpreter::isLabel(string &program)
 }
 bool Interpreter::run(PCB* PCBbox)
 {
-	int label=0;
+	int label = 0;
 	bool koniec = true;
-	
+
 	// program = ram.pobierzRozkaz(RUNNING.GetName());
 	if (!program.size())
 	{
@@ -62,15 +62,15 @@ bool Interpreter::run(PCB* PCBbox)
 			{
 				if (program.substr(3, 1) == "B")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A')+processmanagement.GetReg(PCBbox->ID, 'B'));
+					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A') + processmanagement.GetReg(PCBbox->ID, 'B'));
 				}
 				else if (program.substr(3, 1) == "C")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A')+processmanagement.GetReg(PCBbox->ID, 'C'));
+					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A') + processmanagement.GetReg(PCBbox->ID, 'C'));
 				}
 				else if (program.substr(3, 1) == "D")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A')+processmanagement.GetReg(PCBbox->ID, 'D'));
+					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A') + processmanagement.GetReg(PCBbox->ID, 'D'));
 				}
 			}
 			else
@@ -87,19 +87,19 @@ bool Interpreter::run(PCB* PCBbox)
 				liczba = atoi(program.substr(4, program.size() - 4).c_str());
 				if (program.substr(3, 1) == "A")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A')+liczba);
+					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A') + liczba);
 				}
 				else if (program.substr(3, 1) == "B")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'B', processmanagement.GetReg(PCBbox->ID, 'B')+liczba);
+					processmanagement.SetReg(PCBbox->ID, 'B', processmanagement.GetReg(PCBbox->ID, 'B') + liczba);
 				}
 				else if (program.substr(3, 1) == "C")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'C', processmanagement.GetReg(PCBbox->ID, 'C')+liczba);
+					processmanagement.SetReg(PCBbox->ID, 'C', processmanagement.GetReg(PCBbox->ID, 'C') + liczba);
 				}
 				else if (program.substr(3, 1) == "D")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'D', processmanagement.GetReg(PCBbox->ID, 'D')+liczba);
+					processmanagement.SetReg(PCBbox->ID, 'D', processmanagement.GetReg(PCBbox->ID, 'D') + liczba);
 				}
 			}
 			else
@@ -117,15 +117,15 @@ bool Interpreter::run(PCB* PCBbox)
 				liczba = atoi(program.substr(4, program.size() - 4).c_str());
 				if (program.substr(3, 1) == "A")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A')-liczba);
+					processmanagement.SetReg(PCBbox->ID, 'A', processmanagement.GetReg(PCBbox->ID, 'A') - liczba);
 				}
 				else if (program.substr(3, 1) == "B")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'B', processmanagement.GetReg(PCBbox->ID, 'B')-liczba);
+					processmanagement.SetReg(PCBbox->ID, 'B', processmanagement.GetReg(PCBbox->ID, 'B') - liczba);
 				}
 				else if (program.substr(3, 1) == "C")
 				{
-					processmanagement.SetReg(PCBbox->ID, 'C', processmanagement.GetReg(PCBbox->ID, 'C')-liczba);
+					processmanagement.SetReg(PCBbox->ID, 'C', processmanagement.GetReg(PCBbox->ID, 'C') - liczba);
 				}
 			}
 			else
@@ -215,7 +215,7 @@ bool Interpreter::run(PCB* PCBbox)
 			break;
 		}
 		case JP:
-		{	
+		{
 			if (processmanagement.GetReg(PCBbox->ID, 'D') != 0) // processmanagement.GetReg(PCBbox.ID, 'D') != 0
 			{
 				processmanagement.SetReg(PCBbox->ID, 'D', processmanagement.GetReg(PCBbox->ID, 'D') - 1);
@@ -244,7 +244,7 @@ bool Interpreter::run(PCB* PCBbox)
 				string name, data;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				data = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc.wpisywanieDoPliku(name,data);
+				disc.wpisywanieDoPliku(name, data);
 			}
 			else
 			{
@@ -273,7 +273,7 @@ bool Interpreter::run(PCB* PCBbox)
 				string name, newname;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				newname = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc.zmianaNazwy(name,newname);
+				disc.zmianaNazwy(name, newname);
 			}
 			else
 			{
@@ -288,7 +288,7 @@ bool Interpreter::run(PCB* PCBbox)
 				string name, data;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				data = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc.dopiszDoPliku(name,data);
+				disc.dopiszDoPliku(name, data);
 			}
 			else
 			{
@@ -302,7 +302,7 @@ bool Interpreter::run(PCB* PCBbox)
 				string name, path;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy
 				path = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie sciezki																								// processmanagement.CreateProcess(name,path);
-				processmanagement.CreateProcess(name,path,5);
+				processmanagement.CreateProcess(name, path, 5);
 			}
 			else
 			{
@@ -317,7 +317,7 @@ bool Interpreter::run(PCB* PCBbox)
 				string name;
 				int ID;
 				name = program.substr(3, program.size() - 3).c_str();
-				ID=processmanagement.getIdFromName(name);
+				ID = processmanagement.getIdFromName(name);
 				processmanagement.DeleteProcess(ID);
 			}
 			else
@@ -364,7 +364,7 @@ bool Interpreter::run(PCB* PCBbox)
 				string name, data;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy
 				data = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie sciezki
-				komunikacja.write(name,data); 
+				komunikacja.write(name, data);
 			}
 			else
 			{

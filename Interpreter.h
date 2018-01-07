@@ -3,10 +3,11 @@
 #include <string>
 #include "ProcessManagement.h"
 #include "PCB.h"
-#include "Scheduler.h"
 #include "plikiFAT.h"
 #include "Komunikacja.h"
+
 using namespace std;
+
 enum Rozkazy {
 	AD, // AD A B					(dodaje do rejestrA zawartoœæ rejestrB) +
 	AX, // AX A 10					(dodaje liczby do rejestru) +
@@ -46,7 +47,7 @@ private:
 	ProcessManagement processmanagement; //<--- proces
 	Komunikacja komunikacja; // <--- komunikacja
 	Rozkazy rozkaz;
-	string program="AAAAAAAAAAAAAAAAAA"; // rozkaz pobierany z ramu
+	string program = "AAAAAAAAAAAAAAAAAA"; // rozkaz pobierany z ramu
 public:
 	bool run(PCB* PCBbox);
 };

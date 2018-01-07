@@ -16,3 +16,7 @@ void ID_Manager::ClearID(int ID)
 {
 	FreeIdArray[ID] = 0;
 }
+ID_Manager::ID_Manager() 
+{
+		FreeIdArray.fill(0);
+}

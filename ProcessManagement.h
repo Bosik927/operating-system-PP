@@ -13,7 +13,7 @@ private:
 	void addFirstProcess(std::string path);
 	Scheduler scheduler;
 public:
-	ProcessManagement() 
+	ProcessManagement()
 	{
 		addFirstProcess("SCIEZKA PROCESU BEZCZYNNOSCI");
 	}
