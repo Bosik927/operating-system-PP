@@ -23,27 +23,25 @@ struct mkfifo
 		{
 			fifo << msg;
 		}
-		else
-			cout << "Blad zapisu do pliku" << endl;
 		fifo.close();
 	}
-	void odczytaj()
-	{
-		ifstream fifo(sciezka);
-		string linia;
-		if (fifo.is_open())
-		{
-			while (getline(fifo, linia))
-			{
-				temp += linia;
-			}
-		}
-		else
-			cout << "Blad odczytania z pliku" << endl;
-		cout << temp;
-		cout << endl;
-		fifo.close();
-	}
+	//void odczytaj()
+	//{
+	//	ifstream fifo(sciezka);
+	//	string linia;
+	//	if (fifo.is_open())
+	//	{
+	//		while (getline(fifo, linia))
+	//		{
+	//			temp += linia;
+	//		}
+	//	}
+	//	else
+	//		cout << "Blad odczytania z pliku" << endl;
+	//	cout << temp;
+	//	cout << endl;
+	//	fifo.close();
+	//}
 	void odczytaj(int iloscz)
 	{
 		ifstream fifo(sciezka);
@@ -55,8 +53,6 @@ struct mkfifo
 				temp += linia;
 			}
 		}
-		else
-			cout << "Blad odczytania z pliku" << endl;
 		for (int i = 0; i < iloscz; i++)
 			cout << temp[i];
 		cout << endl;
@@ -75,9 +71,9 @@ public:
 	Komunikacja();
 	Komunikacja(ProcessManagement *Proces);
 	vector<string> tab;
-	mkfifo mkfifo;
+	mkfifo mkfif;
 	void write(string id, string msg);
-	void read(string id);
+	//void read(string id);
 	void read(string id, int iloscz);
 };
 
