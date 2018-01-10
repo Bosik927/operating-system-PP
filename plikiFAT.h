@@ -16,7 +16,7 @@ public:
 	bool zapisany;					// Czy plik zapisany				
 	int jap1;						// numer pierwszego jap
 	int rozmiar;						// rozmiar plik
-	Mutex zamek;
+	Mutex zamek;									//Mutex zamek;
 
 };
 
@@ -36,26 +36,28 @@ public:
 
 	Disc();
 	void wys();
-	void tworzeniaPliku(std::string nazwa, PCB* process);
+	//void tworzeniaPliku(std::string nazwa, PCB* process);
+	void otworzPlik(std::string nazwa, PCB* process);
+	void zamknijPlik(std::string nazwa, PCB*process);
 	void tworzeniaPliku(std::string nazwa);
 	void wpisywanieDoPliku(std::string nazwa, std::string data);
-	void wpisywanieDoPliku(std::string nazwa, std::string data, PCB* process);
+	//void wpisywanieDoPliku(std::string nazwa, std::string data, PCB* process);
 	int file_jap(std::string nazwa);
 	int wolneMiejsceDysk();
 	void usuwaniePliku(std::string nazwa);
-	void usuwaniePliku(std::string nazwa, PCB* process);
+	//void usuwaniePliku(std::string nazwa, PCB* process);
 	void wyswietlaPliki();
 	void iloscWolnegoMiejsca();
 
 	void drukujDysk(std::string nazwa);
 	void www();
 	void dopiszDoPliku(std::string nazwa, std::string data);
-	void dopiszDoPliku(std::string nazwa, std::string data, PCB* process);
+	//void dopiszDoPliku(std::string nazwa, std::string data, PCB* process);
 	int wolnyJap(int nr_jap);
 	int ktory_katalog(std::string nazwa);
 	int wolnyKatalog();
 	bool nazwaIstnieje(std::string nazwa);
 	int szukanieWolnegoJap();
 	void zmianaNazwy(std::string nazwa, std::string newname);
-	void zmianaNazwy(std::string nazwa, std::string newname, PCB* process);
+	//void zmianaNazwy(std::string nazwa, std::string newname, PCB* process);
 };
