@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <iostream>
 
@@ -23,6 +24,7 @@ public:
 	int B;
 	int C;
 	int D;
+
 	void print();
 	void sleep();
 	void wakeup();

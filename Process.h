@@ -7,7 +7,6 @@ class Process
 {
 protected:
 	unsigned int restTime;
-	unsigned int waitingTime;
 	unsigned int allNeedTime;
 
 public:
@@ -16,14 +15,11 @@ public:
 	Process();
 	Process(PCB* process);
 
-	void incWaitingTime();
 	void decRestTime();
 
 	void setRestTime(unsigned int time);
-	void setWaitingTime(unsigned int time);
 	void setAllNeedTime(unsigned int time);
 
 	unsigned int getRestTime();
-	unsigned int getWaitingTime();
 	unsigned int getAllNeedTime();
 };

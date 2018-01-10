@@ -4,10 +4,7 @@
 #include <iostream>
 #include <string>
 #include "Process.h"
-//#include "Interpreter.h"
 
-
-//BARDZO WAZNA RZECZ TRZEBA DODAC RECZNIE PROCES BEZCZYNNOSCI
 class Scheduler {
 
 protected:
@@ -15,43 +12,54 @@ protected:
 	Process runningProcess;
 	//Znacznik mowiacy o potrzebie wywlaszczenia procesora 
 	bool needResched;
+	//Znacznik mowiacy czy zostal ostatni proces, ktory otrzymal procesor, zostal wrzucony do kolejki procesow przeterminowanych
+	bool lastTerminated;
 
-	//Wektor kolejek procesow aktywnych	(przechowuje procesy aktywne)
+	//Wektor kolejek procesow aktywnych	
 	std::array <std::queue<Process>, 16> activeProcesses;
-	//Wektor kolejek procesow przeterminowanych (przechowuje przeterminowane procesy)
+	//Wektor kolejek procesow przeterminowanych 
 	std::array <std::queue<Process>, 16> terminatedProcesses;
 
-	//Wektor bitowy procesow aktywnych (ulatwiajacy i przyspieszajacy operacje na wektorach kolejek)
+	//Wektor bitowy procesow aktywnych (jedynka oznacz ze dany priorytet posiada reprezentanta)
 	std::array <bool, 16> bitsMapActive;
-	//Wektor bitowy procesow przeterminowanch (ulatwiajacy i przyspieszajacy operacje na wektorach kolejek)
+	//Wektor bitowy procesow przeterminowanch (jedynka oznacz ze dany priorytet posiada reprezentanta)
 	std::array <bool, 16> bitsMapTerminated;
 
-	//Procesy waiting
+	//Procesy o statusie waiting
 	std::vector <Process> waitingProcesses;
 
 public:
 
 	//Wykorzystywane przez zarzadce procesami
+	///Konstruktor mojej struktury
 	Scheduler();
+	///Dodawanie pierwszego procesu idle (najlepiej w konstruktorze "recznie"
 	void addFirstProcess(PCB *process);
-	void addProcess(PCB *process);
-	void assignProcessor();
-	void deleteProcess(Process &process);
-	void unsleep(int ID);
-	void sleep(int ID);
+	///Dodawanie kazdego procesu poza idle
+	void addProcess(PCB *process, unsigned int allNeedTime);
+	///Nadawanie procesora (zwraca proces ktoremu przydzielilem procesor musisz go przekazac Ivanowi)
+	unsigned int assignProcessor();
+	///Usuwanie istniejacego procesu 
+	void deleteProcess(unsigned int ID);
+	///Przerzucenie z waiting do active
+	void unsleep(unsigned int ID);
+	///Dodawanie do plisty procesow waiting (przy Twojej funkcji sleep musisz wywolywac)
+	void sleep(unsigned int ID);
 
 	//Wykorzystywane przeze mnie 
-	void calculateFirstTimeCurrentPriority(Process &process);
+	void calculateFirstTimeCurrentPriority(Process &process, unsigned int allNeedTime);
 	void calculateCurrentPriority(Process &process);
-	void translate(Process &process);
+	void translatePriority(Process &process);
 	void giveTime(Process &process);
-	void chooseProcess();
-	void incWaitingTime();
-	void terminated(Process &process);
-	bool isTerminatedEmpty();
-	void endOfEpoch();
-	void reschedProcess();
-	bool isActiveEmpty();
+	void chooseProcess();				
+	void terminated();
+	bool isTerminatedEmpty();	
+	void endOfEpoch();	
+	void reschedProcess();	
+	bool isActiveEmpty();		
+	void deleteActiveProcess(unsigned int ID);
+	void deleteTerminatedProcess(unsigned int ID); 
+	void deleteWaitingProcess(unsigned int ID);
 
 	//METODY PRZEZNACZONE DO SHELLA
 	void displayActiveProcesses();
@@ -59,5 +67,6 @@ public:
 	void displayActiveBitsMap();
 	void displayTerminatedBitsMap();
 	void displayRunningProcess();
-
+	void displayWaitingProcesses();
+	void displayAll();
 };
