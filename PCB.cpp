@@ -1,16 +1,28 @@
 #include "PCB.h"
 
-//Drukowanie zawartoœci pola PCB
-void PCB::print() {
-	std::cout << "Proces: " << name << ", identyfikator: " << ID << ", rejestry A: " << A << ", B: " << B << ", C: " << C << ", D: " << D << ", command counter: " << commandCounter << std::endl;
+std::string PCB::displayState()
+{
+	switch (this->state)
+	{
+	case processState::active:
+		return "active";
+	case processState::newbie:
+		return "new";
+	case processState::ready:
+		return "ready";
+	case processState::waiting:
+		return "waiting";
+	case processState::finished:
+		return "finished";
+	default:
+		return "error";
+	}
 }
-//Uspyianie procesu - pole blocked uniemo¿liwia ustawienie stanu ready
-void PCB::sleep() {
-	//this->state = PCB::processState::waiting;
-	//this->blocked = 1;
-}
-//Budzenie procesu
-void PCB::wakeup() {
-	//this->blocked = 0;
 
+//Drukowanie zawartoœci pola PCB
+std::string PCB::display()
+{
+	return "Proces: " + name + ", identyfikator: " + std::to_string(ID) + ", stan: " + displayState() + ", priorytet bazowy: " + std::to_string(basePriority) + ", aktualny priorytet: " + std::to_string(priority) + ", rejestry A: " + std::to_string(A) + ", B: " + std::to_string(B) + ", C: " + std::to_string(C) + ", D: " + std::to_string(D) + "\n";
 }
+
+

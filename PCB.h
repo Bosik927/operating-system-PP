@@ -12,7 +12,7 @@ public:
 	}
 	PCB() {}
 
-	enum processState { newbie, waiting, ready, active, finished };
+	enum processState { newbie, waiting, ready, active, finished, err };
 	std::string name;
 	int ID;
 	processState state;
@@ -25,7 +25,7 @@ public:
 	int C;
 	int D;
 
-	void print();
-	void sleep();
-	void wakeup();
+	std::string displayState();
+	std::string display();
+
 };

@@ -1,11 +1,10 @@
 #include"ProcessManagement.h"
 #include<string>
 #include<list>
-#include<random>
-#include<time.h>
+
 
 //Tworzenie nowego pola PCB
-int ProcessManagement::CreateProcess(std::string Name, std::string Path, int BasePriority) {
+int ProcessManagement::CreateProces(std::string Name, std::string Path, int BasePriority) {
 	if (CheckNameUniqe(Name))
 	{
 		//B£¥D, POWIELONA NAZWA
@@ -13,16 +12,16 @@ int ProcessManagement::CreateProcess(std::string Name, std::string Path, int Bas
 	}
 	else
 	{
-		int ID = ID_Manager.PickID();
-		PCB temp;
+		int ID = IdManager.PickID();
+		PCB temp(Name,BasePriority);
 		temp.state = PCB::processState::newbie;
-		temp.name = Name;
+		//temp.name = Name;
 		temp.ID = ID;
 		temp.A = 0;
 		temp.B = 0;
 		temp.C = 0;
 		temp.D = 0;
-		temp.basePriority = BasePriority;
+		//temp.basePriority = BasePriority;
 		temp.commandCounter = 0;
 		temp.blocked = 0;
 		Processes.push_back(temp);
@@ -34,13 +33,13 @@ int ProcessManagement::CreateProcess(std::string Name, std::string Path, int Bas
 
 }
 
+//Losowy priorytet z grupy priorytetów normalnych 1-7
 int ProcessManagement::RandomPriority()
 {
-	srand(time(0));
-	return rand()%8;
+	return rand()%7+1;
 }
 
-
+//Sprawdza unikalnoœæ nazwy procesu; 0 - unikalna, 1 - powtarza siê
 bool ProcessManagement::CheckNameUniqe(std::string Name)
 {
 	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
@@ -55,7 +54,7 @@ bool ProcessManagement::CheckNameUniqe(std::string Name)
 //Tworzenie procesu bezczynnoœci
 void ProcessManagement::addFirstProcess(std::string path)
 {
-	int ID = ID_Manager.PickID();
+	int ID = IdManager.PickID();
 	PCB temp;
 	temp.state = PCB::processState::newbie;
 	temp.name = "idle";
@@ -67,8 +66,8 @@ void ProcessManagement::addFirstProcess(std::string path)
 	temp.basePriority = 0;
 	temp.commandCounter = 0;
 	temp.blocked = 0;
-	Processes.push_back(temp);
 	temp.state = PCB::processState::ready;
+	Processes.push_back(temp);
 	scheduler.addFirstProcess(this->getPCB(0));
 	//TRZEBA JAKOŒ DODAC KOD PROGRAMU DO RAMU
 }
@@ -81,9 +80,11 @@ void ProcessManagement::DeleteProcess(int ID) {
 	else {
 		bool deleted = 0;
 		for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
-			if(iter->ID == ID) {
-				ID_Manager.ClearID(ID);
+			if(iter->ID == ID) 
+			{
+				scheduler.deleteProcess(ID);//metoda Stasia
 				Processes.erase(iter);
+				IdManager.ClearID(ID);
 				deleted = 1;
 				break;
 			}
@@ -101,6 +102,7 @@ PCB::processState ProcessManagement::GetState(int ID)
 			return iter->state;
 		}
 	}
+	return PCB::processState::err;
 }
 
 //Nadawanie stanu procesu
@@ -123,7 +125,7 @@ void ProcessManagement::SetState(int ID, PCB::processState newState) {
 					if (iter->state != PCB::processState::ready)
 					{
 						//wrzucanie do kolejki procesów gotowych
-						scheduler.addProcess(this->getPCB(ID));
+						scheduler.addProcess(this->getPCB(ID), RandomPriority());//Losowanie tutaj priorytetu chyba jest bez sensu.
 					}
 					//nadawanie nowego stanu
 					iter->state = newState;
@@ -135,7 +137,7 @@ void ProcessManagement::SetState(int ID, PCB::processState newState) {
 			{
 				if (iter->state == PCB::processState::ready)
 				{
-					scheduler.sleep(ID);
+					//scheduler.sleep(ID); //chyba bez sensu tutaj
 					iter->state = newState;
 					
 				}
@@ -158,7 +160,7 @@ void ProcessManagement::SetState(int ID, PCB::processState newState) {
 void ProcessManagement::print(int ID) {
 	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
 		if(iter->ID == ID) {
-			iter->print();
+			std::cout << iter->display();
 			break;
 		}
 	}
@@ -283,15 +285,17 @@ int ProcessManagement::getIdFromName(std::string name) {
 void ProcessManagement::Sleep(int ID) 
 {
 	SetState(ID, PCB::processState::waiting);
-
+	scheduler.sleep(ID);
 }
 //Budzi proces
 void ProcessManagement::WakeUp(int ID) 
 {
 	SetState(ID, PCB::processState::ready);
-
+	scheduler.unsleep(ID);
 }
 //Zwraca wskaŸnik do PCB
+//JEŒLI NIE ZNAJDZIE DANEGO PROCESU ZWRACA NULLPTR
+//KONIECZNA OBS£UGA B£EDU!!!
 PCB * ProcessManagement::getPCB(int ID) {
 	PCB* temp = nullptr;
 	for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
@@ -314,4 +318,42 @@ void ProcessManagement::DisplayScheduler()
 void ProcessManagement::Run()
 {
 	scheduler.assignProcessor();
+}
+
+PCB * ProcessManagement::AssignProcessor()
+{
+	int actvID;
+	actvID = scheduler.assignProcessor();
+	return getPCB(actvID);
+}
+
+
+std::string ProcessManagement::DisplayAllProcesses()
+{
+	std::string all;
+	for (PCB process : Processes)
+	{
+		all += process.display();
+	}
+	return all;
+}
+
+std::string ProcessManagement::DisplayProcessByName(std::string Name)
+{
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->name == Name) {
+			return iter->display();
+		}
+	}
+	return "Nie znaleziono procesu o danej nazwie\n";
+}
+
+std::string ProcessManagement::DisplayProcessByID(int ID)
+{
+	for (std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		if (iter->ID == ID) {
+			return iter->display();
+		}
+	}
+	return "Nie znaleziono procesu o danym ID\n";
 }

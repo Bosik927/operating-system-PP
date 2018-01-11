@@ -3,9 +3,11 @@
 #include<iostream>
 #include<string>
 #include<list>
+#include<random>
+#include<time.h>
 #include"ID_Manager.h"
-#include "PCB.h"
-#include "Scheduler.h"
+#include"PCB.h"
+#include"Scheduler.h"
 
 class ProcessManagement {
 private:
@@ -15,11 +17,14 @@ private:
 public:
 	ProcessManagement() 
 	{
+		srand(time(0));//potrzebne do losowego priorytetu
 		addFirstProcess("SCIEZKA PROCESU BEZCZYNNOSCI");
 	}
 
-	ID_Manager ID_Manager;
+	ID_Manager IdManager;
 	PCB::processState GetState(int ID);
+	int RandomPriority();
+	//
 	void SetState(int ID, PCB::processState newState);
 	void print(int ID);
 	int GetBasePriority(int ID);
@@ -34,7 +39,10 @@ public:
 	bool CheckNameUniqe(std::string name);
 
 	PCB* getPCB(int ID);
-	int RandomPriority();
+	//JEŒLI NIE ZNAJDZIE DANEGO PROCESU ZWRACA NULLPTR
+	//KONIECZNA OBS£UGA B£EDU!!!
+	
+	
 
 	//SCHEDULER
 	void Run();
@@ -42,5 +50,13 @@ public:
 	void Sleep(int ID);
 	void WakeUp(int ID);
 	void DeleteProcess(int ID);
-	int CreateProcess(std::string Name, std::string Path, int BasePriority = 5);
+	int CreateProces(std::string Name, std::string Path, int BasePriority = 5);
+
+	//SHELL
+	PCB* AssignProcessor();
+	//TU TE¯ OBS£UGA NULLPTR
+	std::string DisplayAllProcesses();
+	std::string DisplayProcessByName(std::string Name);
+	std::string DisplayProcessByID(int ID);
+
 };
