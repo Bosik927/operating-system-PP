@@ -38,6 +38,7 @@ bool Interpreter::isLabel(string &program)
 }
 void Interpreter::run(PCB* PCBbox)
 {
+	PCBbox = processmanagement->GetRunningProcess();
 	int label=0;
 	// program = ram.pobierzRozkaz(RUNNING.GetName());
 	if (!program.size())
