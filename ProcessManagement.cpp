@@ -4,11 +4,11 @@
 
 
 //Tworzenie nowego pola PCB, podanie 0 na BasePriority losuje priorytet
-int ProcessManagement::CreateProces(std::string Name, std::string Path, int BasePriority) {
+std::string ProcessManagement::CreateProces(std::string Name, std::string Path, int BasePriority) {
 	if (CheckNameUniqe(Name))
 	{
 		//B£¥D, POWIELONA NAZWA
-		return -1;
+		return "Blad, proces o podanej nazwie juz istnieje\n";
 	}
 	else
 	{
@@ -18,22 +18,21 @@ int ProcessManagement::CreateProces(std::string Name, std::string Path, int Base
 		{
 			prior = RandomPriority();
 		}
-		PCB temp(Name,prior);
+		PCB temp(Name, prior);
 		temp.state = PCB::processState::newbie;
-		//temp.name = Name;
 		temp.ID = ID;
 		temp.A = 0;
 		temp.B = 0;
 		temp.C = 0;
 		temp.D = 0;
-		//temp.basePriority = BasePriority;
 		temp.commandCounter = 0;
 		temp.blocked = 0;
 		Processes.push_back(temp);
 		SetState(ID, PCB::processState::ready);
 		scheduler.addProcess(this->getPCB(ID), BasePriority);
+		return "Utworzono proces: " + Name + " o identyfikatorze: " + std::to_string(ID) + " i priorytecie wg. Windows: " + std::to_string(prior) + "\n";
 	}
-	return 0;
+	return "Nieznany blad przy tworzeniu procesu\n";
 	//TRZEBA JAKOŒ DODAC KOD PROGRAMU DO RAMU
 	//PATH - NAZWA LUB SCIEZKA PLIKU ZRODLOWEGO
 
@@ -79,26 +78,28 @@ void ProcessManagement::addFirstProcess(std::string path)
 }
 
 //Usuwanie wybranego procesu z listy procesów
-void ProcessManagement::DeleteProcess(int ID) {
+std::string ProcessManagement::DeleteProcess(int ID) {
 	if(ID == 0) {
-		//B£¥D NIE MOZNA USUNAC PROCESU BEZCZYNNOSCI
+		return "Blad, usuniecie procesu bezczynnosci jest niemozliwe!\n";
 	}
 	else {
 		bool deleted = 0;
-		for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter) {
+		for(std::list<PCB>::iterator iter = Processes.begin(); iter != Processes.end(); ++iter)
+		{
 			if(iter->ID == ID) 
 			{
 				scheduler.deleteProcess(ID);//metoda Stasia
 				Processes.erase(iter);
 				IdManager.ClearID(ID);
 				deleted = 1;
-				break;
+				return "Usunieto proces o identyfikatorze: " + std::to_string(ID) + "\n";
 			}
 		}
 		if(!deleted) {
-			//B£¥D, BRAK PROCESU O PODANYM ID
+			return "Nie znaleziono procesu o podanym ID\n";
 		}
 	}
+	return "Nieznany blad przy usuwaniu procesu\n";
 }
 //Pobieranie stanu wybranego procesu
 PCB::processState ProcessManagement::GetState(int ID) 

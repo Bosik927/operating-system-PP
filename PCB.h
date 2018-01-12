@@ -25,7 +25,6 @@ public:
 	int C;
 	int D;
 
-	int RandomPriority();
 	void Sleep();
 	void WakeUp();
 	std::string displayState();

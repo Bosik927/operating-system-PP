@@ -46,11 +46,13 @@ public:
 	//SCHEDULER
 	void Run();
 	void DisplayScheduler();
-	void DeleteProcess(int ID);
-	//Nie podanie BasePriority, lub podanie 0 powoduje wybranie losowego priorytetu z grupy priorytetów normalnych
-	int CreateProces(std::string Name, std::string Path, int BasePriority = 0);
+
 
 	//SHELL
+	//Nie podanie BasePriority, lub podanie 0 powoduje wybranie losowego priorytetu z grupy priorytetów normalnych
+	std::string CreateProces(std::string Name, std::string Path, int BasePriority = 0);
+	//Create i Delete zwracaj¹ wynik operacji, mo¿na je bezpoœrednio wyœwietlaæ na konsole w shellu
+	std::string DeleteProcess(int ID);
 	PCB* AssignProcessor();
 	//TU TE¯ OBS£UGA NULLPTR
 	std::string DisplayAllProcesses();
