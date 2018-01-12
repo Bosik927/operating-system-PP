@@ -50,7 +50,7 @@ std::vector<PCB *>* Mutex::getWaitingProcesses() {
 }
 
 bool Mutex::isBlock() {
-	return !is_lock;
+	return is_lock;
 }
 
 std::string Mutex::toString() {
