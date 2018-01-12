@@ -40,8 +40,10 @@ public:
 	PCB* getPCB(int ID);
 	//JEŒLI NIE ZNAJDZIE DANEGO PROCESU ZWRACA NULLPTR
 	//KONIECZNA OBS£UGA B£EDU!!!
-	
-	
+
+	//INTERPRETER
+	PCB* GetRunningProcess();
+	//OB£SUGA B£ÊDOW W CHUJ!!!
 
 	//SCHEDULER
 	void Run();

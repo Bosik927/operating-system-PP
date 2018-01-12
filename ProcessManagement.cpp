@@ -30,7 +30,7 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 		Processes.push_back(temp);
 		SetState(ID, PCB::processState::ready);
 		scheduler.addProcess(this->getPCB(ID), BasePriority);
-		return "Utworzono proces: " + Name + " o identyfikatorze: " + std::to_string(ID) + " i priorytecie wg. Windows: " + std::to_string(prior) + "\n";
+		return "Utworzono proces: \"" + Name + "\" o identyfikatorze: " + std::to_string(ID) + " i priorytecie wg. Windows: " + std::to_string(prior) + "\n";
 	}
 	return "Nieznany blad przy tworzeniu procesu\n";
 	//TRZEBA JAKOŒ DODAC KOD PROGRAMU DO RAMU
@@ -276,7 +276,13 @@ void ProcessManagement::DisplayScheduler()
 	scheduler.displayTerminatedProcesses();
 }
 
-void ProcessManagement::Run()
+PCB * ProcessManagement::GetRunningProcess()
+{
+	int actvID = scheduler.returnRunningProcess();
+	return getPCB(actvID);
+}
+
+void ProcessManagement::Run()//Czy to jest potrzebne w ogole?
 {
 	scheduler.assignProcessor();
 }

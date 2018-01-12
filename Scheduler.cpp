@@ -326,6 +326,11 @@ void Scheduler::deleteWaitingProcess(unsigned int ID) {
 	}
 }
 
+int Scheduler::returnRunningProcess()
+{
+	return runningProcess.process->ID;
+}
+
 //wybieranie procesu do dzialania, wyciaganie go z kolejki i zwracanie
 //odpowiednie ustawienie mapy bitowej
 void Scheduler::chooseProcess()
