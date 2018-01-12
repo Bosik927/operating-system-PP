@@ -11,7 +11,7 @@ public:
 	Mutex();
 	~Mutex();
 
-	void lock(PCB& process);
+	bool lock(PCB& process);
 	bool try_lock(PCB& process);
 	void unlock(PCB& process);
 

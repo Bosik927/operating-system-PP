@@ -5,14 +5,16 @@ Mutex::Mutex() : using_process(), waiting_processes(), is_lock(false) {}
 
 Mutex::~Mutex() {}
 
-void Mutex::lock(PCB &process) {
+bool Mutex::lock(PCB &process) {
 	if(using_process != nullptr && is_lock == true) {
 		process.sleep();
 		waiting_processes.push_back(&process);
+		return false;
 	}
 	else {
 		using_process = &process;
 		is_lock = true;
+		return true
 	}
 }
 
