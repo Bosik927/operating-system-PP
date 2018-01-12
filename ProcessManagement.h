@@ -24,7 +24,6 @@ public:
 	ID_Manager IdManager;
 	PCB::processState GetState(int ID);
 	int RandomPriority();
-	//
 	void SetState(int ID, PCB::processState newState);
 	void print(int ID);
 	int GetBasePriority(int ID);
@@ -47,10 +46,9 @@ public:
 	//SCHEDULER
 	void Run();
 	void DisplayScheduler();
-	void Sleep(int ID);
-	void WakeUp(int ID);
 	void DeleteProcess(int ID);
-	int CreateProces(std::string Name, std::string Path, int BasePriority = 5);
+	//Nie podanie BasePriority, lub podanie 0 powoduje wybranie losowego priorytetu z grupy priorytetów normalnych
+	int CreateProces(std::string Name, std::string Path, int BasePriority = 0);
 
 	//SHELL
 	PCB* AssignProcessor();

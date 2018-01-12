@@ -3,7 +3,7 @@
 #include<list>
 
 
-//Tworzenie nowego pola PCB
+//Tworzenie nowego pola PCB, podanie 0 na BasePriority losuje priorytet
 int ProcessManagement::CreateProces(std::string Name, std::string Path, int BasePriority) {
 	if (CheckNameUniqe(Name))
 	{
@@ -13,7 +13,12 @@ int ProcessManagement::CreateProces(std::string Name, std::string Path, int Base
 	else
 	{
 		int ID = IdManager.PickID();
-		PCB temp(Name,BasePriority);
+		int prior = BasePriority;
+		if (prior == 0)
+		{
+			prior = RandomPriority();
+		}
+		PCB temp(Name,prior);
 		temp.state = PCB::processState::newbie;
 		//temp.name = Name;
 		temp.ID = ID;
@@ -26,6 +31,7 @@ int ProcessManagement::CreateProces(std::string Name, std::string Path, int Base
 		temp.blocked = 0;
 		Processes.push_back(temp);
 		SetState(ID, PCB::processState::ready);
+		scheduler.addProcess(this->getPCB(ID), BasePriority);
 	}
 	return 0;
 	//TRZEBA JAKOŒ DODAC KOD PROGRAMU DO RAMU
@@ -112,41 +118,6 @@ void ProcessManagement::SetState(int ID, PCB::processState newState) {
 		{
 			switch (newState)
 			{
-			case PCB::processState::ready:
-			{
-				if (iter->blocked)
-				{
-					break;
-					//nie mo¿na nadaæ stanu ready zablokowaneu procesowi
-				}
-				else
-				{
-					//sprawdzanie czy proces nie ma stanu gotowy
-					if (iter->state != PCB::processState::ready)
-					{
-						//wrzucanie do kolejki procesów gotowych
-						scheduler.addProcess(this->getPCB(ID), RandomPriority());//Losowanie tutaj priorytetu chyba jest bez sensu.
-					}
-					//nadawanie nowego stanu
-					iter->state = newState;
-
-				}
-				break;
-			}
-			case PCB::processState::waiting:
-			{
-				if (iter->state == PCB::processState::ready)
-				{
-					//scheduler.sleep(ID); //chyba bez sensu tutaj
-					iter->state = newState;
-					
-				}
-				else
-				{
-					iter->state = newState;
-				}
-				break;
-			}
 			default:
 				iter->state = newState;
 				break;
@@ -281,18 +252,7 @@ int ProcessManagement::getIdFromName(std::string name) {
 	}
 	return -1;
 }
-//Usypia proces
-void ProcessManagement::Sleep(int ID) 
-{
-	SetState(ID, PCB::processState::waiting);
-	scheduler.sleep(ID);
-}
-//Budzi proces
-void ProcessManagement::WakeUp(int ID) 
-{
-	SetState(ID, PCB::processState::ready);
-	scheduler.unsleep(ID);
-}
+
 //Zwraca wskaŸnik do PCB
 //JEŒLI NIE ZNAJDZIE DANEGO PROCESU ZWRACA NULLPTR
 //KONIECZNA OBS£UGA B£EDU!!!
@@ -322,6 +282,8 @@ void ProcessManagement::Run()
 
 PCB * ProcessManagement::AssignProcessor()
 {
+	//TODO:
+	//Zmiana stanów procesów!!!
 	int actvID;
 	actvID = scheduler.assignProcessor();
 	return getPCB(actvID);

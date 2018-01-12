@@ -1,5 +1,21 @@
 #include "PCB.h"
 
+//Losowy priorytet z grupy priorytetów normalnych 1-7
+int PCB::RandomPriority()
+{
+	return rand() % 7 + 1;
+}
+
+void PCB::Sleep()
+{
+	this->state = processState::waiting;
+}
+
+void PCB::WakeUp()
+{
+	this->state = processState::ready;
+}
+
 std::string PCB::displayState()
 {
 	switch (this->state)
