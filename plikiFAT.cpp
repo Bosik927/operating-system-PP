@@ -308,7 +308,7 @@ void Disc::usuwaniePliku(std::string nazwa)
 	if (nazwaIstnieje(nazwa) == false)
 	{
 
-		for (int i = 0; i<buffor; i++)
+		for (int i = 0; i < buffor; i++)
 		{
 			for (int j = 0; j < 64; j++)
 			{
@@ -326,10 +326,10 @@ void Disc::usuwaniePliku(std::string nazwa)
 			atrybuty[x].zapisany = false;
 		}
 		iloscWolnegoMiejsca();
-		std::cout << ("Usuwanie pliku przebieglo pomyslnie");
+		std::cout << ("Usuwanie pliku przebieglo pomyslnie") << std::endl;
 	}
 	else
-		std::cout << ("Plik nie istnieje");
+		std::cout << ("Plik nie istnieje") << std::endl;
 
 }
 
@@ -386,7 +386,7 @@ void Disc::wyswietlaPliki()
 {
 	int allsize = 0;
 	int l = 0;
-	std::cout << "  Directory of root:" << std::endl;
+	std::cout << "Directory of root:" << std::endl;
 
 	std::cout << "Nazwa   Rozmiar ";
 	std::cout << std::endl;

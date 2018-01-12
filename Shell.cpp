@@ -1,8 +1,9 @@
 #include "Shell.h"
+
 //skrypty!!!!!
 
 
-Polecenia convert(const std::string &str) {
+Polecenia Shell::convert(const std::string &str) {
 	if (str == "go" | str == "GO") return Polecenia::GO; //chójoza spróbój zamieniæ 
 	else if (str == "cp" | str == "CP") return Polecenia::CP;
 	else if (str == "dp" | str == "DP") return Polecenia::DP;
@@ -19,13 +20,13 @@ Polecenia convert(const std::string &str) {
 	else if (str == "help" | str == "HELP") return Polecenia::HELP;
 	else return Polecenia::BLAD;
 }
-bool is_number(const std::string &s)
+bool Shell::is_number(const std::string &s)
 {
 	std::string::const_iterator it = s.begin();
 	while (it != s.end() && std::isdigit(*it)) ++it;
 	return !s.empty() && it == s.end();
 }
-std::string text_to_string()
+std::string Shell::text_to_string()
 {
 	std::string buffer;
 	std::string wynik;
@@ -38,10 +39,11 @@ std::string text_to_string()
 			break;
 		}
 	}
+	wynik.pop_back();
 	return wynik;
 }
 
-void shell()
+void Shell::shell()
 {
 
 	bool a = true;
@@ -148,7 +150,7 @@ void shell()
 			case LS:
 				if (pom.size() - 1 == 1)
 				{
-					//void Disc::wyswietlaPliki()
+					dysk.wyswietlaPliki();
 				}
 				else
 				{
@@ -158,7 +160,7 @@ void shell()
 			case CF:
 				if (pom.size() - 1 == 2) {
 
-					//Disc::tworzeniaPliku(pom[1]);
+					dysk.tworzeniaPliku(pom[1]);
 				}
 				else
 				{
@@ -167,15 +169,23 @@ void shell()
 				break;
 			case WF:
 			{
-				std::string sprawdzam;
-				sprawdzam = text_to_string();
-				//void Disc::wpisywanieDoPliku(pom[1], tekst_to_string);
+				if (pom.size() - 1 == 2) 
+				{
+					/*std::string sprawdzam;
+					sprawdzam = text_to_string()*/;
+					dysk.wpisywanieDoPliku(pom[1], text_to_string());
+				}
+				else
+				{
+					throw 2;
+				}
+				
 				break;
 			}
 			case DF:
 				if (pom.size() - 1 == 2) {
 
-					//void Disc::usuwaniePliku(pom[1]);
+					dysk.usuwaniePliku(pom[1]);
 				}
 				else
 				{
@@ -184,7 +194,7 @@ void shell()
 				break;
 			case RF:
 				if (pom.size() - 1 == 2) {
-					//void Disc::drukujDysk(pom[1])
+					dysk.drukujDysk(pom[1]);
 				}
 				else
 				{
@@ -194,7 +204,7 @@ void shell()
 			case REF:
 				if (pom.size() - 1 == 3)
 				{
-					//void Disc::zmianaNazwy(pom[1], pom[2])
+					dysk.zmianaNazwy(pom[1], pom[2]);
 				}
 				else
 				{
@@ -204,7 +214,7 @@ void shell()
 			case APF:
 			{
 
-				//void Disc::dopiszDoPliku(pom[1], text_to_string);
+				dysk.dopiszDoPliku(pom[1], text_to_string());
 			}
 
 			break;
@@ -276,7 +286,7 @@ void shell()
 	}
 	std::getchar();//to wywal
 }
-void logo() {//lol
+void Shell::logo() {//lol
 	int i = 50;
 	std::cout << "         GGGGGGGGGGG          RRRRRRRRRRRRRR          AAAAAAAAAAAAAAAAA   \n";
 	Sleep(i);
@@ -328,3 +338,4 @@ void logo() {//lol
 	Sleep(1000);
 	system("cls");
 }
+
