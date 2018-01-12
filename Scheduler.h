@@ -60,6 +60,10 @@ public:
 	void deleteActiveProcess(unsigned int ID);
 	void deleteTerminatedProcess(unsigned int ID); 
 	void deleteWaitingProcess(unsigned int ID);
+	int returnRunningProcess(){
+		return runningProcess.process->ID;
+		
+	}
 
 	//METODY PRZEZNACZONE DO SHELLA
 	void displayActiveProcesses();

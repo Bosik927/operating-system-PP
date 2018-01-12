@@ -478,7 +478,7 @@ void Scheduler::displayActiveProcesses()
 			auto process = e.front();
 			e.pop();
 			
-			std::cout << "NAME: " << process.process->name << " KWANT: " << process.getRestTime()<< std::endl;
+			std::cout<< process.process->display();
 		}
 	}
 }
