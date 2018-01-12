@@ -13,7 +13,7 @@
 #include "ProcessManagement.h"
 enum Polecenia
 {
-	go, cp, dp, sp, mc, BLAD,
+	go, cp, dp, sp, mc, BLAD, aa,
 	ls, cf, wf, df, rf, reff, apf, EXIT, HELP
 };
 class Shell {
@@ -30,6 +30,7 @@ public:
 	Shell() 
 	{
 		interpreter = Interpreter(&pm, &kom,&disc);
+		
 	}
 	Polecenia convert(const std::string &str);
 	bool is_number(const std::string &s);

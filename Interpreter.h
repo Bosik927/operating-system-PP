@@ -46,7 +46,7 @@ private:
 	ProcessManagement *processmanagement; //<--- proces
 	Komunikacja *komunikacja; // <--- komunikacja
 	Rozkazy rozkaz;
-	string program="CF nazwa.txt"; // rozkaz pobierany z ramu
+	string program="AX A 9"; // rozkaz pobierany z ramu
 public:
 	void run(PCB* PCBbox);
 	Interpreter() {}

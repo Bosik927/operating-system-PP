@@ -86,6 +86,11 @@ void Interpreter::run(PCB* PCBbox)
 				if (program.substr(3, 1) == "A")
 				{
 					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A')+liczba);
+					std::cout << liczba << "\n";
+					std::cout << PCBbox->ID << "\n";
+					std::cout << processmanagement->GetReg(PCBbox->ID, 'A') << "\n";
+
+
 				}
 				else if (program.substr(3, 1) == "B")
 				{

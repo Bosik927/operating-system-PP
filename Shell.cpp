@@ -4,7 +4,7 @@
 
 
 Polecenia Shell::convert(const std::string &str) {
-	if (str == "go" | str == "GO") return Polecenia::go; //chójoza spróbój zamieniæ 
+	if (str == "go" | str == "GO") return Polecenia::go; 
 	else if (str == "cp" | str == "CP") return Polecenia::cp;
 	else if (str == "dp" | str == "DP") return Polecenia::dp;
 	else if (str == "sp" | str == "SP") return Polecenia::sp;
@@ -13,6 +13,7 @@ Polecenia Shell::convert(const std::string &str) {
 	else if (str == "cf" | str == "CF") return Polecenia::cf;
 	else if (str == "wf" | str == "WF") return Polecenia::wf;
 	else if (str == "df" | str == "DF") return Polecenia::df;
+	else if (str == "aa" | str == "AA") return Polecenia::aa;
 	else if (str == "rf" | str == "RF") return Polecenia::rf;
 	else if (str == "ref" | str == "REF") return Polecenia::reff;
 	else if (str == "apf" | str == "APF") return Polecenia::apf;
@@ -89,7 +90,7 @@ void Shell::shell()
 						std::istringstream ss(pom[3]);
 						ss >> pomoc;
 						if (pomoc <= 14 && pomoc >= 0) {
-							//create process
+							std::cout << pm.CreateProces(pom[1], pom[2], pomoc);
 						}
 						else
 						{
@@ -107,9 +108,23 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
+			case aa:
+				if (pom.size() - 1 == 1)
+				{
+					std::cout << pm.DisplayAllProcesses();
+				}
+				else
+				{
+					throw 2;
+				}
+				break;
+
 			case dp:
+
 				if (pom.size() - 1 == 2) {
 					std::cout << "Poszlo dp" << std::endl;
+					
+					std::cout << pm.DeleteProcess(pm.getIdFromName(pom[1]));
 				}
 				else
 				{
