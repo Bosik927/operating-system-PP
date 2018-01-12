@@ -7,14 +7,14 @@ Mutex::~Mutex() {}
 
 bool Mutex::lock(PCB &process) {
 	if(using_process != nullptr && is_lock == true) {
-		process.sleep();
+		process.Sleep();
 		waiting_processes.push_back(&process);
 		return false;
 	}
 	else {
 		using_process = &process;
 		is_lock = true;
-		return true
+		return true;
 	}
 }
 
@@ -36,7 +36,7 @@ void Mutex::unlock(PCB &process) {
 			using_process = waiting_processes[0];
 			waiting_processes.erase(waiting_processes.begin());
 			is_lock = true;
-			using_process->wakeup();
+			using_process->WakeUp();
 		}
 	}
 }
