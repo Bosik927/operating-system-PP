@@ -36,11 +36,9 @@ bool Interpreter::isLabel(string &program)
 		return false;
 	}
 }
-bool Interpreter::run(PCB* PCBbox)
+void Interpreter::run(PCB* PCBbox)
 {
 	int label=0;
-	bool koniec = true;
-	
 	// program = ram.pobierzRozkaz(RUNNING.GetName());
 	if (!program.size())
 	{
@@ -302,7 +300,7 @@ bool Interpreter::run(PCB* PCBbox)
 				string name, path;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy
 				path = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie sciezki																								// processmanagement.CreateProcess(name,path);
-				processmanagement.CreateProcess(name,path,5);
+				processmanagement.CreateProces(name,path,5);
 			}
 			else
 			{
@@ -326,6 +324,9 @@ bool Interpreter::run(PCB* PCBbox)
 			}
 			break;
 		}
+
+		// Run proces jest niepotrzebnie w naszym systemie
+		/*
 		case RP:
 		{
 			if (program.substr(2, 1) == " ")
@@ -343,13 +344,16 @@ bool Interpreter::run(PCB* PCBbox)
 			}
 			break;
 		}
+		*/
 		case RM:
 		{
 			if (program.substr(2, 1) == " ")
 			{
 				string name;
+				int ilosc_znakow=0;
 				name = program.substr(3, program.size() - 3).c_str();
-				komunikacja.read(name);
+				ilosc_znakow= atoi(program.substr(4, program.size() - 4).c_str());
+				komunikacja.read(name,ilosc_znakow); 
 			}
 			else
 			{
@@ -374,7 +378,7 @@ bool Interpreter::run(PCB* PCBbox)
 		}
 		case HL:
 		{
-			koniec = false;
+			
 			break;
 		}
 		default:
@@ -382,15 +386,6 @@ bool Interpreter::run(PCB* PCBbox)
 			cout << "Nie rozpoznano rozkazu." << endl;
 			break;
 		}
-		}
-
-		if (!koniec)
-		{
-			return 0;
-		}
-		else
-		{
-			return true;
 		}
 	}
 }

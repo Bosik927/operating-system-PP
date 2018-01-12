@@ -48,5 +48,5 @@ private:
 	Rozkazy rozkaz;
 	string program="AAAAAAAAAAAAAAAAAA"; // rozkaz pobierany z ramu
 public:
-	bool run(PCB* PCBbox);
+	void run(PCB* PCBbox);
 };
