@@ -72,9 +72,8 @@ void Shell::shell()
 				if (pom.size() - 1 == 1)
 				{
 
-					PCB* aaa;
-					aaa = new PCB;
-//					interpreter.run(aaa);
+					PCB aaa("asasa",12);
+					interpreter.run(&aaa);
 					std::cout << "Poszlo go" << std::endl;
 				}
 				else

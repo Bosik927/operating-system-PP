@@ -49,6 +49,7 @@ private:
 	string program="CF nazwa.txt"; // rozkaz pobierany z ramu
 public:
 	void run(PCB* PCBbox);
+	Interpreter() {}
 	Interpreter(ProcessManagement* pm, Komunikacja* km, Disc* dc)
 	{
 		this->processmanagement = pm;
