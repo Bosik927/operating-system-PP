@@ -4,18 +4,18 @@
 
 
 Polecenia Shell::convert(const std::string &str) {
-	if (str == "go" | str == "GO") return Polecenia::GO; //chójoza spróbój zamieniæ 
-	else if (str == "cp" | str == "CP") return Polecenia::CP;
-	else if (str == "dp" | str == "DP") return Polecenia::DP;
-	else if (str == "sp" | str == "SP") return Polecenia::SP;
-	else if (str == "mc" | str == "MC") return Polecenia::MC;
-	else if (str == "ls" | str == "LS") return Polecenia::LS;
-	else if (str == "cf" | str == "CF") return Polecenia::CF;
-	else if (str == "wf" | str == "WF") return Polecenia::WF;
-	else if (str == "df" | str == "DF") return Polecenia::DF;
-	else if (str == "rf" | str == "RF") return Polecenia::RF;
-	else if (str == "ref" | str == "REF") return Polecenia::REF;
-	else if (str == "apf" | str == "APF") return Polecenia::APF;
+	if (str == "go" | str == "GO") return Polecenia::go; //chójoza spróbój zamieniæ 
+	else if (str == "cp" | str == "CP") return Polecenia::cp;
+	else if (str == "dp" | str == "DP") return Polecenia::dp;
+	else if (str == "sp" | str == "SP") return Polecenia::sp;
+	else if (str == "mc" | str == "MC") return Polecenia::mc;
+	else if (str == "ls" | str == "LS") return Polecenia::ls;
+	else if (str == "cf" | str == "CF") return Polecenia::cf;
+	else if (str == "wf" | str == "WF") return Polecenia::wf;
+	else if (str == "df" | str == "DF") return Polecenia::df;
+	else if (str == "rf" | str == "RF") return Polecenia::rf;
+	else if (str == "ref" | str == "REF") return Polecenia::reff;
+	else if (str == "apf" | str == "APF") return Polecenia::apf;
 	else if (str == "exit" | str == "EXIT") return Polecenia::EXIT;
 	else if (str == "help" | str == "HELP") return Polecenia::HELP;
 	else return Polecenia::BLAD;
@@ -68,9 +68,13 @@ void Shell::shell()
 
 			switch (k)
 			{
-			case GO:
+			case go:
 				if (pom.size() - 1 == 1)
 				{
+
+					PCB* aaa;
+					aaa = new PCB;
+//					interpreter.run(aaa);
 					std::cout << "Poszlo go" << std::endl;
 				}
 				else
@@ -78,7 +82,7 @@ void Shell::shell()
 					throw 1; //tesz chójoza
 				}
 				break;
-			case CP:
+			case cp:
 				if (pom.size() - 1 == 4)
 				{
 					if (is_number(pom[3])) {
@@ -104,7 +108,7 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
-			case DP:
+			case dp:
 				if (pom.size() - 1 == 2) {
 					std::cout << "Poszlo dp" << std::endl;
 				}
@@ -113,7 +117,7 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
-			case SP:
+			case sp:
 				if (pom.size() - 1 == 2) {
 					std::cout << "Poszlo sp" << std::endl;
 				}
@@ -122,7 +126,7 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
-			case MC:
+			case mc:
 				if (pom.size() - 1 == 3)
 				{
 					if (is_number(pom[1]) && is_number(pom[2]))
@@ -147,33 +151,33 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
-			case LS:
+			case ls:
 				if (pom.size() - 1 == 1)
 				{
-					dysk.wyswietlaPliki();
+					disc.wyswietlaPliki();
 				}
 				else
 				{
 					throw 1;
 				}
 				break;
-			case CF:
+			case cf:
 				if (pom.size() - 1 == 2) {
 
-					dysk.tworzeniaPliku(pom[1]);
+					disc.tworzeniaPliku(pom[1]);
 				}
 				else
 				{
 					throw 2;
 				}
 				break;
-			case WF:
+			case wf:
 			{
 				if (pom.size() - 1 == 2) 
 				{
 					/*std::string sprawdzam;
 					sprawdzam = text_to_string()*/;
-					dysk.wpisywanieDoPliku(pom[1], text_to_string());
+					disc.wpisywanieDoPliku(pom[1], text_to_string());
 				}
 				else
 				{
@@ -182,39 +186,39 @@ void Shell::shell()
 				
 				break;
 			}
-			case DF:
+			case df:
 				if (pom.size() - 1 == 2) {
 
-					dysk.usuwaniePliku(pom[1]);
+					disc.usuwaniePliku(pom[1]);
 				}
 				else
 				{
 					throw 2;
 				}
 				break;
-			case RF:
+			case rf:
 				if (pom.size() - 1 == 2) {
-					dysk.drukujDysk(pom[1]);
+					disc.drukujDysk(pom[1]);
 				}
 				else
 				{
 					throw 2;
 				}
 				break;
-			case REF:
+			case reff:
 				if (pom.size() - 1 == 3)
 				{
-					dysk.zmianaNazwy(pom[1], pom[2]);
+					disc.zmianaNazwy(pom[1], pom[2]);
 				}
 				else
 				{
 					throw 2;
 				}
 				break;
-			case APF:
+			case apf:
 			{
 
-				dysk.dopiszDoPliku(pom[1], text_to_string());
+				disc.dopiszDoPliku(pom[1], text_to_string());
 			}
 
 			break;
