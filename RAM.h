@@ -39,26 +39,29 @@ public:
 		std::ifstream program;
 		program.open(fileName);
 		std::string wiersz;
+		std::string buff;
 		while (std::getline(program, wiersz))
 		{
 			pomoc.push_back(wiersz);
+			buff += wiersz;
 			licznikRozkazow++;
 		}
-		while (pomoc.size() % 16 != 0)
+		while (buff.size() % 16 != 0)
 		{
-			pomoc.push_back(" ");
+			buff.push_back(' ');
 		}
-		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size() / 16); //do poprawy na ile_potrzeba_ramek
+		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size()/16); //do poprawy na ile_potrzeba_ramek
 		struktura nowa;
-		for (int i = 0; i < ilosc_stron; i++)
+		for (int i = 0; i < buff.size(); i++)
 		{
 			for (int j = 0; j < 16; j++)
 			{
 				nowa.procName = processName;
-				nowa.data[j] = pomoc[16 * i + j][j];
+				nowa.data[j] = buff[i*16 + j];
 				exchangeFile.push_back(nowa);
 			}
 		}
+		
 		return licznikRozkazow;
 	}
 
@@ -76,7 +79,7 @@ public:
 		{
 			exchangeFile[pageIndex].data[j] = data[j];
 		}
-
+		
 
 		// ???? JESZCZE OBS£UGA B£ÊDU ????
 	}
