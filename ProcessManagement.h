@@ -8,15 +8,18 @@
 #include"ID_Manager.h"
 #include"PCB.h"
 #include"Scheduler.h"
+#include"RAM.h"
 
 class ProcessManagement {
 private:
 	std::list<PCB> Processes;
 	void addFirstProcess(std::string path);
 	Scheduler scheduler;
+	RAM * ram;
 public:
-	ProcessManagement() 
+	ProcessManagement(RAM * ram) 
 	{
+		this->ram = ram;
 		srand(time(0));//potrzebne do losowego priorytetu
 		addFirstProcess("SCIEZKA PROCESU BEZCZYNNOSCI");
 	}
