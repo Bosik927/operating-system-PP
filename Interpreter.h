@@ -6,6 +6,7 @@
 #include "Scheduler.h"
 #include "plikiFAT.h"
 #include "Komunikacja.h"
+#include "RAM.h"
 using namespace std;
 enum Rozkazy {
 	AD, // AD A B					(dodaje do rejestrA zawartoœæ rejestrB) +

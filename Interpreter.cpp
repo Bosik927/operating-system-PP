@@ -1,6 +1,5 @@
 #pragma once
 #include "Interpreter.h"
-#define MAKSYMALNY_PRIORYTET 15
 Rozkazy convert(const string& operacja) // Funkcja dla konwersji rozkazow dla switcha
 {
 	if (operacja == "AD") return AD;
