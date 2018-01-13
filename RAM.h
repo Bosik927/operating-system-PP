@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <list>
 #include <queue>
@@ -11,7 +10,7 @@
 struct pom
 {
 	std::string procName;
-	char *data = new char[16];
+	const char *data = new char[16];
 };
 
 int ile_potrzeba_ramek2(int ile) //zwraca liczbê wymaganych ramek/stronnic wymaganych do przechowania zadanej iloœci znaków
@@ -55,16 +54,15 @@ public:
 		{
 			for (int j = 0; j < 16; j++)
 			{
-
 				nowa.procName = processName;
-				strcpy(nowa.data, pomoc[j].c_str());
+				nowa.data = pomoc[j].c_str();
 				exchangeFile.push_back(nowa);
 			}
 		}
 		return licznikRozkazow;
 	}
 
-	char *readFrom(std::string &processName, int pageIndex, int indexInPage)
+	const char *readFrom(std::string &processName, int pageIndex, int indexInPage)
 	{
 		return exchangeFile[pageIndex].data;
 
@@ -306,7 +304,7 @@ public:
 		}
 	}
 
-	void writeToRam(int index, char content[16]) {
+	void writeToRam(int index, const char content[16]) {
 		for (int i = 0; i < 16; i++) {
 			ram[index * 16 + i] = content[i];
 		}
