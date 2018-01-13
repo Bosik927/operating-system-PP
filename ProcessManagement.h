@@ -15,8 +15,8 @@ private:
 	std::list<PCB> Processes;
 	void addFirstProcess(std::string path);
 	Scheduler scheduler;
-	RAM *ram;
 public:
+	RAM *ram;
 
 	ProcessManagement() 
 	{
@@ -26,7 +26,7 @@ public:
 	{
 		this->ram = ram;
 		srand(time(0));//potrzebne do losowego priorytetu
-		addFirstProcess("SCIEZKA PROCESU BEZCZYNNOSCI");
+		addFirstProcess("a.txt");
 	}
 
 	ID_Manager IdManager;

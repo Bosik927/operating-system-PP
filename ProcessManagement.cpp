@@ -76,6 +76,8 @@ void ProcessManagement::addFirstProcess(std::string path)
 	Processes.push_back(temp);
 	scheduler.addFirstProcess(this->getPCB(0));
 	SetState(0, PCB::processState::active);
+	std::string p = "a.txt";
+	//ram->exchangeFile.writeTo(temp.name, p);
 	//TRZEBA JAKOŒ DODAC KOD PROGRAMU DO RAMU
 }
 
