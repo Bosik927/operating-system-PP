@@ -372,11 +372,11 @@ public:
 			std::cout << pageTables[i].processName;
 	}
 
-	void memoryContent(int adres, int rozmiar) //coutowaæ wszystko
+	void memoryContent() //coutowaæ wszystko
 	{
-		for (adres; adres < adres + rozmiar; adres++)
+		for (int i = 0; i < 16; i++) 
 		{
-			std::cout << "RAM[" << adres << "]: " << ram[adres];
+			for (int j = 0; j < 16; j++) std::cout << "RAM[" << i*j << "]: " << ram[i*j];
 		}
 	}
 };
