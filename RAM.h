@@ -8,15 +8,15 @@
 
 //exchangeFile
 
-struct pom
+struct struktura
 {
 	std::string procName;
-	const char *data = new char[16];
+	std::array <char, 16> data;
 };
 
 class ExchangeFile {
 public:
-	std::vector<pom> exchangeFile;
+	std::vector<struktura> exchangeFile;
 	std::vector<std::string> pomoc;
 	int ile_potrzeba_ramek2(int ile) //zwraca liczbê wymaganych ramek/stronnic wymaganych do przechowania zadanej iloœci znaków
 	{
@@ -48,14 +48,14 @@ public:
 		{
 			pomoc.push_back(" ");
 		}
-		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size()/16); //do poprawy na ile_potrzeba_ramek
-		pom nowa;
+		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size() / 16); //do poprawy na ile_potrzeba_ramek
+		struktura nowa;
 		for (int i = 0; i < ilosc_stron; i++)
 		{
 			for (int j = 0; j < 16; j++)
 			{
 				nowa.procName = processName;
-				nowa.data = pomoc[j].c_str();
+				nowa.data[j] = pomoc[16 * i + j][j];
 				exchangeFile.push_back(nowa);
 			}
 		}
@@ -64,7 +64,7 @@ public:
 
 	const char *readFrom(std::string &processName, int pageIndex, int indexInPage)
 	{
-		return exchangeFile[pageIndex].data;
+		return exchangeFile[pageIndex].data.data();
 
 		// ???? JESZCZE OBS£UGA B£ÊDU ????
 	}
@@ -72,7 +72,11 @@ public:
 	void saveTo(std::string &processName, char data[16], int pageIndex)
 	{ //zapisywanie ca³ej strony
 
-		exchangeFile[pageIndex].data = data;
+		for (int j = 0; j < 16; j++)
+		{
+			exchangeFile[pageIndex].data[j] = data[j];
+		}
+
 
 		// ???? JESZCZE OBS£UGA B£ÊDU ????
 	}
@@ -80,9 +84,9 @@ public:
 	void showContent()
 	{
 		std::cout << "Zawartosc pliku wymiany: ";
-		for (pom i : exchangeFile)
+		for (struktura i : exchangeFile)
 		{
-			std::cout << i.data << std::endl;
+			std::cout << i.data.data() << std::endl;
 		}
 	}
 
@@ -95,8 +99,6 @@ public:
 		}
 	}
 };
-
-//exchangeFile
 
 //pageTable
 
