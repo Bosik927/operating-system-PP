@@ -13,7 +13,9 @@ Polecenia Shell::convert(const std::string &str) {
 	else if (str == "cf" | str == "CF") return Polecenia::cf;
 	else if (str == "wf" | str == "WF") return Polecenia::wf;
 	else if (str == "df" | str == "DF") return Polecenia::df;
-	else if (str == "aa" | str == "AA") return Polecenia::aa;
+	else if (str == "sproc" | str == "SPROC") return Polecenia::sproc;
+	else if (str == "sprocn" | str == "SPROCN") return Polecenia::sprocn;
+	else if (str == "sprocid" | str == "SPROCID") return Polecenia::sprocid;
 	else if (str == "rf" | str == "RF") return Polecenia::rf;
 	else if (str == "ref" | str == "REF") return Polecenia::reff;
 	else if (str == "apf" | str == "APF") return Polecenia::apf;
@@ -70,19 +72,21 @@ void Shell::shell()
 			switch (k)
 			{
 			case go:
+			{
 				if (pom.size() - 1 == 1)
 				{
-
-					PCB aaa("asasa",12);
-					interpreter.run(&aaa);
+					auto proces = pm.AssignProcessor();
+					interpreter.run(proces);
 					std::cout << "Poszlo go" << std::endl;
 				}
 				else
 				{
-					throw 1; //tesz chójoza
+					throw 1;
 				}
 				break;
+			}
 			case cp:
+			{
 				if (pom.size() - 1 == 4)
 				{
 					if (is_number(pom[3])) {
@@ -108,7 +112,9 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
-			case aa:
+			}
+			case sproc:
+			{
 				if (pom.size() - 1 == 1)
 				{
 					std::cout << pm.DisplayAllProcesses();
@@ -118,12 +124,44 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
+			}
+			case sprocn:
+			{
+				if (pom.size() - 1 == 2)
+				{
+					std::cout << pm.DisplayProcessByName(pom[1]);
+				}
+				else
+				{
+					throw 2;
+				}
+				break;
+			}
+			case sprocid:
+			{
+				if (pom.size() - 1 == 2)
+				{
+					if (is_number(pom[1])) {
+						int pomoc;
+						std::istringstream ss(pom[1]);
+						ss >> pomoc;
 
+						std::cout << pm.DisplayProcessByID(pomoc);
+					}
+					else
+					{
+						throw 6;
+					}
+				}
+				else
+				{
+					throw 2;
+				}
+				break;
+			}
 			case dp:
-
+			{
 				if (pom.size() - 1 == 2) {
-					std::cout << "Poszlo dp" << std::endl;
-					
 					std::cout << pm.DeleteProcess(pm.getIdFromName(pom[1]));
 				}
 				else
@@ -131,16 +169,9 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
-			case sp:
-				if (pom.size() - 1 == 2) {
-					std::cout << "Poszlo sp" << std::endl;
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
+			}
 			case mc:
+			{
 				if (pom.size() - 1 == 3)
 				{
 					if (is_number(pom[1]) && is_number(pom[2]))
@@ -165,7 +196,9 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
+			}
 			case ls:
+			{
 				if (pom.size() - 1 == 1)
 				{
 					disc.wyswietlaPliki();
@@ -175,7 +208,9 @@ void Shell::shell()
 					throw 1;
 				}
 				break;
+			}
 			case cf:
+			{
 				if (pom.size() - 1 == 2) {
 
 					disc.tworzeniaPliku(pom[1]);
@@ -185,24 +220,22 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
+			}
 			case wf:
 			{
 				if (pom.size() - 1 == 2) 
 				{
-					/*std::string sprawdzam;
-					sprawdzam = text_to_string()*/;
 					disc.wpisywanieDoPliku(pom[1], text_to_string());
 				}
 				else
 				{
 					throw 2;
 				}
-				
 				break;
 			}
 			case df:
+			{
 				if (pom.size() - 1 == 2) {
-
 					disc.usuwaniePliku(pom[1]);
 				}
 				else
@@ -210,7 +243,9 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
+			}
 			case rf:
+			{
 				if (pom.size() - 1 == 2) {
 					disc.drukujDysk(pom[1]);
 				}
@@ -219,7 +254,9 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
+			}
 			case reff:
+			{
 				if (pom.size() - 1 == 3)
 				{
 					disc.zmianaNazwy(pom[1], pom[2]);
@@ -229,25 +266,26 @@ void Shell::shell()
 					throw 2;
 				}
 				break;
+			}
 			case apf:
 			{
-
 				disc.dopiszDoPliku(pom[1], text_to_string());
+				break;
 			}
-
-			break;
 			case EXIT:
+			{
 				if (pom.size() - 1 == 1)
 				{
 					a = false;
-					std::cout << "Poszlo exit" << std::endl;
 				}
 				else
 				{
 					throw 1;
 				}
 				break;
+			}
 			case HELP:
+			{
 				if (pom.size() - 1 == 1)
 				{
 					std::cout << "GO" << std::endl;
@@ -262,9 +300,6 @@ void Shell::shell()
 					std::cout << "APF (name)(data) - append file" << std::endl;
 					std::cout << "EXIT" << std::endl;
 
-
-
-					std::cout << "Poszlo help" << std::endl;
 				}
 				else
 				{
@@ -274,7 +309,7 @@ void Shell::shell()
 			default:
 				std::cout << "nie ma komendy" << std::endl;
 				break;
-
+			}
 			}
 		}
 		catch (int error_no)
@@ -299,10 +334,13 @@ void Shell::shell()
 			{
 				std::cout << "prioryten przyjmuje wartosc od 0 do 14" << std::endl;
 			}
+			if (error_no == 6)
+			{
+				std::cout << "id procesu musi byc liczba" << std::endl;
+			}
 
 		}
 	}
-	std::getchar();//to wywal
 }
 void Shell::logo() {//lol
 	int i = 50;
