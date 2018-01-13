@@ -18,8 +18,8 @@ enum Polecenia
 };
 class Shell {
 public:
-	ProcessManagement pm = ProcessManagement(&ram);;
 	RAM ram;
+	ProcessManagement pm = ProcessManagement(&ram);;
 	Disc disc;
 	Komunikacja kom;
 	Interpreter interpreter;

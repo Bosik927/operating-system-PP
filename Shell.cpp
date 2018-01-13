@@ -94,6 +94,7 @@ void Shell::shell()
 						std::istringstream ss(pom[3]);
 						ss >> pomoc;
 						if (pomoc <= 14 && pomoc >= 0) {
+							ram.exchangeFile.writeTo(pom[1], pom[2]);
 							std::cout << pm.CreateProces(pom[1], pom[2], pomoc);
 						}
 						else
