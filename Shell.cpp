@@ -8,6 +8,7 @@ Polecenia Shell::convert(const std::string &str) {
 	else if (str == "cp" | str == "CP") return Polecenia::cp;
 	else if (str == "dp" | str == "DP") return Polecenia::dp;
 	else if (str == "mc" | str == "MC") return Polecenia::mc;
+	else if (str == "ef" | str == "EF") return Polecenia::ef;
 	else if (str == "ls" | str == "LS") return Polecenia::ls;
 	else if (str == "cf" | str == "CF") return Polecenia::cf;
 	else if (str == "wf" | str == "WF") return Polecenia::wf;
@@ -174,6 +175,18 @@ void Shell::shell()
 				if (pom.size() - 1 == 1)
 				{
 					ram.memoryContent();
+				}
+				else
+				{
+					throw 2;
+				}
+				break;
+			}
+			case ef:
+			{
+				if (pom.size() - 1 == 1)
+				{
+					ram.exchangeFile.showContent();
 				}
 				else
 				{

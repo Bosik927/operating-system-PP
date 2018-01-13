@@ -13,12 +13,12 @@
 #include "ProcessManagement.h"
 enum Polecenia
 {
-	go, cp, dp, sp, mc, BLAD, sproc, sprocn, sprocid,
+	go, cp, dp, sp, mc, BLAD, sproc, sprocn, sprocid,ef,
 	ls, cf, wf, df, rf, reff, apf, EXIT, HELP
 };
 class Shell {
 public:
-	ProcessManagement pm;
+	ProcessManagement pm = ProcessManagement(&ram);;
 	RAM ram;
 	Disc disc;
 	Komunikacja kom;
@@ -30,7 +30,6 @@ public:
 
 	Shell() 
 	{
-		pm = ProcessManagement(&ram);
 		interpreter = Interpreter(&pm, &kom,&disc,&ram);
 		
 	}
