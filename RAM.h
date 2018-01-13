@@ -1,15 +1,190 @@
-#pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 #include <list>
 #include <queue>
-#include "ExchangeFile.h"
 #include <stack>
+#include <string>
+#include <fstream>
+
+//exchangeFile
+
+struct pom
+{
+	std::string procName;
+	char *data = new char[16];
+};
+
+int ile_potrzeba_ramek2(int ile) //zwraca liczbê wymaganych ramek/stronnic wymaganych do przechowania zadanej iloœci znaków
+{
+	if (ile <= 0)
+	{
+		return 0;
+	}
+	int iloœæ_ramek = ile / 16;
+	if (ile % 16 != 0)
+	{
+		iloœæ_ramek++;
+	}
+
+	return iloœæ_ramek;
+}
+class ExchangeFile {
+public:
+	std::vector<pom> exchangeFile;
+	std::vector<std::string> pomoc;
+
+
+	int writeTo(std::string &processName, std::string &fileName)
+	{
+		int licznikRozkazow = 0;
+		std::ifstream program;
+		program.open(fileName);
+		std::string wiersz;
+		while (std::getline(program, wiersz))
+		{
+			pomoc.push_back(wiersz);
+			licznikRozkazow++;
+		}
+		while (pomoc.size() % 16 != 0)
+		{
+			pomoc.push_back(" ");
+		}
+		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size() / 16); //do poprawy na ile_potrzeba_ramek
+		pom nowa;
+		for (int i = 0; i < ilosc_stron; i++)
+		{
+			for (int j = 0; j < 16; j++)
+			{
+
+				nowa.procName = processName;
+				strcpy(nowa.data, pomoc[j].c_str());
+				exchangeFile.push_back(nowa);
+			}
+		}
+		return licznikRozkazow;
+	}
+
+	char *readFrom(std::string &processName, int pageIndex, int indexInPage)
+	{
+		return exchangeFile[pageIndex].data;
+
+		// ???? JESZCZE OBS£UGA B£ÊDU ????
+	}
+
+	void saveTo(std::string &processName, char data[16], int pageIndex)
+	{ //zapisywanie ca³ej strony
+
+		exchangeFile[pageIndex].data = data;
+
+		// ???? JESZCZE OBS£UGA B£ÊDU ????
+	}
+
+	void showContent()
+	{
+		std::cout << "Zawartosc pliku wymiany: ";
+		for (pom i : exchangeFile)
+		{
+			std::cout << i.data << std::endl;
+		}
+	}
+
+	void deleteData(std::string &processName, int howManyPages, int pageIndex)
+	{
+		std::cout << "Usuwanie z pliku wymiany: " << howManyPages << " stron procesu: " << processName;
+		if (exchangeFile[pageIndex].procName == processName)
+		{
+			exchangeFile.erase(exchangeFile.begin() + pageIndex, exchangeFile.begin() + pageIndex + howManyPages);
+		}
+	}
+};
+
+//exchangeFile
+
+//pageTable
+
+class PageTable
+{
+public:
+	int* framesNumber; //w jakich ramkach jest dana strona programu
+	bool* inRAM; // czy jest w ramie
+	std::string processName; //nr procesu, który jest w RAMie
+	int sizeOfTable;
+
+	PageTable(int processDataSize, std::string procName) // ???? Potrzebujê pobraæ sk¹dœ rozmiar procesu ????
+	{
+		int count;
+		// obliczanie ile stron zajmuje dany program
+		if (processDataSize % 16 == 0)
+			count = processDataSize / 16;
+		else
+			count = processDataSize / 16 + 1;
+		// ustawianie odpowiednich wartosci
+		framesNumber = new int[count];
+		inRAM = new bool[count];
+		processName = procName;
+		sizeOfTable = count;
+		// wypelnienie
+		for (int i = 0; i < count; i++)
+		{
+			framesNumber[i] = -1;
+			inRAM[i] = false;
+			// System.out.println(framesNumber[i] +" "+ inRAM[i]+"A");
+		}
+	}
+
+	//zwraca pozycjê stronicy w RAMie lub -1, gdy stronicy nie ma w RAMie
+	int getPositionInRam(int pageNumber)
+	{
+		if (inRAM[pageNumber] == true)
+		{
+			return framesNumber[pageNumber];
+		}
+		else
+			return -1;
+	}
+
+	// zwraca nr stronicy ktora jest w danej ramce
+	int getIndex(int pageInRam)
+	{
+		for (int i = 0; i < sizeOfTable; i++) {
+			if (framesNumber[i] == pageInRam)
+				return i;
+		}
+		return -1;
+	}
+	// wypisuje tablice stronic
+	void writePageTable()
+	{
+		for (int i = 0; i < sizeOfTable; i++)
+			std::cout << framesNumber[i] << " " << inRAM[i] << std::endl; // ???? Pewnie do poprawy ????
+	}
+};
+
+struct Ramka
+{
+public:
+	int adres_poczatkowy;
+	int adres_koncowy;
+	int nr_ramki;
+	bool bit_odniesienia;
+	bool bit_modyfikacji;
+
+	Ramka()
+	{
+		bit_odniesienia = 0;
+		bit_modyfikacji = 0;
+	}
+};
+
+//pageTable
+
 class RAM
 {
 private:
 public:
 
 	char *ram = new char[256];
-	Ramka *framesTable = new Ramka;
+	std::vector<Ramka> framesTable;;
 	std::string *processNameInFrame = new std::string[16]; //NO NIBY SPOKO ZMIENNA, ALE POWINIENEM TO CHYBA POBIERAÆ OD ADAMA
 	std::queue<int> FIFO;
 	ExchangeFile exchangeFile;
@@ -24,12 +199,10 @@ public:
 			for (int j = 0; j < 16; j++)
 				ram[i * j] = ' ';
 			freeFrames.push(i);
-			//inicjalizacja_tabeli_ramek();
+
 		}
+		inicjalizacja_tabeli_ramek();
 	}
-
-	//operacje na ramkach
-
 	void inicjalizacja_tabeli_ramek() //inicjalizuje liste ramek aby zawiera³a odpowiednie wskazania na komorki pamieci
 	{
 		for (int i = 0; i < 16; i++)
@@ -38,7 +211,7 @@ public:
 			ramka.adres_poczatkowy = i * 16;
 			ramka.adres_koncowy = i * 16 + 16 - 1;
 			ramka.nr_ramki = i;
-			framesTable[i] = ramka;
+			framesTable.push_back(ramka);
 		}
 	}
 
@@ -53,7 +226,7 @@ public:
 		return bufor; //zwracam stringa
 	}
 
-	void zapisz_ramkê(int numer_ramki, string znaki) //zapisuje znaki w konkretnej ramce (odpowiadaj¹cej dostarczonemu segmentowi); nie zmienia bitu u¿ywania na true; jest to zmieniane przy wyszukiwaniu wolnej ramki
+	void zapisz_ramkê(int numer_ramki, std::string znaki) //zapisuje znaki w konkretnej ramce (odpowiadaj¹cej dostarczonemu segmentowi); nie zmienia bitu u¿ywania na true; jest to zmieniane przy wyszukiwaniu wolnej ramki
 	{
 		int adres = numer_ramki * 16;
 
@@ -133,25 +306,25 @@ public:
 		}
 	}
 
-	void writeToRam(int index, char content) {
+	void writeToRam(int index, char content[16]) {
 		for (int i = 0; i < 16; i++) {
-			ram[index * 16 + i] = content;
+			ram[index * 16 + i] = content[i];
 		}
 	}
 
 	void strona_w_ramke(int nrStrony, std::string procName)
 	{
 		if (freeFrames.size() <= 0) zwolnij_ramkê(ktora_ramke_zwolnic());
-			for (int i = 0; i < pageTables.size(); i++)
+		for (int i = 0; i < pageTables.size(); i++)
+		{
+			if (pageTables[i].processName == procName)
 			{
-				if (pageTables[i].processName == procName)
-				{
-					pageTables[i].framesNumber[nrStrony] = freeFrames.top();
-					pageTables[i].inRAM[nrStrony] = true;
-					freeFrames.pop();
-					writeToRam(pageTables[i].framesNumber[nrStrony], exchangeFile.readFrom(procName, nrStrony, 0));
-				}
+				pageTables[i].framesNumber[nrStrony] = freeFrames.top();
+				pageTables[i].inRAM[nrStrony] = true;
+				freeFrames.pop();
+				writeToRam(pageTables[i].framesNumber[nrStrony], exchangeFile.readFrom(procName, nrStrony, 0));
 			}
+		}
 	}
 
 	std::string getCommand(int programCounter, std::string &processName)
@@ -183,7 +356,7 @@ public:
 				FIFO.push(i);
 				for (int j = 0; j < pageTables.size(); j++) {
 					if (pageTables[j].processName == (procName))
-						pageTables.erase(pageTables.begin()+j);
+						pageTables.erase(pageTables.begin() + j);
 				}
 
 				for (int j = 0; j < 16; j++)
@@ -208,5 +381,4 @@ public:
 			std::cout << "RAM[" << adres << "]: " << ram[adres];
 		}
 	}
-
 };
