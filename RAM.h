@@ -107,7 +107,7 @@ public:
 	bool* inRAM; // czy jest w ramie
 	std::string processName; //nr procesu, który jest w RAMie
 	int sizeOfTable;
-
+	PageTable() {}
 	PageTable(int processDataSize, std::string procName) // ???? Potrzebujê pobraæ sk¹dœ rozmiar procesu ????
 	{
 		int count;
@@ -327,21 +327,21 @@ public:
 
 	std::string getCommand(int programCounter, std::string &processName)
 	{
-		PageTable *ktora_tablica;
+		PageTable ktora_tablica;
 		int pageIndex;
 		if ((programCounter + 1) % 16 == 0) pageIndex = ((programCounter + 1) / 16) - 1;
 		else pageIndex = ((programCounter + 1) / 16);
-		for (auto &a : pageTables)
+		for (auto a : pageTables)
 		{
-			if (processName == a.processName) ktora_tablica = &a;
+			if (processName == a.processName) ktora_tablica = a;
 		}
-		if (ktora_tablica->inRAM[pageIndex])
+		if (ktora_tablica.inRAM[pageIndex])
 		{
-			return odczytaj_ramkê(ktora_tablica->getPositionInRam(pageIndex));
+			return odczytaj_ramkê(ktora_tablica.getPositionInRam(pageIndex));
 		}
 
-		else strona_w_ramke(pageIndex, ktora_tablica->processName);
-		return odczytaj_ramkê(ktora_tablica->getPositionInRam(pageIndex));
+		else strona_w_ramke(pageIndex, ktora_tablica.processName);
+		return odczytaj_ramkê(ktora_tablica.getPositionInRam(pageIndex));
 	}
 
 	// usuwanie danego procesu z pamieci

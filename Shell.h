@@ -24,12 +24,14 @@ public:
 	Komunikacja kom;
 	Interpreter interpreter;
 
+
 	Disc *d;
 
 
 	Shell() 
 	{
-		interpreter = Interpreter(&pm, &kom,&disc);
+		pm = ProcessManagement(&ram);
+		interpreter = Interpreter(&pm, &kom,&disc,&ram);
 		
 	}
 	Polecenia convert(const std::string &str);
