@@ -61,24 +61,22 @@ bool ProcessManagement::CheckNameUniqe(std::string Name)
 void ProcessManagement::addFirstProcess(std::string path)
 {
 	int ID = IdManager.PickID();
-	PCB temp;
+	PCB temp("idle", 0);
 	temp.state = PCB::processState::newbie;
-	temp.name = "idle";
 	temp.ID = ID;
 	temp.A = 0;
 	temp.B = 0;
 	temp.C = 0;
 	temp.D = 0;
-	temp.basePriority = 0;
+	//temp.basePriority = 0;
 	temp.commandCounter = 0;
 	temp.blocked = 0;
 	temp.state = PCB::processState::ready;
 	Processes.push_back(temp);
 	scheduler.addFirstProcess(this->getPCB(0));
 	SetState(0, PCB::processState::active);
-	std::string p = "a.txt";
-	//ram->exchangeFile.writeTo(temp.name, p);
-	//TRZEBA JAKOŒ DODAC KOD PROGRAMU DO RAMU
+	ram->exchangeFile.writeTo(temp.name, path);
+
 }
 
 //Usuwanie wybranego procesu z listy procesów
