@@ -326,7 +326,7 @@ void Scheduler::deleteWaitingProcess(unsigned int ID) {
 	}
 }
 
-int Scheduler::returnRunningProcess()
+int Scheduler::getRunningProcess()
 {
 	return runningProcess.process->ID;
 }

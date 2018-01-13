@@ -45,6 +45,7 @@ public:
 	void unsleep(unsigned int ID);
 	///Dodawanie do plisty procesow waiting (przy Twojej funkcji sleep musisz wywolywac)
 	void sleep(unsigned int ID);
+	int getRunningProcess();
 
 	//Wykorzystywane przeze mnie 
 	void calculateFirstTimeCurrentPriority(Process &process, unsigned int allNeedTime);
@@ -60,7 +61,6 @@ public:
 	void deleteActiveProcess(unsigned int ID);
 	void deleteTerminatedProcess(unsigned int ID); 
 	void deleteWaitingProcess(unsigned int ID);
-	int returnRunningProcess();
 
 	//METODY PRZEZNACZONE DO SHELLA
 	void displayActiveProcesses();

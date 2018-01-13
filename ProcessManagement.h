@@ -46,7 +46,7 @@ public:
 	//OB£SUGA B£ÊDOW W CHUJ!!!
 
 	//SCHEDULER
-	void Run();
+	//void Run();
 	void DisplayScheduler();
 
 

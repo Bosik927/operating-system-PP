@@ -56,7 +56,7 @@ bool ProcessManagement::CheckNameUniqe(std::string Name)
 	return 0;
 }
 
-//Tworzenie procesu bezczynnoœci
+//Tworzenie procesu bezczynnoœci, nadaje mu ID 0, i stan active
 void ProcessManagement::addFirstProcess(std::string path)
 {
 	int ID = IdManager.PickID();
@@ -74,6 +74,7 @@ void ProcessManagement::addFirstProcess(std::string path)
 	temp.state = PCB::processState::ready;
 	Processes.push_back(temp);
 	scheduler.addFirstProcess(this->getPCB(0));
+	SetState(0, PCB::processState::active);
 	//TRZEBA JAKOŒ DODAC KOD PROGRAMU DO RAMU
 }
 
@@ -278,21 +279,22 @@ void ProcessManagement::DisplayScheduler()
 
 PCB * ProcessManagement::GetRunningProcess()
 {
-	int actvID = scheduler.returnRunningProcess();
+	int actvID = scheduler.getRunningProcess();
 	return getPCB(actvID);
 }
 
-void ProcessManagement::Run()//Czy to jest potrzebne w ogole?
-{
-	scheduler.assignProcessor();
-}
+//void ProcessManagement::Run()//Czy to jest potrzebne w ogole?
+//{
+//	scheduler.assignProcessor();
+//}
 
 PCB * ProcessManagement::AssignProcessor()
 {
-	//TODO:
-	//Zmiana stanów procesów!!!
+	int outdatedID = scheduler.getRunningProcess();
+	SetState(outdatedID, PCB::processState::ready);
 	int actvID;
 	actvID = scheduler.assignProcessor();
+	SetState(actvID, PCB::processState::active);
 	return getPCB(actvID);
 }
 
