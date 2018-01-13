@@ -42,25 +42,27 @@ public:
 	///Usuwanie istniejacego procesu 
 	void deleteProcess(unsigned int ID);
 	///Przerzucenie z waiting do active
-	void unsleep(unsigned int ID);
+	void unsleep();
 	///Dodawanie do plisty procesow waiting (przy Twojej funkcji sleep musisz wywolywac)
-	void sleep(unsigned int ID);
-	int getRunningProcess();
+	void sleep(Process &process);
 
 	//Wykorzystywane przeze mnie 
 	void calculateFirstTimeCurrentPriority(Process &process, unsigned int allNeedTime);
 	void calculateCurrentPriority(Process &process);
 	void translatePriority(Process &process);
 	void giveTime(Process &process);
-	void chooseProcess();				
+	bool chooseProcess();				
 	void terminated();
 	bool isTerminatedEmpty();	
 	void endOfEpoch();	
 	void reschedProcess();	
-	bool isActiveEmpty();		
+	bool isActiveEmpty();	
+	void deleteWaitingProcess(unsigned int ID);
 	void deleteActiveProcess(unsigned int ID);
 	void deleteTerminatedProcess(unsigned int ID); 
-	void deleteWaitingProcess(unsigned int ID);
+	int returnRunningProcess(){
+		return runningProcess.process->ID;
+	}
 
 	//METODY PRZEZNACZONE DO SHELLA
 	void displayActiveProcesses();
