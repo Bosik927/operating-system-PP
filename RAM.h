@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <list>
 #include <queue>
@@ -13,25 +14,24 @@ struct pom
 	const char *data = new char[16];
 };
 
-int ile_potrzeba_ramek2(int ile) //zwraca liczbê wymaganych ramek/stronnic wymaganych do przechowania zadanej iloœci znaków
-{
-	if (ile <= 0)
-	{
-		return 0;
-	}
-	int iloœæ_ramek = ile / 16;
-	if (ile % 16 != 0)
-	{
-		iloœæ_ramek++;
-	}
-
-	return iloœæ_ramek;
-}
 class ExchangeFile {
 public:
 	std::vector<pom> exchangeFile;
 	std::vector<std::string> pomoc;
+	int ile_potrzeba_ramek2(int ile) //zwraca liczbê wymaganych ramek/stronnic wymaganych do przechowania zadanej iloœci znaków
+	{
+		if (ile <= 0)
+		{
+			return 0;
+		}
+		int iloœæ_ramek = ile / 16;
+		if (ile % 16 != 0)
+		{
+			iloœæ_ramek++;
+		}
 
+		return iloœæ_ramek;
+	}
 
 	int writeTo(std::string &processName, std::string &fileName)
 	{
@@ -48,7 +48,7 @@ public:
 		{
 			pomoc.push_back(" ");
 		}
-		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size() / 16); //do poprawy na ile_potrzeba_ramek
+		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size()/16); //do poprawy na ile_potrzeba_ramek
 		pom nowa;
 		for (int i = 0; i < ilosc_stron; i++)
 		{

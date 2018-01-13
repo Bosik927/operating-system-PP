@@ -9,7 +9,7 @@
 #include "plikiFAT.h"
 #include "PCB.h"
 #include "Interpreter.h"
-//#include "RAM.h"
+#include "RAM.h"
 #include "ProcessManagement.h"
 enum Polecenia
 {
@@ -19,7 +19,7 @@ enum Polecenia
 class Shell {
 public:
 	ProcessManagement pm;
-	//RAM ram;
+	RAM ram;
 	Disc disc;
 	Komunikacja kom;
 	Interpreter interpreter;
