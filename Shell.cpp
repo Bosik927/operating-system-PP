@@ -7,7 +7,6 @@ Polecenia Shell::convert(const std::string &str) {
 	if (str == "go" | str == "GO") return Polecenia::go; 
 	else if (str == "cp" | str == "CP") return Polecenia::cp;
 	else if (str == "dp" | str == "DP") return Polecenia::dp;
-	else if (str == "sp" | str == "SP") return Polecenia::sp;
 	else if (str == "mc" | str == "MC") return Polecenia::mc;
 	else if (str == "ls" | str == "LS") return Polecenia::ls;
 	else if (str == "cf" | str == "CF") return Polecenia::cf;
@@ -172,24 +171,9 @@ void Shell::shell()
 			}
 			case mc:
 			{
-				if (pom.size() - 1 == 3)
+				if (pom.size() - 1 == 1)
 				{
-					if (is_number(pom[1]) && is_number(pom[2]))
-					{
-						int pomoc;
-						std::istringstream ss(pom[1]); //to gówno zmieñ
-						ss >> pomoc;
-						std::cout << pomoc << std::endl;
-						int pomoc1;
-						std::istringstream ss1(pom[2]);
-						ss1 >> pomoc1;
-						std::cout << pomoc1 << std::endl;
-						std::cout << "Poszlo mc" << std::endl;
-					}
-					else
-					{
-						throw 4;
-					}
+					ram.memoryContent();
 				}
 				else
 				{
