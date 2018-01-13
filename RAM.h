@@ -5,6 +5,7 @@
 #include <stack>
 #include <string>
 #include <fstream>
+#include <array>
 
 //exchangeFile
 
@@ -50,18 +51,19 @@ public:
 		{
 			buff.push_back(' ');
 		}
-		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size()/16); //do poprawy na ile_potrzeba_ramek
+		int ilosc_stron = ile_potrzeba_ramek2(pomoc.size() / 16); //do poprawy na ile_potrzeba_ramek
 		struktura nowa;
-		for (int i = 0; i < buff.size(); i++)
+		for (int i = 0; i * 16 < buff.size(); i++)
 		{
 			for (int j = 0; j < 16; j++)
 			{
 				nowa.procName = processName;
-				nowa.data[j] = buff[i*16 + j];
-				exchangeFile.push_back(nowa);
+				nowa.data[j] = buff[i * 16 + j];
+
 			}
+			exchangeFile.push_back(nowa);
 		}
-		
+
 		return licznikRozkazow;
 	}
 
@@ -79,7 +81,7 @@ public:
 		{
 			exchangeFile[pageIndex].data[j] = data[j];
 		}
-		
+
 
 		// ???? JESZCZE OBS£UGA B£ÊDU ????
 	}
@@ -89,7 +91,9 @@ public:
 		std::cout << "Zawartosc pliku wymiany: ";
 		for (struktura i : exchangeFile)
 		{
-			std::cout << i.data.data() << std::endl;
+			std::string buff(i.data.data());
+			buff.erase(buff.begin() + 16, buff.end());
+			std::cout << buff << std::endl;
 		}
 	}
 
@@ -379,7 +383,7 @@ public:
 
 	void memoryContent() //coutowaæ wszystko
 	{
-		for (int i = 0; i < 16; i++) 
+		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 16; j++) std::cout << "RAM[" << i*j << "]: " << ram[i*j];
 		}
