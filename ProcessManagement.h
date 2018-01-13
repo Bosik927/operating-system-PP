@@ -5,19 +5,24 @@
 #include<list>
 #include<random>
 #include<time.h>
+#include"RAM.h"
 #include"ID_Manager.h"
 #include"PCB.h"
 #include"Scheduler.h"
-#include"RAM.h"
 
 class ProcessManagement {
 private:
 	std::list<PCB> Processes;
 	void addFirstProcess(std::string path);
 	Scheduler scheduler;
-	RAM * ram;
+	RAM *ram;
 public:
-	ProcessManagement(RAM * ram) 
+
+	ProcessManagement() 
+	{
+		//ram = nullptr;
+	}
+	ProcessManagement(RAM* ram) 
 	{
 		this->ram = ram;
 		srand(time(0));//potrzebne do losowego priorytetu

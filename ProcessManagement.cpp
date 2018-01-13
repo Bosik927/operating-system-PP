@@ -30,6 +30,7 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 		Processes.push_back(temp);
 		SetState(ID, PCB::processState::ready);
 		scheduler.addProcess(this->getPCB(ID), BasePriority);
+		ram->exchangeFile.writeTo(temp.name, Path);
 		return "Utworzono proces: \"" + Name + "\" o identyfikatorze: " + std::to_string(ID) + " i priorytecie wg. Windows: " + std::to_string(prior) + "\n";
 	}
 	return "Nieznany blad przy tworzeniu procesu\n";
