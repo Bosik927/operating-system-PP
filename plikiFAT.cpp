@@ -23,7 +23,7 @@ Disc::Disc()
 
 std::string Disc::zawartoscDisc()
 {
-	return "Rozmiar dysku: " + std::to_string(Disc::rozmiarDysku) + " wolne miejsce: " + std::to_string(Disc::wolneMiejsceDysk());
+	return "Rozmiar dysku: " + std::to_string(this->rozmiarDysku) + " wolne miejsce: " + std::to_string(this->wolneMiejsceDysk());
 }
 std::string Disc::zawartoscPlik(std::string nazwa)
 {
@@ -31,7 +31,7 @@ std::string Disc::zawartoscPlik(std::string nazwa)
 	{
 		if (atrybuty[i].nazwa == (nazwa))
 		{
-			return "Nazwa" + atrybuty[i].nazwa + " status" + std::to_string(atrybuty[i].status) + " czy zapisany" + std::to_string(atrybuty[i].zapisany) + " pierwszy jap:" + std::to_string(atrybuty[i].jap1) + " rozmiar:" + std::to_string(atrybuty[i].rozmiar);
+			return "Nazwa: " + atrybuty[i].nazwa + " status: " + std::to_string(atrybuty[i].status) + " czy zapisany: " + std::to_string(atrybuty[i].zapisany) + " pierwszy jap: " + std::to_string(atrybuty[i].jap1) + " rozmiar: " + std::to_string(atrybuty[i].rozmiar);
 		}
 	}
 }
