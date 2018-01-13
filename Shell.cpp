@@ -1,10 +1,12 @@
 #include "Shell.h"
 
-//skrypty!!!!!
+
+
 
 
 Polecenia Shell::convert(const std::string &str) {
-	if (str == "go" | str == "GO") return Polecenia::go; 
+	if (str == "go" | str == "GO") return Polecenia::go;
+	else if (str == "run" | str == "RUN") return Polecenia::run;
 	else if (str == "cp" | str == "CP") return Polecenia::cp;
 	else if (str == "dp" | str == "DP") return Polecenia::dp;
 	else if (str == "mc" | str == "MC") return Polecenia::mc;
@@ -20,6 +22,7 @@ Polecenia Shell::convert(const std::string &str) {
 	else if (str == "ref" | str == "REF") return Polecenia::reff;
 	else if (str == "apf" | str == "APF") return Polecenia::apf;
 	else if (str == "exit" | str == "EXIT") return Polecenia::EXIT;
+	else if (str == "format" | str == "FORMAT") return Polecenia::format;
 	else if (str == "help" | str == "HELP") return Polecenia::HELP;
 	else return Polecenia::BLAD;
 }
@@ -29,315 +32,363 @@ bool Shell::is_number(const std::string &s)
 	while (it != s.end() && std::isdigit(*it)) ++it;
 	return !s.empty() && it == s.end();
 }
-std::string Shell::text_to_string()
-{
-	std::string buffer;
-	std::string wynik;
-	while (true)
+void Shell::odczyt_z_pliku(std::string a) {
+	std::ifstream czytaj;
+	czytaj.open(a, std::ios::in);
+	if (czytaj.is_open() == true)
 	{
-		std::getline(std::cin, buffer);
-		wynik += buffer;
-		if (buffer[buffer.size() - 1] == 4)
+		while (std::getline(czytaj, this->pom1))
 		{
-			break;
+			this->vector_skrypt.push_back(this->pom1);
 		}
+		czytaj.close();
 	}
-	wynik.pop_back();
-	return wynik;
+	else
+	{
+		throw 7;
+	}
 }
 
+void Shell::interpret(std::string a)
+{
+	this->vector_str.clear();
+	std::istringstream iss(a);
+	do
+	{
+		iss >> this->pom1;
+		this->vector_str.push_back(this->pom1);
+
+	} while (iss);
+
+	this->k = Shell::convert(this->vector_str[0]);
+
+	try
+	{
+
+		switch (k)
+		{
+		case go:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				auto proces = pm.AssignProcessor();
+				interpreter.run(proces);
+				std::cout << "Poszlo go" << std::endl;
+			}
+			else
+			{
+				throw 1;
+			}
+			break;
+		}
+		case cp:
+		{
+			if (this->vector_str.size() - 1 == 4)
+			{
+				if (is_number(this->vector_str[3])) {
+					int pomoc;
+					std::istringstream ss(this->vector_str[3]);
+					ss >> pomoc;
+					if (pomoc <= 14 && pomoc >= 0) {
+						ram.exchangeFile.writeTo(this->vector_str[1], this->vector_str[2]);
+						std::cout << pm.CreateProces(this->vector_str[1], this->vector_str[2], pomoc);
+					}
+					else
+					{
+						throw 5;
+					}
+				}
+				else
+				{
+					throw 3;
+				}
+			}
+			else
+			{
+				std::cout << "NIE Poszlo cp" << std::endl;
+				throw 2;
+			}
+			break;
+		}
+		case sproc:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				std::cout << pm.DisplayAllProcesses();
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case sprocn:
+		{
+			if (this->vector_str.size() - 1 == 2)
+			{
+				std::cout << pm.DisplayProcessByName(this->vector_str[1]);
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case sprocid:
+		{
+			if (this->vector_str.size() - 1 == 2)
+			{
+				if (is_number(this->vector_str[1])) {
+					int pomoc;
+					std::istringstream ss(this->vector_str[1]);
+					ss >> pomoc;
+
+					std::cout << pm.DisplayProcessByID(pomoc);
+				}
+				else
+				{
+					throw 6;
+				}
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case dp:
+		{
+			if (this->vector_str.size() - 1 == 2) {
+				std::cout << pm.DeleteProcess(pm.getIdFromName(this->vector_str[1]));
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case mc:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				ram.memoryContent();
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case ef:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				ram.exchangeFile.showContent();
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case ls:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				disc.wyswietlaPliki();
+			}
+			else
+			{
+				throw 1;
+			}
+			break;
+		}
+		case cf:
+		{
+			if (this->vector_str.size() - 1 == 2) {
+
+				disc.tworzeniaPliku(this->vector_str[1]);
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case wf:
+		{
+			if (this->vector_str.size() - 1 == 3)
+			{
+				disc.wpisywanieDoPliku(this->vector_str[1], this->vector_str[2]);
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case df:
+		{
+			if (this->vector_str.size() - 1 == 2) {
+				disc.usuwaniePliku(this->vector_str[1]);
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case rf:
+		{
+			if (this->vector_str.size() - 1 == 2) {
+				disc.drukujDysk(this->vector_str[1]);
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case reff:
+		{
+			if (this->vector_str.size() - 1 == 3)
+			{
+				disc.zmianaNazwy(this->vector_str[1], this->vector_str[2]);
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case apf:
+		{
+			if (this->vector_str.size() - 1 == 3)
+			{
+				disc.dopiszDoPliku(this->vector_str[1], this->vector_str[2]);
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case run:
+		{
+			if (this->vector_str.size() - 1 == 2)
+			{
+				this->vector_skrypt.clear();
+				Shell::odczyt_z_pliku(this->vector_str[1]);
+				for(int i=0;i<this->vector_skrypt.size();i++)
+				{
+					Shell::interpret(this->vector_skrypt[i]);
+				}
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case format:
+		{
+			if (this->vector_str.size() - 1 == 2)
+			{
+				if (this->vector_str[1] == "C")
+				{
+					system("COLOR 01");
+					
+					
+				}
+				
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case EXIT:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				this->a = false;
+			}
+			else
+			{
+				throw 1;
+			}
+			break;
+		}
+		case HELP:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				std::cout << "GO" << std::endl;
+				std::cout << "CP" << std::endl;
+				std::cout << "MC" << std::endl;
+				std::cout << "LS - wiew files" << std::endl;
+				std::cout << "CF (name) - create file" << std::endl;
+				std::cout << "WF (name) - write file" << std::endl;
+				std::cout << "DF (name) - delete file" << std::endl;
+				std::cout << "RF (name) - read file" << std::endl;
+				std::cout << "REF (name)(newname) - rename file" << std::endl;
+				std::cout << "APF (name)(data) - append file" << std::endl;
+				std::cout << "EXIT" << std::endl;
+
+			}
+			else
+			{
+				throw 1;
+			}
+			break;
+		default:
+			std::cout << "nie ma komendy" << std::endl;
+			break;
+		}
+		}
+	}
+	catch (int error_no)
+	{
+		if (error_no == 1)
+		{
+			std::cout << "Za duzo argumentow" << std::endl;
+		}
+		if (error_no == 2)
+		{
+			std::cout << "Zla ilosc argumentow" << std::endl;
+		}
+		if (error_no == 3)
+		{
+			std::cout << "rozmiar musi byc liczba" << std::endl;
+		}
+		if (error_no == 4)
+		{
+			std::cout << "adres i rozmiar musi byc liczba" << std::endl;
+		}
+		if (error_no == 5)
+		{
+			std::cout << "prioryten przyjmuje wartosc od 0 do 14" << std::endl;
+		}
+		if (error_no == 6)
+		{
+			std::cout << "id procesu musi byc liczba" << std::endl;
+		}
+		if (error_no == 7)
+		{
+			std::cout << "plik nie zostal otworzony" << std::endl;
+		}
+	}
+
+}
 void Shell::shell()
 {
-
-	bool a = true;
-	while (a)
+	while (this->a)
 	{
-		try
-		{
-			std::cout << "bambosz@host: ~ $ ";
-			std::string wczytywany_string;
-			std::getline(std::cin, wczytywany_string);
-			std::istringstream iss(wczytywany_string);
-			std::vector<std::string> pom;
-			do
-			{
-				std::string pom1;
-				iss >> pom1;
-				pom.push_back(pom1);
-			} while (iss);
-			Polecenia k = convert(pom[0]);
+		std::cout << "bambosz@host: ~ $ ";
+		std::getline(std::cin, wczytywany_string);
+		Shell::interpret(wczytywany_string);
 
-
-
-			switch (k)
-			{
-			case go:
-			{
-				if (pom.size() - 1 == 1)
-				{
-					auto proces = pm.AssignProcessor();
-					interpreter.run(proces);
-					std::cout << "Poszlo go" << std::endl;
-				}
-				else
-				{
-					throw 1;
-				}
-				break;
-			}
-			case cp:
-			{
-				if (pom.size() - 1 == 4)
-				{
-					if (is_number(pom[3])) {
-						int pomoc;
-						std::istringstream ss(pom[3]);
-						ss >> pomoc;
-						if (pomoc <= 14 && pomoc >= 0) {
-							ram.exchangeFile.writeTo(pom[1], pom[2]);
-							std::cout << pm.CreateProces(pom[1], pom[2], pomoc);
-						}
-						else
-						{
-							throw 5;
-						}
-					}
-					else
-					{
-						throw 3;
-					}
-				}
-				else
-				{
-					std::cout << "NIE Poszlo cp" << std::endl;
-					throw 2;
-				}
-				break;
-			}
-			case sproc:
-			{
-				if (pom.size() - 1 == 1)
-				{
-					std::cout << pm.DisplayAllProcesses();
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case sprocn:
-			{
-				if (pom.size() - 1 == 2)
-				{
-					std::cout << pm.DisplayProcessByName(pom[1]);
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case sprocid:
-			{
-				if (pom.size() - 1 == 2)
-				{
-					if (is_number(pom[1])) {
-						int pomoc;
-						std::istringstream ss(pom[1]);
-						ss >> pomoc;
-
-						std::cout << pm.DisplayProcessByID(pomoc);
-					}
-					else
-					{
-						throw 6;
-					}
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case dp:
-			{
-				if (pom.size() - 1 == 2) {
-					std::cout << pm.DeleteProcess(pm.getIdFromName(pom[1]));
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case mc:
-			{
-				if (pom.size() - 1 == 1)
-				{
-					ram.memoryContent();
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case ef:
-			{
-				if (pom.size() - 1 == 1)
-				{
-					ram.exchangeFile.showContent();
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case ls:
-			{
-				if (pom.size() - 1 == 1)
-				{
-					disc.wyswietlaPliki();
-				}
-				else
-				{
-					throw 1;
-				}
-				break;
-			}
-			case cf:
-			{
-				if (pom.size() - 1 == 2) {
-
-					disc.tworzeniaPliku(pom[1]);
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case wf:
-			{
-				if (pom.size() - 1 == 2) 
-				{
-					disc.wpisywanieDoPliku(pom[1], text_to_string());
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case df:
-			{
-				if (pom.size() - 1 == 2) {
-					disc.usuwaniePliku(pom[1]);
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case rf:
-			{
-				if (pom.size() - 1 == 2) {
-					disc.drukujDysk(pom[1]);
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case reff:
-			{
-				if (pom.size() - 1 == 3)
-				{
-					disc.zmianaNazwy(pom[1], pom[2]);
-				}
-				else
-				{
-					throw 2;
-				}
-				break;
-			}
-			case apf:
-			{
-				disc.dopiszDoPliku(pom[1], text_to_string());
-				break;
-			}
-			case EXIT:
-			{
-				if (pom.size() - 1 == 1)
-				{
-					a = false;
-				}
-				else
-				{
-					throw 1;
-				}
-				break;
-			}
-			case HELP:
-			{
-				if (pom.size() - 1 == 1)
-				{
-					std::cout << "GO" << std::endl;
-					std::cout << "CP" << std::endl;
-					std::cout << "MC" << std::endl;
-					std::cout << "LS - wiew files" << std::endl;
-					std::cout << "CF (name) - create file" << std::endl;
-					std::cout << "WF (name) - write file" << std::endl;
-					std::cout << "DF (name) - delete file" << std::endl;
-					std::cout << "RF (name) - read file" << std::endl;
-					std::cout << "REF (name)(newname) - rename file" << std::endl;
-					std::cout << "APF (name)(data) - append file" << std::endl;
-					std::cout << "EXIT" << std::endl;
-
-				}
-				else
-				{
-					throw 1;
-				}
-				break;
-			default:
-				std::cout << "nie ma komendy" << std::endl;
-				break;
-			}
-			}
-		}
-		catch (int error_no)
-		{
-			if (error_no == 1)
-			{
-				std::cout << "Za duzo argumentow" << std::endl;
-			}
-			if (error_no == 2)
-			{
-				std::cout << "Zla ilosc argumentow" << std::endl;
-			}
-			if (error_no == 3)
-			{
-				std::cout << "rozmiar musi byc liczba" << std::endl;
-			}
-			if (error_no == 4)
-			{
-				std::cout << "adres i rozmiar musi byc liczba" << std::endl;
-			}
-			if (error_no == 5)
-			{
-				std::cout << "prioryten przyjmuje wartosc od 0 do 14" << std::endl;
-			}
-			if (error_no == 6)
-			{
-				std::cout << "id procesu musi byc liczba" << std::endl;
-			}
-
-		}
 	}
 }
 void Shell::logo() {//lol

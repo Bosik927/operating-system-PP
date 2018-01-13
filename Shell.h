@@ -13,7 +13,7 @@
 #include "ProcessManagement.h"
 enum Polecenia
 {
-	go, cp, dp, sp, mc, BLAD, sproc, sprocn, sprocid,ef,
+	go, cp, dp, sp, mc, BLAD, sproc, sprocn, sprocid,ef,run, format,
 	ls, cf, wf, df, rf, reff, apf, EXIT, HELP
 };
 class Shell {
@@ -24,22 +24,26 @@ public:
 	Komunikacja kom;
 	Interpreter interpreter;
 
-
-	Disc *d;
+	Polecenia k;
+	std::string wczytywany_string;
+	std::vector<std::string> vector_str;
+	std::vector<std::string> vector_skrypt;
+	std::string pom1;
+	bool a;
 
 
 	Shell() 
 	{
 		interpreter = Interpreter(&pm, &kom,&disc,&ram);
+		this->a = true;
 		
 	}
 	Polecenia convert(const std::string &str);
 	bool is_number(const std::string &s);
-	std::string text_to_string();
 	void shell();
 	void logo();
-
-
+	void interpret(std::string a);
+	void odczyt_z_pliku(std::string a);
 
 
 };
