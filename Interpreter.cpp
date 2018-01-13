@@ -39,7 +39,7 @@ void Interpreter::run(PCB* PCBbox)
 {
 	PCBbox = processmanagement->GetRunningProcess();
 	int label=0;
-	// program = ram.pobierzRozkaz(RUNNING.GetName());
+	program = ram->getCommand(PCBbox->commandCounter,PCBbox->name);
 	if (!program.size())
 	{
 		cout << "Nie udalo sie pobrac rozkazu!" << endl;

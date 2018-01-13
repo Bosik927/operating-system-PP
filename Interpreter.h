@@ -43,18 +43,20 @@ class Interpreter
 {
 private:
 	bool isLabel(string &program);
+	RAM *ram;
 	Disc *disc; //<--- pliki
 	ProcessManagement *processmanagement; //<--- proces
 	Komunikacja *komunikacja; // <--- komunikacja
 	Rozkazy rozkaz;
-	string program="AX A 9"; // rozkaz pobierany z ramu
+	string program; // rozkaz pobierany z ramu
 public:
 	void run(PCB* PCBbox);
 	Interpreter() {}
-	Interpreter(ProcessManagement* pm, Komunikacja* km, Disc* dc)
+	Interpreter(ProcessManagement* pm, Komunikacja* km, Disc* dc, RAM *ram)
 	{
 		this->processmanagement = pm;
 		this->komunikacja = km;
 		this->disc = dc;
+		this->ram = ram;
 	}
 };
