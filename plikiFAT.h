@@ -4,8 +4,8 @@
 #include <string>
 #include <iostream>
 #include <math.h>
-#include "PCB.h"
 #include "Mutex.h"
+#include "PCB.h"
 
 
 
@@ -36,6 +36,10 @@ public:
 
 	Disc();
 	void wys();
+	std::string zawartoscDisc();
+	std::string zawartoscPlik(std::string nazwa);
+
+
 	//void tworzeniaPliku(std::string nazwa, PCB* process);
 	void otworzPlik(std::string nazwa, PCB* process);
 	void zamknijPlik(std::string nazwa, PCB*process);

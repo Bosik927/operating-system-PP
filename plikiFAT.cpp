@@ -1,5 +1,4 @@
-#pragma once
-#include "plikiFAT.h"
+ï»¿#include "plikiFAT.h"
 
 Disc::Disc()
 {
@@ -19,6 +18,21 @@ Disc::Disc()
 		fat[i] = 0;
 		atrybuty[i].status = false;
 		atrybuty[i].zapisany = false;
+	}
+}
+
+std::string Disc::zawartoscDisc()
+{
+	return "Rozmiar dysku: " + std::to_string(Disc::rozmiarDysku) + " wolne miejsce: " + std::to_string(Disc::wolneMiejsceDysk());
+}
+std::string Disc::zawartoscPlik(std::string nazwa)
+{
+	for (int i = 0; i < 64; i++)
+	{
+		if (atrybuty[i].nazwa == (nazwa))
+		{
+			return "Nazwa" + atrybuty[i].nazwa + " status" + std::to_string(atrybuty[i].status) + " czy zapisany" + std::to_string(atrybuty[i].zapisany) + " pierwszy jap:" + std::to_string(atrybuty[i].jap1) + " rozmiar:" + std::to_string(atrybuty[i].rozmiar);
+		}
 	}
 }
 void Disc::otworzPlik(std::string nazwa, PCB* process)
@@ -64,7 +78,7 @@ void Disc::zamknijPlik(std::string nazwa, PCB*process)
 //		atrybuty[buffor1].zapisany = false;
 //		fat[buffor] = -1;
 //
-//		std::cout << "Plik zosta³ utworzony!" << std::endl;
+//		std::cout << "Plik zostaÂ³ utworzony!" << std::endl;
 //		//	iloscWolnegoMiejsca();
 //		atrybuty[buffor1].zamek.unlock(*process);
 //
@@ -103,7 +117,7 @@ void Disc::tworzeniaPliku(std::string nazwa)		//parametry nazwa rozszerzenie
 		atrybuty[buffor1].zapisany = false;
 		fat[buffor] = -1;
 
-		std::cout << "Plik zosta³ utworzony!" << std::endl;
+		std::cout << "Plik zostaÂ³ utworzony!" << std::endl;
 		//	iloscWolnegoMiejsca();
 
 	}
@@ -172,7 +186,7 @@ void Disc::wpisywanieDoPliku(std::string nazwa, std::string data)
 				jap1 = file_jap(nazwa);
 
 				//DLA PIERWSZEGO 
-				//std::cout<<("pocz¹tek pliku "+jap1);
+				//std::cout<<("poczÂ¹tek pliku "+jap1);
 				char * datachar = new char[data.size() + 1];
 				strcpy(datachar, data.c_str());
 
@@ -233,7 +247,7 @@ void Disc::wpisywanieDoPliku(std::string nazwa, std::string data)
 //				jap1 = file_jap(nazwa);
 //
 //				//DLA PIERWSZEGO 
-//				//std::cout<<("pocz¹tek pliku "+jap1);
+//				//std::cout<<("poczÂ¹tek pliku "+jap1);
 //				char * datachar = new char[data.size() + 1];
 //				strcpy(datachar, data.c_str());
 //
@@ -624,7 +638,7 @@ void Disc::dopiszDoPliku(std::string nazwa, std::string data)
 				jap1 = file_jap(nazwa);
 
 				//DLA PIERWSZEGO 
-				//	std::cout<<("pocz¹tek pliku "+jap1);
+				//	std::cout<<("poczÂ¹tek pliku "+jap1);
 				char * datachar = new char[data.size() + 1];
 				strcpy(datachar, data.c_str());
 				for (int q = 0; q < data.length() && q < 64; q++) {
@@ -766,7 +780,7 @@ void Disc::dopiszDoPliku(std::string nazwa, std::string data)
 //				jap1 = file_jap(nazwa);
 //
 //				//DLA PIERWSZEGO 
-//				//	std::cout<<("pocz¹tek pliku "+jap1);
+//				//	std::cout<<("poczÂ¹tek pliku "+jap1);
 //				char * datachar = new char[data.size() + 1];
 //				strcpy(datachar, data.c_str());
 //				for (int q = 0; q < data.length() && q < 64; q++) {
