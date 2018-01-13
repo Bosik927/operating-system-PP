@@ -1,8 +1,5 @@
 #pragma once
-#include <iostream>
-#include <string>
 #include <list>
-#include "PageTable.h"
 #include <queue>
 #include "ExchangeFile.h"
 #include <stack>
@@ -19,7 +16,7 @@ public:
 	//tabela stron
 	std::vector<PageTable> pageTables;
 	std::stack<int> freeFrames;
-
+public:
 	// konstruktor, ustawienie podstawowych parametrow
 	RAM() {
 		for (int i = 0; i < 16; i++) {
@@ -27,7 +24,7 @@ public:
 			for (int j = 0; j < 16; j++)
 				ram[i * j] = ' ';
 			freeFrames.push(i);
-			inicjalizacja_tabeli_ramek();
+			//inicjalizacja_tabeli_ramek();
 		}
 	}
 
@@ -136,9 +133,9 @@ public:
 		}
 	}
 
-	void writeToRam(int index, char content[16]) {
+	void writeToRam(int index, char content) {
 		for (int i = 0; i < 16; i++) {
-			ram[index * 16 + i] = content[i];
+			ram[index * 16 + i] = content;
 		}
 	}
 
@@ -157,7 +154,7 @@ public:
 			}
 	}
 
-	std::string getCommand(int programCounter, std::string processName)
+	std::string getCommand(int programCounter, std::string &processName)
 	{
 		PageTable *ktora_tablica;
 		int pageIndex;
@@ -169,24 +166,24 @@ public:
 		}
 		if (ktora_tablica->inRAM[pageIndex])
 		{
-			return odczytaj_ramkê(ktora_tablica->getPositionInRam);
+			return odczytaj_ramkê(ktora_tablica->getPositionInRam(pageIndex));
 		}
 
 		else strona_w_ramke(pageIndex, ktora_tablica->processName);
-		return odczytaj_ramkê(ktora_tablica->getPositionInRam);
+		return odczytaj_ramkê(ktora_tablica->getPositionInRam(pageIndex));
 	}
 
 	// usuwanie danego procesu z pamieci
-	void deleteProcessData(std::string processName) {
+	void deleteProcessData(std::string procName) {
 
 		// usuniecie danych z pamieci ram
 		// ??? Do poprawienia
 		for (int i = 0; i < 16; i++) {
-			if (processNameInFrame[i] == (processName)) {
+			if (processNameInFrame[i] == (procName)) {
 				FIFO.push(i);
 				for (int j = 0; j < pageTables.size(); j++) {
-					if (pageTables[j].processName == (processName))
-						pageTables.erase[j];
+					if (pageTables[j].processName == (procName))
+						pageTables.erase(pageTables.begin()+j);
 				}
 
 				for (int j = 0; j < 16; j++)
@@ -208,7 +205,7 @@ public:
 	{
 		for (adres; adres < adres + rozmiar; adres++)
 		{
-			std::cout << ram[adres];
+			std::cout << "RAM[" << adres << "]: " << ram[adres];
 		}
 	}
 

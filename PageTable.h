@@ -23,7 +23,7 @@ public:
 		processName = procName;
 		sizeOfTable = count;
 		// wypelnienie
-		for (int i = 0; i < count; i++) 
+		for (int i = 0; i < count; i++)
 		{
 			framesNumber[i] = -1;
 			inRAM[i] = false;
@@ -34,14 +34,16 @@ public:
 	//zwraca pozycjê stronicy w RAMie lub -1, gdy stronicy nie ma w RAMie
 	int getPositionInRam(int pageNumber)
 	{
-		if (inRAM[pageNumber] == false)
-			return -1;
-		else
+		if (inRAM[pageNumber] == true)
+		{
 			return framesNumber[pageNumber];
+		}
+		else
+			return -1;
 	}
 
 	// zwraca nr stronicy ktora jest w danej ramce
-	int getIndex(int pageInRam) 
+	int getIndex(int pageInRam)
 	{
 		for (int i = 0; i < sizeOfTable; i++) {
 			if (framesNumber[i] == pageInRam)
@@ -50,10 +52,10 @@ public:
 		return -1;
 	}
 	// wypisuje tablice stronic
-	void writePageTable() 
+	void writePageTable()
 	{
 		for (int i = 0; i < sizeOfTable; i++)
-			std::cout << (framesNumber[i] + " " + inRAM[i]); // ???? Pewnie do poprawy ????
+			std::cout << framesNumber[i] << " " << inRAM[i] << std::endl; // ???? Pewnie do poprawy ????
 	}
 };
 
@@ -71,11 +73,4 @@ public:
 		bit_odniesienia = 0;
 		bit_modyfikacji = 0;
 	}
-};
-
-struct Strona
-{
-public:
-	int numer; //na jak¹ ramkê/stronê wskazuje
-	bool poprawnoœæ; // 1-fizyczna 0 -wirtualna
 };
