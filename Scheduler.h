@@ -64,7 +64,7 @@ public:
 		return runningProcess.process->ID;
 	}
 	std::vector <Process>& getWaitingProcesses() {
-		return &waitingProcesses;
+		return waitingProcesses;
 	}
 
 	//METODY PRZEZNACZONE DO SHELLA

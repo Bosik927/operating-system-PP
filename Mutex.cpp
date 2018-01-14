@@ -6,7 +6,7 @@ Mutex::Mutex() : using_process(), waiting_processes(), is_lock(false) {}
 Mutex::~Mutex() {}
 
 bool Mutex::lock(PCB &process) {
-	if(using_process != nullptr && is_lock == true) {
+	if(using_process != nullptr && is_lock == true && using_process != &process) {
 		process.Sleep();
 		waiting_processes.push_back(&process);
 		return false;
@@ -62,7 +62,7 @@ std::string Mutex::toString() {
 		}
 	}
 	else {
-		buffor += "otwarty";
+		buffor += " otwarty;";
 	}
 	return buffor;
 }
