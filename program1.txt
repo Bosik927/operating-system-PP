@@ -1,0 +1,7 @@
+AX D 3
+AX A 1
+SILNIA:
+MV B
+MU D
+JP
+HL
