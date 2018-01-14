@@ -64,4 +64,5 @@ public:
 	int szukanieWolnegoJap();
 	void zmianaNazwy(std::string nazwa, std::string newname);
 	//void zmianaNazwy(std::string nazwa, std::string newname, PCB* process);
+	void stan_zamka(std::string a);
 };

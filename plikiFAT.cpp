@@ -395,7 +395,9 @@ void Disc::usuwaniePliku(std::string nazwa)
 //
 //
 ////do ogarniecia
-
+void Disc::stan_zamka(std::string a) {
+	std::cout << this->atrybuty[ktory_katalog(a)].zamek.toString() << std::endl;
+}
 void Disc::wyswietlaPliki()
 {
 	int allsize = 0;
@@ -468,7 +470,6 @@ void Disc::drukujDysk(std::string nazwa)
 			{
 				std::cout << (dysk[z]);
 			}
-
 		}std::cout << std::endl;
 	}
 	else

@@ -19,6 +19,7 @@ Polecenia Shell::convert(const std::string &str) {
 	else if (str == "sprocn" | str == "SPROCN") return Polecenia::sprocn;
 	else if (str == "sprocid" | str == "SPROCID") return Polecenia::sprocid;
 	else if (str == "rf" | str == "RF") return Polecenia::rf;
+	else if (str == "sz" | str == "SZ") return Polecenia::sz;
 	else if (str == "ref" | str == "REF") return Polecenia::reff;
 	else if (str == "apf" | str == "APF") return Polecenia::apf;
 	else if (str == "exit" | str == "EXIT") return Polecenia::EXIT;
@@ -159,6 +160,18 @@ void Shell::interpret(std::string a)
 		{
 			if (this->vector_str.size() - 1 == 2) {
 				std::cout << pm.DeleteProcess(pm.getIdFromName(this->vector_str[1]));
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case sz:
+		{
+			if (this->vector_str.size() - 1 == 2) {
+				disc.stan_zamka(this->vector_str[1]);
+				
 			}
 			else
 			{
