@@ -42,6 +42,7 @@ Rozkazy convert(const string& operacja);
 class Interpreter
 {
 private:
+	int label;
 	bool isLabel(string &program);
 	RAM *ram;
 	Disc *disc; //<--- pliki

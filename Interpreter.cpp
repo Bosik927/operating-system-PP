@@ -38,7 +38,6 @@ bool Interpreter::isLabel(string &program)
 void Interpreter::run(PCB* PCBbox)
 {
 	PCBbox = processmanagement->GetRunningProcess();
-	int label=0;
 	program = ram->getCommand(PCBbox->commandCounter,PCBbox->name);
 	if (!program.size())
 	{
@@ -156,7 +155,7 @@ void Interpreter::run(PCB* PCBbox)
 				}
 				else if (program.substr(3, 1) == "D")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A')*processmanagement->GetReg(PCBbox->ID, 'C'));
+					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A')*processmanagement->GetReg(PCBbox->ID, 'D'));
 				}
 			}
 			else
