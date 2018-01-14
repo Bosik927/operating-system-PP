@@ -26,7 +26,7 @@ Rozkazy convert(const string& operacja) // Funkcja dla konwersji rozkazow dla sw
 }
 bool Interpreter::isLabel(string &program)
 {
-	if (program[program.size() - 1] == ':')
+	if (program[program.size() - 2] == ':')
 	{
 		return true;
 	}
@@ -52,6 +52,7 @@ void Interpreter::run(PCB* PCBbox)
 	else
 	{
 		PCBbox->commandCounter += program.size();
+		program.erase(program.end() - 1, program.end());
 		switch (convert(program.substr(0, 2)))
 		{
 		case AD:
@@ -384,7 +385,7 @@ void Interpreter::run(PCB* PCBbox)
 		}
 		case HL:
 		{
-			
+			cout << "KONIEC PROCEUS" << endl;
 			break;
 		}
 		default:

@@ -253,11 +253,11 @@ public:
 		return bufor; //zwracam stringa
 	}
 
-	std::string zwroc_rozkaz(int ramka, int adres)
+	std::string zwroc_rozkaz(int ramka, int adres, std::string procName)
 	{
 		std::string temp = ""; //tworzê bufor na odczytane dane
 
-		for (int i = adres; i < 16; i++)
+		for (int i = adres%16; i < 16; i++)
 		{
 			if (ram[ramka * 16 + i] == '\n')
 			{
@@ -266,7 +266,8 @@ public:
 			}
 			temp.push_back(ram[ramka * 16 + i]); //odczytujê rozkaz
 		}
-		return temp; //zwracam stringa
+		temp += (getCommand(ramka + 16, procName));
+		return temp;
 	}
 
 	void zapisz_ramkê(int numer_ramki, std::string znaki) //zapisuje znaki w konkretnej ramce (odpowiadaj¹cej dostarczonemu segmentowi); nie zmienia bitu u¿ywania na true; jest to zmieniane przy wyszukiwaniu wolnej ramki
@@ -375,7 +376,7 @@ public:
 		PageTable ktora_tablica;
 		int pageIndex;
 		if ((programCounter) % 16 == 0) pageIndex = ((programCounter + 1) / 16);
-		else pageIndex = ((programCounter + 1) / 16);
+		else pageIndex = ((programCounter) / 16);
 		for (auto a : pageTables)
 		{
 			if (processName == a.processName)
@@ -386,11 +387,11 @@ public:
 		}
 		if (ktora_tablica.inRAM[pageIndex])
 		{
-			return odczytaj_ramkê(ktora_tablica.getPositionInRam(pageIndex));
+			return zwroc_rozkaz(ktora_tablica.framesNumber[pageIndex], programCounter, processName);
 		}
 
 		else strona_w_ramke(pageIndex, ktora_tablica.processName);
-		return zwroc_rozkaz(pageIndex, programCounter);
+		return zwroc_rozkaz(ktora_tablica.framesNumber[pageIndex], programCounter, processName);
 	}
 
 	// usuwanie danego procesu z pamieci
