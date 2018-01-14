@@ -46,8 +46,8 @@ void Interpreter::run(PCB* PCBbox)
 	}
 	if (isLabel(program))
 	{
-		label = PCBbox->commandCounter;
 		PCBbox->commandCounter += program.size();
+		label = PCBbox->commandCounter;
 	}
 	else
 	{
@@ -201,15 +201,15 @@ void Interpreter::run(PCB* PCBbox)
 			{
 				if (program.substr(3, 1) == "B")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'B'));
+					processmanagement->SetReg(PCBbox->ID, 'B', processmanagement->GetReg(PCBbox->ID, 'A'));
 				}
 				else if (program.substr(3, 1) == "C")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'C'));
+					processmanagement->SetReg(PCBbox->ID, 'C', processmanagement->GetReg(PCBbox->ID, 'A'));
 				}
 				else if (program.substr(3, 1) == "D")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'D'));
+					processmanagement->SetReg(PCBbox->ID, 'D', processmanagement->GetReg(PCBbox->ID, 'A'));
 				}
 			}
 			else
