@@ -46,6 +46,7 @@ public:
 		{
 			pomoc.push_back(wiersz);
 			buff += wiersz;
+			buff += "\n";
 			licznikRozkazow++;
 		}
 		while (buff.size() % 16 != 0)
@@ -252,6 +253,22 @@ public:
 		return bufor; //zwracam stringa
 	}
 
+	std::string zwroc_rozkaz(int ramka, int adres)
+	{
+		std::string temp = ""; //tworzê bufor na odczytane dane
+
+		for (int i = adres; i < 16; i++)
+		{
+			if (ram[ramka * 16 + i] == '\n')
+			{
+				temp.push_back('\n');
+				return temp;
+			}
+			temp.push_back(ram[ramka * 16 + i]); //odczytujê rozkaz
+		}
+		return temp; //zwracam stringa
+	}
+
 	void zapisz_ramkê(int numer_ramki, std::string znaki) //zapisuje znaki w konkretnej ramce (odpowiadaj¹cej dostarczonemu segmentowi); nie zmienia bitu u¿ywania na true; jest to zmieniane przy wyszukiwaniu wolnej ramki
 	{
 		int adres = numer_ramki * 16;
@@ -357,7 +374,7 @@ public:
 	{
 		PageTable ktora_tablica;
 		int pageIndex;
-		if ((programCounter + 1) % 16 == 0) pageIndex = ((programCounter + 1) / 16) - 1;
+		if ((programCounter) % 16 == 0) pageIndex = ((programCounter + 1) / 16);
 		else pageIndex = ((programCounter + 1) / 16);
 		for (auto a : pageTables)
 		{
@@ -373,7 +390,7 @@ public:
 		}
 
 		else strona_w_ramke(pageIndex, ktora_tablica.processName);
-		return odczytaj_ramkê(ktora_tablica.getPositionInRam(pageIndex));
+		return zwroc_rozkaz(pageIndex, programCounter);
 	}
 
 	// usuwanie danego procesu z pamieci
