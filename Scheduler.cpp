@@ -47,8 +47,7 @@ void Scheduler::unsleep()
 	{	if (waitingProcesses[i].process->state == PCB::processState::ready)
 		{
 			activeProcesses[waitingProcesses[i].process->priority].push(waitingProcesses[i]);
-
-		//	if (bitsMapActive[newProcess.process->priority] == 0) { bitsMapActive[process->priority] = 1; }
+		//	if (bitsMapActive[waitingProcesses[i].process->priority] == 0) { bitsMapActive[waitingProcesses[i]->priority] = 1; }
 
 			waitingProcesses.erase(waitingProcesses.begin() + i);
 		}
