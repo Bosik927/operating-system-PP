@@ -13,7 +13,7 @@
 #include "ProcessManagement.h"
 enum Polecenia
 {
-	go, cp, dp, sp, mc, BLAD, sproc, sprocn, sprocid,ef,run, format,
+	go, cp, dp, sp, mc, BLAD, sproc, sprocn, sprocid,ef,run, format,sz,
 	ls, cf, wf, df, rf, reff, apf, EXIT, HELP
 };
 class Shell {
