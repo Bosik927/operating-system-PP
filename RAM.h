@@ -215,7 +215,7 @@ public:
 		for (int i = 0; i < 16; i++) {
 			processNameInFrame[i] = "";
 			for (int j = 0; j < 16; j++)
-				ram[i * j] = ' ';
+				ram[i *16+ j] = ' ';
 			freeFrames.push(i);
 
 		}
@@ -396,7 +396,8 @@ public:
 	{
 		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < 16; j++) std::cout << "RAM[" << i*j << "]: " << ram[i*j];
+			for (int j = 0; j < 16; j++) std::cout << "RAM[" << i*16+j << "]:" << ram[i*16+j] << " " ;
+			std::cout << std::endl;
 		}
 	}
 };
