@@ -216,10 +216,10 @@ public:
 			processNameInFrame[i] = "";
 			for (int j = 0; j < 16; j++)
 				ram[i *16+ j] = ' ';
-			freeFrames.push(i);
 
 		}
 		inicjalizacja_tabeli_ramek();
+		inicjalizacja_stosu_ramek();
 	}
 	void inicjalizacja_tabeli_ramek() //inicjalizuje liste ramek aby zawiera³a odpowiednie wskazania na komorki pamieci
 	{
@@ -230,6 +230,14 @@ public:
 			ramka.adres_koncowy = i * 16 + 16 - 1;
 			ramka.nr_ramki = i;
 			framesTable.push_back(ramka);
+		}
+	}
+
+	void inicjalizacja_stosu_ramek()
+	{
+		for (int i = 15; i >= 0; i--)
+		{
+			freeFrames.push(i);
 		}
 	}
 
@@ -353,7 +361,11 @@ public:
 		else pageIndex = ((programCounter + 1) / 16);
 		for (auto a : pageTables)
 		{
-			if (processName == a.processName) ktora_tablica = a;
+			if (processName == a.processName)
+			{
+				ktora_tablica = a;
+				break;
+			}
 		}
 		if (ktora_tablica.inRAM[pageIndex])
 		{
@@ -394,9 +406,16 @@ public:
 
 	void memoryContent() //coutowaæ wszystko
 	{
+		std::string pom;
 		for (int i = 0; i < 16; i++)
 		{
-			for (int j = 0; j < 16; j++) std::cout << "RAM[" << i*16+j << "]:" << ram[i*16+j] << " " ;
+			for (int j = 0; j < 16; j++)
+			{
+				pom += ram[i * 16 + j];
+			}
+
+			std::cout << "RAM[" << i * 16 << "-" << i * 16 + 15 << "]:" << pom << " ";
+			pom = "";
 			std::cout << std::endl;
 		}
 	}

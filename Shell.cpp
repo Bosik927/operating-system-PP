@@ -90,7 +90,6 @@ void Shell::interpret(std::string a)
 					std::istringstream ss(this->vector_str[3]);
 					ss >> pomoc;
 					if (pomoc <= 14 && pomoc >= 0) {
-						ram.exchangeFile.writeTo(this->vector_str[1], this->vector_str[2]);
 						std::cout << pm.CreateProces(this->vector_str[1], this->vector_str[2], pomoc);
 					}
 					else
