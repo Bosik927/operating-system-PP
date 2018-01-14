@@ -51,7 +51,7 @@ public:
 	void calculateCurrentPriority(Process &process);
 	void translatePriority(Process &process);
 	void giveTime(Process &process);
-	bool chooseProcess();				
+	void chooseProcess();				
 	void terminated();
 	bool isTerminatedEmpty();	
 	void endOfEpoch();	
@@ -63,10 +63,8 @@ public:
 	int returnRunningProcess(){
 		return runningProcess.process->ID;
 	}
-	std::vector <Process>& getWaitingProcesses() {
-		return waitingProcesses;
-	}
-
+	
+	
 	//METODY PRZEZNACZONE DO SHELLA
 	void displayActiveProcesses();
 	void displayTerminatedProcesses();
