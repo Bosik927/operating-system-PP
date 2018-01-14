@@ -13,6 +13,7 @@ struct struktura
 {
 	std::string procName;
 	std::array <char, 16> data;
+	int rozmiar;
 };
 
 class ExchangeFile {
@@ -61,6 +62,7 @@ public:
 				nowa.data[j] = buff[i * 16 + j];
 
 			}
+			nowa.rozmiar = buff.size();
 			exchangeFile.push_back(nowa);
 		}
 
@@ -105,7 +107,16 @@ public:
 			exchangeFile.erase(exchangeFile.begin() + pageIndex, exchangeFile.begin() + pageIndex + howManyPages);
 		}
 	}
+
+	int getRozmiar(std::string processName)
+	{
+		for (auto i : exchangeFile)
+		{
+			if (i.procName == processName) return i.rozmiar;
+		}
+	}
 };
+
 
 //pageTable
 

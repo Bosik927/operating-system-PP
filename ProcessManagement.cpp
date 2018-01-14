@@ -31,6 +31,7 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 		SetState(ID, PCB::processState::ready);
 		scheduler.addProcess(this->getPCB(ID), BasePriority);
 		ram->exchangeFile.writeTo(temp.name, Path);
+		ram->pageTables.push_back(PageTable(ram->exchangeFile.getRozmiar(temp.name), temp.name));
 		return "Utworzono proces: \"" + Name + "\" o identyfikatorze: " + std::to_string(ID) + " i priorytecie wg. Windows: " + std::to_string(prior) + "\n";
 	}
 	return "Nieznany blad przy tworzeniu procesu\n";
@@ -280,7 +281,7 @@ void ProcessManagement::DisplayScheduler()
 
 PCB * ProcessManagement::GetRunningProcess()
 {
-	int actvID = scheduler.getRunningProcess();
+	int actvID = scheduler.returnRunningProcess();
 	return getPCB(actvID);
 }
 
@@ -291,7 +292,7 @@ PCB * ProcessManagement::GetRunningProcess()
 
 PCB * ProcessManagement::AssignProcessor()
 {
-	int outdatedID = scheduler.getRunningProcess();
+	int outdatedID = scheduler.returnRunningProcess();
 	SetState(outdatedID, PCB::processState::ready);
 	int actvID;
 	actvID = scheduler.assignProcessor();
