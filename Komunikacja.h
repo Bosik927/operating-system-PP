@@ -71,7 +71,7 @@ public:
 public:
 	Komunikacja();
 	Komunikacja(ProcessManagement *Proces);
-	vector<string> tab;
+	//vector<string> tab;
 	mkfifo mkfif;
 	void write(string id, string msg);
 	//void read(string id);
