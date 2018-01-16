@@ -37,7 +37,6 @@ bool Interpreter::isLabel(string &program)
 }
 void Interpreter::run(PCB* PCBbox)
 {
-	PCBbox = processmanagement->GetRunningProcess();
 	program = ram->getCommand(PCBbox->commandCounter,PCBbox->name);
 	if (!program.size())
 	{
@@ -218,13 +217,23 @@ void Interpreter::run(PCB* PCBbox)
 			break;
 		}
 		case JP:
-		{	
-			if (processmanagement->GetReg(PCBbox->ID, 'D') != 0) // processmanagement.GetReg(PCBbox.ID, 'D') != 0
+		{
+			if (program.size() == 2)
 			{
-				processmanagement->SetReg(PCBbox->ID, 'D', processmanagement->GetReg(PCBbox->ID, 'D') - 1);
-				PCBbox->commandCounter = label;
+				if (processmanagement->GetReg(PCBbox->ID, 'D') != 0) // processmanagement.GetReg(PCBbox.ID, 'D') != 0
+				{
+					processmanagement->SetReg(PCBbox->ID, 'D', processmanagement->GetReg(PCBbox->ID, 'D') - 1);
+					PCBbox->commandCounter = label;
+				}
+				break;
 			}
-			break;
+			else
+			{
+				int liczba = 0;
+				liczba = atoi(program.substr(4, program.size() - 4).c_str());
+				PCBbox->commandCounter = liczba;
+				break;
+			}
 		}
 		case CF:
 		{
@@ -384,6 +393,7 @@ void Interpreter::run(PCB* PCBbox)
 		}
 		case HL:
 		{
+			processmanagement->DeleteProcess(PCBbox->ID);
 			cout << "KONIEC PROCEUS" << endl;
 			break;
 		}
