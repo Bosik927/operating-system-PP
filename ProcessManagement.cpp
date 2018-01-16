@@ -77,7 +77,7 @@ void ProcessManagement::addFirstProcess(std::string path)
 	scheduler.addFirstProcess(this->getPCB(0));
 	SetState(0, PCB::processState::active);
 	ram->exchangeFile.writeTo(temp.name, path);
-
+	ram->pageTables.push_back(PageTable(ram->exchangeFile.getRozmiar(temp.name), temp.name));
 }
 
 //Usuwanie wybranego procesu z listy procesów
