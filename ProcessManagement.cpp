@@ -62,7 +62,7 @@ bool ProcessManagement::CheckNameUniqe(std::string Name)
 void ProcessManagement::addFirstProcess(std::string path)
 {
 	int ID = IdManager.PickID();
-	PCB temp("idle.txt", 0);
+	PCB temp("idle", 0);
 	temp.state = PCB::processState::newbie;
 	temp.ID = ID;
 	temp.A = 0;

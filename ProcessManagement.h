@@ -26,7 +26,7 @@ public:
 	{
 		this->ram = ram;
 		srand(time(0));//potrzebne do losowego priorytetu
-		addFirstProcess("a.txt");
+		addFirstProcess("idle.txt");
 	}
 
 	ID_Manager IdManager;
