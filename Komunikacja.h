@@ -3,8 +3,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "ProcessManagement.h"
 #include "Mutex.h"
+#include "ProcessManagement.h"
 
 using namespace std;
 
@@ -67,11 +67,11 @@ class Komunikacja
 {
 public:
 	ProcessManagement * Proces;
-	Mutex* lock;
+	Mutex lock;
 public:
 	Komunikacja();
 	Komunikacja(ProcessManagement *Proces);
-	//vector<string> tab;
+	vector<string> tab;
 	mkfifo mkfif;
 	void write(string id, string msg);
 	//void read(string id);
