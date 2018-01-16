@@ -72,7 +72,17 @@ public:
 
 	const char *readFrom(std::string &processName, int pageIndex, int indexInPage)
 	{
-		return exchangeFile[pageIndex].data.data();
+		for (int i = 0; i < exchangeFile.size(); i++)
+		{
+			if (exchangeFile[i].procName == processName)
+			{
+				for (int j = 0; j < exchangeFile.size() - i; j++)
+				{
+					if (j == pageIndex) return exchangeFile[i+j].data.data();
+				}
+			}
+		}
+		
 
 		// ???? JESZCZE OBS£UGA B£ÊDU ????
 	}
@@ -364,7 +374,9 @@ public:
 			if (pageTables[i].processName == procName)
 			{
 				pageTables[i].framesNumber[nrStrony] = freeFrames.top();
+				framesTable[freeFrames.top()].bit_odniesienia = 1;
 				pageTables[i].inRAM[nrStrony] = true;
+				FIFO.push(freeFrames.top());
 				freeFrames.pop();
 				writeToRam(pageTables[i].framesNumber[nrStrony], exchangeFile.readFrom(procName, nrStrony, 0));
 			}
@@ -387,6 +399,7 @@ public:
 		}
 		if (ktora_tablica.inRAM[pageIndex])
 		{
+			framesTable[ktora_tablica.framesNumber[pageIndex]].bit_odniesienia = 1;
 			return zwroc_rozkaz(ktora_tablica.framesNumber[pageIndex], programCounter, processName);
 		}
 
