@@ -9,9 +9,9 @@ Komunikacja::Komunikacja(ProcessManagement *Proces)
 
 void Komunikacja::write(string id, string msg)
 {
-	lock->lock(*(Proces)->getPCB(Proces->getIdFromName(id)));
+	if(lock->lock(*(Proces)->getPCB(Proces->getIdFromName(id)))){
 	mkfif.zapisz(msg);
-	lock->unlock(*(Proces)->getPCB(Proces->getIdFromName(id)));
+	}lock->unlock(*(Proces)->getPCB(Proces->getIdFromName(id)));
 }
 
 //void Komunikacja::read(string id)
