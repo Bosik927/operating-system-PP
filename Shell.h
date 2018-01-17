@@ -28,7 +28,7 @@ public:
 	std::string wczytywany_string;
 	std::vector<std::string> vector_str;
 	std::vector<std::string> vector_skrypt;
-	std::string pom1;
+	std::string pom1, pom2;
 	bool a;
 
 
