@@ -397,7 +397,7 @@ void Shell::shell()
 {
 	while (this->a)
 	{
-		std::cout << "bambosz@host: ~ $ ";
+		std::cout << "grazia@host: ~ $ ";
 		std::getline(std::cin, wczytywany_string);
 		Shell::interpret(wczytywany_string);
 
