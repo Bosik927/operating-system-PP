@@ -25,6 +25,7 @@ enum Rozkazy {
 	DF, // DF nazwa_pliku			(usuwa plik o danej nazwie)
 	RF, // RF nazwa_pliku treœæ
 	AF, // AF nazwa_pliku treœæ     (nadpisuje plik o danej nazwie)
+	FC, // FileClose nazwa
 	CP, // CP nazwa sciezka			(tworzenie procesu)
 	DP, // DP nazwa
 	RP, // RP nazwa

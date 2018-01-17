@@ -1,4 +1,3 @@
-CP p3 program2.txt
 SM p2 msg
 SM p2 msg2
 RM p3 3

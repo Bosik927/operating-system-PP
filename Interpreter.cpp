@@ -18,6 +18,7 @@ Rozkazy convert(const string& operacja) // Funkcja dla konwersji rozkazow dla sw
 	else if (operacja == "DF") return DF;
 	else if (operacja == "RF") return RF;
 	else if (operacja == "AF") return AF;
+	else if (operacja == "OF") return OF;
 	else if (operacja == "CP") return CP;
 	else if (operacja == "DP") return DP;
 	else if (operacja == "RP") return RP;
@@ -243,6 +244,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name;
 				name = program.substr(3, program.size() - 3).c_str();
 				disc->tworzeniaPliku(name);
+				disc->otworzPlik(name, PCBbox);
 			}
 			else
 			{
@@ -309,6 +311,20 @@ void Interpreter::run(PCB* PCBbox)
 			}
 			break;
 		}
+		case FC:
+		{
+			if (program.substr(2, 1) == " ")
+			{
+				string name;
+				name = program.substr(3, program.size() - 3).c_str();
+				disc->zamknijPlik(name, PCBbox);
+			}
+			else
+			{
+				cout << "Niepoprawny rozkaz" << endl;
+			}
+			break;
+		}
 		case CP:
 		{
 			if (program.substr(2, 1) == " ")
@@ -367,8 +383,8 @@ void Interpreter::run(PCB* PCBbox)
 			{
 				string name;
 				int ilosc_znakow=0;
-				name = program.substr(3, program.size() - 3).c_str();
-				ilosc_znakow= atoi(program.substr(4, program.size() - 4).c_str());
+				name = program.substr(3, program.find(" ", 4) - 3).c_str();
+				ilosc_znakow = atoi(program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str());
 				komunikacja->read(name,ilosc_znakow); 
 			}
 			else
