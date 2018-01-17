@@ -5,7 +5,8 @@ int main()
 {
 	Shell shell;
 
-	//logo();
+	//shell.logo();
+	system("Color 03");
 	shell.shell();
 	
 	return 0;
