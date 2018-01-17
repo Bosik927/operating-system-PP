@@ -254,7 +254,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name, data;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				data = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc->wpisywanieDoPliku(name,data);
+				disc->wpisywanieDoPliku(name,data, PCBbox);
 			}
 			else
 			{
@@ -268,7 +268,7 @@ void Interpreter::run(PCB* PCBbox)
 			{
 				string name;
 				name = program.substr(3, program.size() - 3).c_str();
-				disc->usuwaniePliku(name);
+				disc->usuwaniePliku(name, PCBbox);
 			}
 			else
 			{
@@ -283,7 +283,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name, newname;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				newname = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc->zmianaNazwy(name,newname);
+				disc->zmianaNazwy(name,newname, PCBbox);
 			}
 			else
 			{
@@ -298,7 +298,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name, data;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				data = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc->dopiszDoPliku(name,data);
+				disc->dopiszDoPliku(name,data, PCBbox);
 			}
 			else
 			{
