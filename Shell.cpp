@@ -4,7 +4,8 @@
 
 
 
-Polecenia Shell::convert(const std::string &str) {
+Polecenia Shell::convert(const std::string &str)
+{
 	if (str == "go" | str == "GO") return Polecenia::go;
 	else if (str == "run" | str == "RUN") return Polecenia::run;
 	else if (str == "cp" | str == "CP") return Polecenia::cp;
@@ -15,6 +16,7 @@ Polecenia Shell::convert(const std::string &str) {
 	else if (str == "cf" | str == "CF") return Polecenia::cf;
 	else if (str == "wf" | str == "WF") return Polecenia::wf;
 	else if (str == "df" | str == "DF") return Polecenia::df;
+	else if (str == "shf" | str == "SHF") return Polecenia::shf;
 	else if (str == "sproc" | str == "SPROC") return Polecenia::sproc;
 	else if (str == "sprocn" | str == "SPROCN") return Polecenia::sprocn;
 	else if (str == "sprocid" | str == "SPROCID") return Polecenia::sprocid;
@@ -23,7 +25,6 @@ Polecenia Shell::convert(const std::string &str) {
 	else if (str == "ref" | str == "REF") return Polecenia::reff;
 	else if (str == "apf" | str == "APF") return Polecenia::apf;
 	else if (str == "exit" | str == "EXIT") return Polecenia::EXIT;
-	else if (str == "format" | str == "FORMAT") return Polecenia::format;
 	else if (str == "help" | str == "HELP") return Polecenia::HELP;
 	else return Polecenia::BLAD;
 }
@@ -49,7 +50,6 @@ void Shell::odczyt_z_pliku(std::string a) {
 		throw 7;
 	}
 }
-
 void Shell::interpret(std::string a)
 {
 	this->vector_str.clear();
@@ -182,6 +182,18 @@ void Shell::interpret(std::string a)
 			if (this->vector_str.size() - 1 == 1)
 			{
 				ram.memoryContent();
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case shf:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				ram.showFIFO();
 			}
 			else
 			{
@@ -331,23 +343,6 @@ void Shell::interpret(std::string a)
 			}
 			break;
 		}
-		case format:
-		{
-			if (this->vector_str.size() - 1 == 2)
-			{
-				if (this->vector_str[1] == "C")
-				{
-					//??
-	
-				}
-				
-			}
-			else
-			{
-				throw 2;
-			}
-			break;
-		}
 		case EXIT:
 		{
 			if (this->vector_str.size() - 1 == 1)
@@ -365,15 +360,21 @@ void Shell::interpret(std::string a)
 			if (this->vector_str.size() - 1 == 1)
 			{
 				std::cout << "GO" << std::endl;
-				std::cout << "CP" << std::endl;
-				std::cout << "MC" << std::endl;
-				std::cout << "LS - wiew files" << std::endl;
-				std::cout << "CF (name) - create file" << std::endl;
-				std::cout << "WF (name) - write file" << std::endl;
-				std::cout << "DF (name) - delete file" << std::endl;
-				std::cout << "RF (name) - read file" << std::endl;
-				std::cout << "REF (name)(newname) - rename file" << std::endl;
-				std::cout << "APF (name)(data) - append file" << std::endl;
+				std::cout << "CP(nazwa)(sciezka)(prioryter) - tworzy proces" << std::endl;
+				std::cout << "DP(nazwa) - usuwa proces" << std::endl;
+				std::cout << "MC - wyswietla zawartosc pamieci" << std::endl;
+				std::cout << "SPROC - wyswietla liste procesow" << std::endl;
+				std::cout << "SPROCN(nazwa) - wyswietla proces" << std::endl;
+				std::cout << "SPROCID(ID) - wyswietla proces" << std::endl;
+				std::cout << "EF - wyswietla plik wymiany" << std::endl;
+				std::cout << "RUN(sciezka do pliku ze skryptem)" << std::endl;
+				std::cout << "LS - wyswielta liste plikow" << std::endl;
+				std::cout << "CF(nazwa) - tworzy plik" << std::endl;
+				std::cout << "WF(nazwa)(tekst) -wpisuje do pustego pliku" << std::endl;
+				std::cout << "DF(nazwa) - usuwa plik" << std::endl;
+				std::cout << "RF(nazwa) - wyswietla zawartosc pliku" << std::endl;
+				std::cout << "REF(nazwa)(nowa nazwa) - zmienia nazwe pliku" << std::endl;
+				std::cout << "APF(nazwa)(tekst) - dopisuje do pliku" << std::endl;
 				std::cout << "EXIT" << std::endl;
 
 			}
@@ -483,4 +484,3 @@ void Shell::logo() {
 	Sleep(1000);
 	system("cls");
 }
-

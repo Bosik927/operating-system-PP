@@ -12,6 +12,7 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 	}
 	else
 	{
+
 		int ID = IdManager.PickID();
 		int prior = BasePriority;
 		if (prior == 0)
@@ -27,16 +28,21 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 		temp.D = 0;
 		temp.commandCounter = 0;
 		temp.blocked = 0;
-		Processes.push_back(temp);
-		SetState(ID, PCB::processState::ready);
-		scheduler.addProcess(this->getPCB(ID), BasePriority);
-		ram->exchangeFile.writeTo(temp.name, Path);
-		ram->pageTables.push_back(PageTable(ram->exchangeFile.getRozmiar(temp.name), temp.name)); //Artur tu by³, tak musi byæ
-		return "Utworzono proces: \"" + Name + "\" o identyfikatorze: " + std::to_string(ID) + " i priorytecie wg. Windows: " + std::to_string(prior) + "\n";
+		int programLength = ram->exchangeFile.writeTo(temp.name, Path);//Stasiu to dla Ciebie :)
+		if (programLength != -1)
+		{
+			Processes.push_back(temp);
+			SetState(ID, PCB::processState::ready);
+			scheduler.addProcess(this->getPCB(ID), programLength);
+			ram->pageTables.push_back(PageTable(ram->exchangeFile.getRozmiar(temp.name), temp.name)); //Artur tu by³, tak musi byæ
+			return "Utworzono proces: \"" + Name + "\" o identyfikatorze: " + std::to_string(ID) + " i priorytecie wg. Windows: " + std::to_string(prior) + "\n";
+		}
+		else
+		{
+			return "Nie udalo sie pobrac kodu programu, tworzenie procesu zostalo przerwane\n";
+		}
 	}
 	return "Nieznany blad przy tworzeniu procesu\n";
-	//TRZEBA JAKOŒ DODAC KOD PROGRAMU DO RAMU
-	//PATH - NAZWA LUB SCIEZKA PLIKU ZRODLOWEGO
 
 }
 
@@ -293,10 +299,14 @@ PCB * ProcessManagement::GetRunningProcess()
 
 PCB * ProcessManagement::AssignProcessor()
 {
-	int outdatedID = scheduler.returnRunningProcess();
-	SetState(outdatedID, PCB::processState::ready);
-	int actvID;
-	actvID = scheduler.assignProcessor();
+	
+	//int outdatedID = scheduler.returnRunningProcess();
+	if (GetState(lastRunningProcesID) == PCB::processState::active)
+	{
+		SetState(lastRunningProcesID, PCB::processState::ready);
+	}
+	int actvID = scheduler.assignProcessor();
+	lastRunningProcesID = actvID;
 	SetState(actvID, PCB::processState::active);
 	return getPCB(actvID);
 }

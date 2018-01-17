@@ -42,6 +42,7 @@ public:
 		program.open(fileName);
 		std::string wiersz;
 		std::string buff;
+		if (!program) return -1;
 		while (std::getline(program, wiersz))
 		{
 			pomoc.push_back(wiersz);
@@ -105,8 +106,21 @@ public:
 		for (struktura i : exchangeFile)
 		{
 			std::string buff(i.data.data());
+			std::string pom = "[";
 			buff.erase(buff.begin() + 16, buff.end());
-			std::cout << buff << std::endl;
+			for (int i = 0; i < 16; i++)
+			{
+				if (buff[i] == '\n')
+				{
+					pom += " ";
+				}
+				else pom += buff[i];
+			}
+			buff = "]     proces: ";
+			pom += buff;
+			buff = i.procName;
+			pom += buff;
+			std::cout << pom << std::endl;
 		}
 	}
 
@@ -483,6 +497,16 @@ public:
 			std::cout << pageTables[i].processName;
 	}
 
+	void showFIFO()
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			std::cout << FIFO.front() << std::endl;
+			FIFO.push(FIFO.front());
+			FIFO.pop();
+		}
+	}
+
 	void memoryContent() //coutowaæ wszystko
 	{
 		std::string pom;
@@ -490,11 +514,16 @@ public:
 		{
 			for (int j = 0; j < 16; j++)
 			{
-				pom += ram[i * 16 + j];
+				if (ram[i * 16 + j] == '\n')
+				{
+					pom += " ";
+				}
+				else pom += ram[i * 16 + j];
 			}
 
 			std::cout << "RAM[" << i * 16 << "-" << i * 16 + 15 << "]:" << pom << " ";
 			pom = "";
+			std::cout << "  proces: " << processNameInFrame[i];
 			std::cout << std::endl;
 		}
 	}
