@@ -1,6 +1,6 @@
 #include "Komunikacja.h"
 
-Komunikacja::Komunikacja() {}
+//Komunikacja::Komunikacja() {}
 
 Komunikacja::Komunikacja(ProcessManagement *Proces)
 {
