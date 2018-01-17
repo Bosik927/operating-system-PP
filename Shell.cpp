@@ -52,6 +52,7 @@ void Shell::odczyt_z_pliku(std::string a) {
 }
 void Shell::interpret(std::string a)
 {
+	this->pom1.clear();
 	this->vector_str.clear();
 	std::istringstream iss(a);
 	do
