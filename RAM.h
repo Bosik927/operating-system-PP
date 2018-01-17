@@ -140,7 +140,7 @@ public:
 		{
 			for (int i = pom.size()-1; i>=0;i--)
 			{
-				exchangeFile.erase(exchangeFile.begin() + i);
+				exchangeFile.erase(exchangeFile.begin() + pom[i]);
 			}
 		}
 	}
