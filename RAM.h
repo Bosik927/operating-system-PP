@@ -110,12 +110,21 @@ public:
 		}
 	}
 
-	void deleteData(std::string &processName, int howManyPages, int pageIndex)
+	void deleteData(std::string &processName)
 	{
-		std::cout << "Usuwanie z pliku wymiany: " << howManyPages << " stron procesu: " << processName;
-		if (exchangeFile[pageIndex].procName == processName)
+		std::cout << "Usuwanie z pliku wymiany stron procesu: " << processName;
+		int j = 0;
+		for (struktura i : exchangeFile)
 		{
-			exchangeFile.erase(exchangeFile.begin() + pageIndex, exchangeFile.begin() + pageIndex + howManyPages);
+			if (i.procName == processName)
+			{
+				exchangeFile.erase(exchangeFile.begin()+j);
+			}
+			j++;
+		}
+		
+		{
+			
 		}
 	}
 
@@ -442,7 +451,7 @@ public:
 		// ??? Do poprawienia
 		for (int i = 0; i < 16; i++) {
 			if (processNameInFrame[i] == (procName)) {
-				FIFO.push(i);
+				freeFrames.push(i);
 				for (int j = 0; j < pageTables.size(); j++) {
 					if (pageTables[j].processName == (procName))
 						pageTables.erase(pageTables.begin() + j);
@@ -454,7 +463,7 @@ public:
 		}
 
 		// usuniecie danych z pliku wymiany
-		/*exchangeFile.deleteData(processName, int ilosc_stron, int indexstrony);*/
+		exchangeFile.deleteData(procName);
 	}
 
 	// wypisanie procesow bedacych w pamieci
