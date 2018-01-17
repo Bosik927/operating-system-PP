@@ -36,7 +36,7 @@ public:
 	{
 		interpreter = Interpreter(&pm, &kom,&disc,&ram);
 		this->a = true;
-		
+		kom = Komunikacja(&pm);
 	}
 	Polecenia convert(const std::string &str);
 	bool is_number(const std::string &s);
