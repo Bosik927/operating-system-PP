@@ -42,6 +42,7 @@ public:
 		program.open(fileName);
 		std::string wiersz;
 		std::string buff;
+		if (!program) return -1;
 		while (std::getline(program, wiersz))
 		{
 			pomoc.push_back(wiersz);
@@ -105,26 +106,42 @@ public:
 		for (struktura i : exchangeFile)
 		{
 			std::string buff(i.data.data());
+			std::string pom = "[";
 			buff.erase(buff.begin() + 16, buff.end());
-			std::cout << buff << std::endl;
+			for (int i = 0; i < 16; i++)
+			{
+				if (buff[i] == '\n')
+				{
+					pom += " ";
+				}
+				else pom += buff[i];
+			}
+			buff = "]     proces: ";
+			pom += buff;
+			buff = i.procName;
+			pom += buff;
+			std::cout << pom << std::endl;
 		}
 	}
 
 	void deleteData(std::string &processName)
 	{
-		std::cout << "Usuwanie z pliku wymiany stron procesu: " << processName;
 		int j = 0;
+		std::vector<int> pom;
 		for (struktura i : exchangeFile)
 		{
 			if (i.procName == processName)
 			{
-				exchangeFile.erase(exchangeFile.begin()+j);
+				pom.push_back(j);
 			}
-			j++;
+		 	j++;
 		}
-		
+		if (pom.size() > 0)
 		{
-			
+			for (int i = pom.size()-1; i>=0;i--)
+			{
+				exchangeFile.erase(exchangeFile.begin() + i);
+			}
 		}
 	}
 
@@ -222,7 +239,7 @@ private:
 public:
 
 	char *ram = new char[256];
-	std::vector<Ramka> framesTable;;
+	std::vector<Ramka> framesTable;
 	std::string *processNameInFrame = new std::string[16]; //NO NIBY SPOKO ZMIENNA, ALE POWINIENEM TO CHYBA POBIERAÆ OD ADAMA
 	std::queue<int> FIFO;
 	ExchangeFile exchangeFile;
@@ -317,24 +334,32 @@ public:
 		for (int i = 0; i < pageTables.size(); i++)
 		{
 			if (pageTables[i].processName == processNameInFrame[ramka])
+			{
+				pageTables[i].inRAM[pageTables[i].getIndex(ramka)] = false;
 				if (framesTable[ramka].bit_modyfikacji == 1) exchangeFile.saveTo(processNameInFrame[ramka], odczytaj_ramkê(ramka), pageTables[i].getIndex(ramka));
+			}
+				
 		}// tutaj do poprawienia nadpisywanie pliku wymiany
+
 		std::queue<int> bufor; //tworzê tymczasow¹ kolejkê pomocnicz¹
 		framesTable[ramka].bit_modyfikacji = 0;
 		framesTable[ramka].bit_odniesienia = 0;
 		while (FIFO.size() > 0)
 		{
 			if (FIFO.front() != ramka)
-				bufor.push(FIFO.front());
+			bufor.push(FIFO.front());
 			FIFO.pop();
 		}
+		//bufor.push(ramka);
+		FIFO = bufor;
 		// odwracam kolejkê
-		while (FIFO.size() > 0)
-		{
-			FIFO.push(bufor.front());
-			bufor.pop();
-		}
+		//while (bufor.size() > 0)
+		//{
+		//	FIFO.push(bufor.front());
+		//	bufor.pop();
+		//}
 	}
+
 
 	int ktora_ramke_zwolnic()
 	{
@@ -410,6 +435,7 @@ public:
 		{
 			if (pageTables[i].processName == procName)
 			{
+				processNameInFrame[freeFrames.top()] = procName;
 				pageTables[i].framesNumber[nrStrony] = freeFrames.top();
 				framesTable[freeFrames.top()].bit_odniesienia = 1;
 				pageTables[i].inRAM[nrStrony] = true;
@@ -446,22 +472,21 @@ public:
 
 	// usuwanie danego procesu z pamieci
 	void deleteProcessData(std::string procName) {
-
 		// usuniecie danych z pamieci ram
 		// ??? Do poprawienia
 		for (int i = 0; i < 16; i++) {
 			if (processNameInFrame[i] == (procName)) {
 				freeFrames.push(i);
-				for (int j = 0; j < pageTables.size(); j++) {
-					if (pageTables[j].processName == (procName))
-						pageTables.erase(pageTables.begin() + j);
-				}
+				
 
 				for (int j = 0; j < 16; j++)
 					ram[i * 16 + j] = ' ';
 			}
 		}
-
+		for (int j = 0; j < pageTables.size(); j++) {
+			if (pageTables[j].processName == (procName))
+				pageTables.erase(pageTables.begin() + j);
+		}
 		// usuniecie danych z pliku wymiany
 		exchangeFile.deleteData(procName);
 	}
@@ -472,6 +497,16 @@ public:
 			std::cout << pageTables[i].processName;
 	}
 
+	void showFIFO()
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			std::cout << FIFO.front() << std::endl;
+			FIFO.push(FIFO.front());
+			FIFO.pop();
+		}
+	}
+
 	void memoryContent() //coutowaæ wszystko
 	{
 		std::string pom;
@@ -479,11 +514,16 @@ public:
 		{
 			for (int j = 0; j < 16; j++)
 			{
-				pom += ram[i * 16 + j];
+				if (ram[i * 16 + j] == '\n')
+				{
+					pom += " ";
+				}
+				else pom += ram[i * 16 + j];
 			}
 
 			std::cout << "RAM[" << i * 16 << "-" << i * 16 + 15 << "]:" << pom << " ";
 			pom = "";
+			std::cout << "  proces: " << processNameInFrame[i];
 			std::cout << std::endl;
 		}
 	}
