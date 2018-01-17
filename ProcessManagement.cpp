@@ -13,7 +13,6 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 	else
 	{
 
-		int ID = IdManager.PickID();
 		int prior = BasePriority;
 		if (prior == 0)
 		{
@@ -21,7 +20,6 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 		}
 		PCB temp(Name, prior);
 		temp.state = PCB::processState::newbie;
-		temp.ID = ID;
 		temp.A = 0;
 		temp.B = 0;
 		temp.C = 0;
@@ -31,6 +29,8 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 		int programLength = ram->exchangeFile.writeTo(temp.name, Path);//Stasiu to dla Ciebie :)
 		if (programLength != -1)
 		{
+			int ID = IdManager.PickID();
+			temp.ID = ID;
 			Processes.push_back(temp);
 			SetState(ID, PCB::processState::ready);
 			scheduler.addProcess(this->getPCB(ID), programLength);
