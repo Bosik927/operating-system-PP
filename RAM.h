@@ -112,7 +112,6 @@ public:
 
 	void deleteData(std::string &processName)
 	{
-		std::cout << "Usuwanie z pliku wymiany stron procesu: " << processName;
 		int j = 0;
 		std::vector<int> pom;
 		for (struktura i : exchangeFile)
@@ -316,7 +315,6 @@ public:
 
 	void zwolnij_ramkê(int ramka)
 	{
-		std::cout << "Zwolnij ramke" << std::endl;
 		freeFrames.push(ramka); //oznaczam ramkê jako woln¹
 								//z kolejki FIFO muszê teraz usun¹æ tê ramkê:
 		for (int i = 0; i < pageTables.size(); i++)
@@ -351,7 +349,6 @@ public:
 
 	int ktora_ramke_zwolnic()
 	{
-		std::cout << "Ktora ramke zwolnic" << std::endl;
 		int pierwsza_ramka = FIFO.front();
 		if (framesTable[pierwsza_ramka].bit_modyfikacji == 0 && framesTable[pierwsza_ramka].bit_odniesienia == 0)
 		{
@@ -419,7 +416,6 @@ public:
 
 	void strona_w_ramke(int nrStrony, std::string procName)
 	{
-		std::cout << "Strona w ramke" << std::endl;
 		if (freeFrames.size() <= 0) zwolnij_ramkê(ktora_ramke_zwolnic());
 		for (int i = 0; i < pageTables.size(); i++)
 		{
@@ -438,7 +434,6 @@ public:
 
 	std::string getCommand(int programCounter, std::string &processName)
 	{
-		std::cout << "GetCommand" << std::endl;
 		PageTable ktora_tablica;
 		int pageIndex;
 		if ((programCounter) % 16 == 0) pageIndex = ((programCounter + 1) / 16);
@@ -453,7 +448,6 @@ public:
 		}
 		if (ktora_tablica.inRAM[pageIndex])
 		{
-			std::cout << "czy tu jest b³¹d?" << std::endl;
 			framesTable[ktora_tablica.framesNumber[pageIndex]].bit_odniesienia = 1;
 			return zwroc_rozkaz(ktora_tablica.framesNumber[pageIndex], programCounter, processName);
 		}
@@ -464,7 +458,6 @@ public:
 
 	// usuwanie danego procesu z pamieci
 	void deleteProcessData(std::string procName) {
-		std::cout << "Delete data process" << std::endl;
 		// usuniecie danych z pamieci ram
 		// ??? Do poprawienia
 		for (int i = 0; i < 16; i++) {
