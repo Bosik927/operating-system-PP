@@ -78,7 +78,7 @@ void Disc::zamknijPlik(std::string nazwa, PCB* process)
 //		atrybuty[buffor1].zapisany = false;
 //		fat[buffor] = -1;
 //
-//		std::cout << "Plik zosta³ utworzony!" << std::endl;
+//		std::cout << "Plik zostal utworzony!" << std::endl;
 //		//	iloscWolnegoMiejsca();
 //		atrybuty[buffor1].zamek.unlock(*process);
 //
@@ -226,66 +226,69 @@ void Disc::wpisywanieDoPliku(std::string nazwa, std::string data)
 
 }
 
-//void Disc::wpisywanieDoPliku(std::string nazwa, std::string data, PCB* process)
-//{
-//
-//	int jap1;
-//	int nastepnyJap;
-//	double dlugosc;
-//	double count_jap = 0;
-//
-//	dlugosc = data.length();
-//	count_jap = ceil(dlugosc / 64);
-//	//std::cout<<("DLUGOSC JAP "+count_jap);
-//	// Czy katalog wolny?  
-//	if (ktory_katalog(nazwa) != -1) {
-//		if (atrybuty[ktory_katalog(nazwa)].zapisany == false)
-//			atrybuty[ktory_katalog(nazwa)].zapisany = true;
-//		atrybuty[ktory_katalog(nazwa)].zamek.lock(*process);
-//		if (file_jap(nazwa) != -1) {
-//			if ((spacefree) > dlugosc) {
-//				jap1 = file_jap(nazwa);
-//
-//				//DLA PIERWSZEGO 
-//				//std::cout<<("pocz¹tek pliku "+jap1);
-//				char * datachar = new char[data.size() + 1];
-//				strcpy(datachar, data.c_str());
-//
-//				for (int q = 0; q < data.length() && q < 64; q++) {
-//					//if (k <= dlugosc - 1) {
-//					dysk[q + jap1 * 64] = datachar[q];
-//					//std::cout<<(q+jap1*64+" -> "+dysk[q+jap1*64]);
-//
-//				}
-//				//DLA WIECEJ
-//				if (count_jap > 1) {
-//					for (int j = 1; j <= count_jap - 1; j++) {
-//						nastepnyJap = szukanieWolnegoJap();
-//						//std::cout<<("WOLNY NEXT JAP "+nastepnyJap);
-//						fat[nastepnyJap] = -1;
-//						fat[jap1] = nastepnyJap;
-//						jap1 = nastepnyJap;
-//						for (int q = 0; q < 64 && q < data.length() - j * 64; q++) {
-//							dysk[q + jap1 * 64] = datachar[q + j * 64];
-//							//	std::cout<<(q+jap1*64+" -> "+dysk[q+jap1*64]);
-//						}
-//
-//					}
-//				}
-//				std::cout << "Wpisanie do pliku pomyslne" << std::endl;
-//				atrybuty[ktory_katalog(nazwa)].rozmiar = data.length();
-//				atrybuty[ktory_katalog(nazwa)].zamek.unlock(*process);
-//			}
-//			else std::cout << "Za malo miejsca na dysku" << std::endl;
-//		}
-//		else  std::cout << "Nie mozna nadpisac danych" << std::endl;
-//	}
-//	else std::cout << "Blad! Plik nie istnieje" << std::endl;
-//	iloscWolnegoMiejsca();
-//
-//
-//
-//}
+void Disc::wpisywanieDoPliku(std::string nazwa, std::string data, PCB* process)
+{
+
+	int jap1;
+	int nastepnyJap;
+	double dlugosc;
+	double count_jap = 0;
+
+	dlugosc = data.length();
+	count_jap = ceil(dlugosc / 64);
+	//std::cout<<("DLUGOSC JAP "+count_jap);
+	// Czy katalog wolny?  
+
+	if (ktory_katalog(nazwa) != -1) {
+		if (atrybuty[ktory_katalog(nazwa)].zapisany == false)
+			if (atrybuty[ktory_katalog(nazwa)].zamek.lock(*process))
+			{
+				atrybuty[ktory_katalog(nazwa)].zapisany = true;
+				if (file_jap(nazwa) != -1) {
+					if ((spacefree) > dlugosc) {
+						jap1 = file_jap(nazwa);
+
+						//DLA PIERWSZEGO 
+						//std::cout<<("pocz¹tek pliku "+jap1);
+						char * datachar = new char[data.size() + 1];
+						strcpy(datachar, data.c_str());
+
+						for (int q = 0; q < data.length() && q < 64; q++) {
+							//if (k <= dlugosc - 1) {
+							dysk[q + jap1 * 64] = datachar[q];
+							//std::cout<<(q+jap1*64+" -> "+dysk[q+jap1*64]);
+
+						}
+						//DLA WIECEJ
+						if (count_jap > 1) {
+							for (int j = 1; j <= count_jap - 1; j++) {
+								nastepnyJap = szukanieWolnegoJap();
+								//std::cout<<("WOLNY NEXT JAP "+nastepnyJap);
+								fat[nastepnyJap] = -1;
+								fat[jap1] = nastepnyJap;
+								jap1 = nastepnyJap;
+								for (int q = 0; q < 64 && q < data.length() - j * 64; q++) {
+									dysk[q + jap1 * 64] = datachar[q + j * 64];
+									//	std::cout<<(q+jap1*64+" -> "+dysk[q+jap1*64]);
+								}
+
+							}
+						}
+						std::cout << "Wpisanie do pliku pomyslne" << std::endl;
+						atrybuty[ktory_katalog(nazwa)].rozmiar = data.length();
+						atrybuty[ktory_katalog(nazwa)].zamek.unlock(*process);
+					}
+					else std::cout << "Za malo miejsca na dysku" << std::endl;
+				}
+				else  std::cout << "Nie mozna nadpisac danych" << std::endl;
+			}
+	}
+	else std::cout << "Blad! Plik nie istnieje" << std::endl;
+	iloscWolnegoMiejsca();
+
+
+
+}
 
 int Disc::wolneMiejsceDysk()
 {
@@ -347,53 +350,54 @@ void Disc::usuwaniePliku(std::string nazwa)
 
 }
 
-//void Disc::usuwaniePliku(std::string nazwa, PCB* process)
-//{
-//	int jap = file_jap(nazwa);
-//	int kolejnyJap;
-//	int buffor = 1;
-//	int tab[64];
-//	tab[0] = jap;
-//	while (jap != -1)
-//	{
-//		kolejnyJap = fat[jap];
-//		jap = kolejnyJap;
-//		tab[buffor] = kolejnyJap;
-//		buffor++;
-//	}
-//	buffor -= 1;
-//
-//	if (nazwaIstnieje(nazwa) == false)
-//	{
-//
-//		for (int i = 0; i<buffor; i++)
-//		{
-//			for (int j = 0; j < 64; j++)
-//			{
-//				dysk[(tab[i] * 64) + j] = 0;
-//			}
-//			fat[tab[i]] = 0;
-//		}
-//		int x = ktory_katalog(nazwa);
-//		if (atrybuty[x].nazwa == (nazwa))
-//		{
-//			atrybuty[x].zamek.lock(*process);
-//			atrybuty[x].nazwa = "";
-//			atrybuty[x].rozmiar = 0;
-//			atrybuty[x].status = false;
-//			atrybuty[x].jap1 = 0;
-//			atrybuty[x].zapisany = false;
-//			atrybuty[x].zamek.unlock(*process);
-//		}
-//		iloscWolnegoMiejsca();
-//		std::cout << ("Usuwanie pliku przebieglo pomyslnie");
-//	}
-//	else
-//		std::cout << ("Plik nie istnieje");
-//
-//}
-//
-//
+void Disc::usuwaniePliku(std::string nazwa, PCB* process)
+{
+	int jap = file_jap(nazwa);
+	int kolejnyJap;
+	int buffor = 1;
+	int tab[64];
+	tab[0] = jap;
+	while (jap != -1)
+	{
+		kolejnyJap = fat[jap];
+		jap = kolejnyJap;
+		tab[buffor] = kolejnyJap;
+		buffor++;
+	}
+	buffor -= 1;
+	int x = ktory_katalog(nazwa);
+	if (atrybuty[x].zamek.lock(*process))
+	{
+		if (nazwaIstnieje(nazwa) == false)
+		{
+
+			for (int i = 0; i < buffor; i++)
+			{
+				for (int j = 0; j < 64; j++)
+				{
+					dysk[(tab[i] * 64) + j] = 0;
+				}
+				fat[tab[i]] = 0;
+			}
+
+			if (atrybuty[x].nazwa == (nazwa))
+			{
+				atrybuty[x].nazwa = "";
+				atrybuty[x].rozmiar = 0;
+				atrybuty[x].status = false;
+				atrybuty[x].jap1 = 0;
+				atrybuty[x].zapisany = false;
+			}
+			iloscWolnegoMiejsca();
+			std::cout << ("Usuwanie pliku przebieglo pomyslnie");
+		}
+		else
+			std::cout << ("Plik nie istnieje");
+	}
+
+}
+
+
 ////do ogarniecia
 void Disc::stan_zamka(std::string a) {
 	std::cout << this->atrybuty[ktory_katalog(a)].zamek.toString() << std::endl;
@@ -512,33 +516,36 @@ void Disc::zmianaNazwy(std::string nazwa, std::string newname)
 		std::cout << ("Plik nie istnieje") << std::endl;
 	}
 }
-//void Disc::zmianaNazwy(std::string nazwa, std::string newname,PCB* process)
-//{
-//	if (nazwaIstnieje(newname) == true)
-//	{
-//		if (file_jap(nazwa) != -1)
-//		{
-//			for (int i = 0; i <64; i++)
-//			{
-//				if (atrybuty[i].nazwa == (nazwa))
-//				{
-//					atrybuty[i].zamek.lock(*process);
-//					atrybuty[i].nazwa = newname;
-//					atrybuty[i].zamek.unlock(*process);
-//				}
-//			}
-//			std::cout << ("Zmiana nazwy przebiegla pomylnie");
-//		}
-//		else
-//		{
-//			std::cout << ("Nie znaleziono pliku");
-//		}
-//	}
-//	else
-//	{
-//		std::cout << ("Plik nie istnieje");
-//	}
-//}
+void Disc::zmianaNazwy(std::string nazwa, std::string newname,PCB* process)
+{
+	if (nazwaIstnieje(newname) == true)
+	{
+		if (file_jap(nazwa) != -1)
+		{
+			for (int i = 0; i <64; i++)
+			{
+				if (atrybuty[i].nazwa == (nazwa))
+				{
+					if (atrybuty[i].zamek.lock(*process))
+					{
+						atrybuty[i].nazwa = newname;
+						std::cout << ("Zmiana nazwy przebiegla pomylnie");
+					}
+					break;
+				}
+			}
+
+		}
+		else
+		{
+			std::cout << ("Nie znaleziono pliku");
+		}
+	}
+	else
+	{
+		std::cout << ("Plik nie istnieje");
+	}
+}
 void Disc::dopiszDoPliku(std::string nazwa, std::string data)
 {
 	std::string dane1 = "";
@@ -676,147 +683,145 @@ void Disc::dopiszDoPliku(std::string nazwa, std::string data)
 
 
 }
-//void Disc::dopiszDoPliku(std::string nazwa, std::string data, PCB* process)
-//{
-//	std::string dane1 = "";
-//	int jap = file_jap(nazwa);
-//	int nextJap;
-//	int l = 1;
-//	int tab[64];
-//	tab[0] = jap;
-//
-//
-//	while (jap != -1)
-//	{
-//		nextJap = fat[jap];
-//		jap = nextJap;
-//		tab[l] = nextJap;
-//		l++;
-//	}
-//	l -= 1;
-//
-//	for (int i = 0; i < l; i++)
-//	{
-//		int j = 64 * tab[i];
-//
-//		int k = j + 64;
-//		for (int z = j; z < k; z++)
-//		{
-//			if (dysk[z] != 0)
-//				dane1 += dysk[z];
-//		}
-//
-//	}
-//	jap = file_jap(nazwa);
-//	int kolejnyJap;
-//	int buffor = 1;
-//	tab[0] = jap;
-//	while (jap != -1)
-//	{
-//		kolejnyJap = fat[jap];
-//		jap = kolejnyJap;
-//		tab[buffor] = kolejnyJap;
-//		buffor++;
-//	}
-//	buffor -= 1;
-//
-//
-//	for (int i = 0; i < buffor; i++)
-//	{
-//		for (int j = 0; j < 64; j++)
-//		{
-//			dysk[(tab[i] * 64) + j] = 0;
-//		}
-//		fat[tab[i]] = 0;
-//	}
-//	int x = ktory_katalog(nazwa);
-//	atrybuty[x].zamek.lock(*process);
-//	if (atrybuty[x].nazwa == (nazwa))
-//	{
-//		atrybuty[x].nazwa = "";
-//		atrybuty[x].rozmiar = 0;
-//		atrybuty[x].status = false;
-//		atrybuty[x].jap1 = 0;
-//		atrybuty[x].zapisany = false;
-//	}
-//
-//	atrybuty[x].zamek.unlock(*process);
-//	iloscWolnegoMiejsca();
-//
-//
-//
-//	int buffor1;
-//
-//
-//	buffor = szukanieWolnegoJap();
-//	buffor1 = wolnyKatalog();
-//
-//
-//
-//	//uzupelnienie wpisow do katalogu
-//	atrybuty[buffor1].zamek.lock(*process);
-//	atrybuty[buffor1].nazwa = nazwa;
-//	atrybuty[buffor1].status = true;
-//	atrybuty[buffor1].jap1 = buffor;
-//	atrybuty[buffor1].rozmiar = 0;
-//	atrybuty[buffor1].zapisany = false;
-//	atrybuty[buffor1].zamek.unlock(*process);
-//	fat[buffor] = -1;
-//	data = dane1 + data;
-//	int jap1;
-//	int nastepnyJap;
-//	double dlugosc;
-//	double count_jap = 0;
-//
-//	dlugosc = data.length();
-//	count_jap = ceil(dlugosc / 64);
-//	//   std::cout<<("DLUGOSC JAP "+count_jap);
-//	// Czy katalog wolny?  
-//	if (ktory_katalog(nazwa) != -1) {
-//		if (atrybuty[ktory_katalog(nazwa)].zapisany == false)
-//			atrybuty[ktory_katalog(nazwa)].zapisany = true;
-//
-//		if (file_jap(nazwa) != -1) {
-//			if ((spacefree) > dlugosc) {
-//				jap1 = file_jap(nazwa);
-//
-//				//DLA PIERWSZEGO 
-//				//	std::cout<<("pocz¹tek pliku "+jap1);
-//				char * datachar = new char[data.size() + 1];
-//				strcpy(datachar, data.c_str());
-//				for (int q = 0; q < data.length() && q < 64; q++) {
-//					//if (k <= dlugosc - 1) {
-//					dysk[q + jap1 * 64] = datachar[q];
-//					//std::cout<<(q+jap1*64+" -> "+dysk[q+jap1*64]);
-//
-//				}
-//				//DLA WIECEJ
-//				if (count_jap > 1) {
-//					for (int j = 1; j <= count_jap - 1; j++) {
-//						nastepnyJap = szukanieWolnegoJap();
-//						//std::cout<<("WOLNY NEXT JAP "+nastepnyJap);
-//						fat[nastepnyJap] = -1;
-//						fat[jap1] = nastepnyJap;
-//						jap1 = nastepnyJap;
-//						for (int q = 0; q < 64 && q < data.length() - j * 64; q++) {
-//							dysk[q + jap1 * 64] = datachar[q + j * 64];
-//							//	std::cout<<(q+jap1*64+" -> "+dysk[q+jap1*64]);
-//						}
-//
-//					}
-//				}
-//				std::cout << ("Wpisanie do pliku pomyslne");
-//				atrybuty[ktory_katalog(nazwa)].rozmiar = data.length();
-//
-//			}
-//			else std::cout << ("Za malo miejsca na dysku");
-//		}
-//		else  std::cout << ("Nie mozna nadpisac danych");
-//	}
-//	else std::cout << ("Blad! Plik nie istnieje");
-//	iloscWolnegoMiejsca();
-//
-//}
+void Disc::dopiszDoPliku(std::string nazwa, std::string data, PCB* process)
+{
+	std::string dane1 = "";
+	int jap = file_jap(nazwa);
+	int nextJap;
+	int l = 1;
+	int tab[64];
+	tab[0] = jap;
+
+
+	while (jap != -1)
+	{
+		nextJap = fat[jap];
+		jap = nextJap;
+		tab[l] = nextJap;
+		l++;
+	}
+	l -= 1;
+
+	for (int i = 0; i < l; i++)
+	{
+		int j = 64 * tab[i];
+
+		int k = j + 64;
+		for (int z = j; z < k; z++)
+		{
+			if (dysk[z] != 0)
+				dane1 += dysk[z];
+		}
+
+	}
+	jap = file_jap(nazwa);
+	int kolejnyJap;
+	int buffor = 1;
+	tab[0] = jap;
+	while (jap != -1)
+	{
+		kolejnyJap = fat[jap];
+		jap = kolejnyJap;
+		tab[buffor] = kolejnyJap;
+		buffor++;
+	}
+	buffor -= 1;
+
+
+	for (int i = 0; i < buffor; i++)
+	{
+		for (int j = 0; j < 64; j++)
+		{
+			dysk[(tab[i] * 64) + j] = 0;
+		}
+		fat[tab[i]] = 0;
+	}
+	int x = ktory_katalog(nazwa);
+	if (atrybuty[x].nazwa == (nazwa))
+	{
+		if (!atrybuty[x].zamek.lock(*process)) return;
+			atrybuty[x].nazwa = "";
+			atrybuty[x].rozmiar = 0;
+			atrybuty[x].status = false;
+			atrybuty[x].jap1 = 0;
+			atrybuty[x].zapisany = false;
+	}
+
+
+	iloscWolnegoMiejsca();
+
+
+
+	int buffor1;
+
+
+	buffor = szukanieWolnegoJap();
+	buffor1 = wolnyKatalog();
+
+
+
+	//uzupelnienie wpisow do katalogu
+	atrybuty[buffor1].nazwa = nazwa;
+	atrybuty[buffor1].status = true;
+	atrybuty[buffor1].jap1 = buffor;
+	atrybuty[buffor1].rozmiar = 0;
+	atrybuty[buffor1].zapisany = false;
+	fat[buffor] = -1;
+	data = dane1 + data;
+	int jap1;
+	int nastepnyJap;
+	double dlugosc;
+	double count_jap = 0;
+
+	dlugosc = data.length();
+	count_jap = ceil(dlugosc / 64);
+	//   std::cout<<("DLUGOSC JAP "+count_jap);
+	// Czy katalog wolny?  
+	if (ktory_katalog(nazwa) != -1) {
+		if (atrybuty[ktory_katalog(nazwa)].zapisany == false)
+			atrybuty[ktory_katalog(nazwa)].zapisany = true;
+
+		if (file_jap(nazwa) != -1) {
+			if ((spacefree) > dlugosc) {
+				jap1 = file_jap(nazwa);
+
+				//DLA PIERWSZEGO 
+				//	std::cout<<("pocz¹tek pliku "+jap1);
+				char * datachar = new char[data.size() + 1];
+				strcpy(datachar, data.c_str());
+				for (int q = 0; q < data.length() && q < 64; q++) {
+					//if (k <= dlugosc - 1) {
+					dysk[q + jap1 * 64] = datachar[q];
+					//std::cout<<(q+jap1*64+" -> "+dysk[q+jap1*64]);
+
+				}
+				//DLA WIECEJ
+				if (count_jap > 1) {
+					for (int j = 1; j <= count_jap - 1; j++) {
+						nastepnyJap = szukanieWolnegoJap();
+						//std::cout<<("WOLNY NEXT JAP "+nastepnyJap);
+						fat[nastepnyJap] = -1;
+						fat[jap1] = nastepnyJap;
+						jap1 = nastepnyJap;
+						for (int q = 0; q < 64 && q < data.length() - j * 64; q++) {
+							dysk[q + jap1 * 64] = datachar[q + j * 64];
+							//	std::cout<<(q+jap1*64+" -> "+dysk[q+jap1*64]);
+						}
+
+					}
+				}
+				std::cout << ("Wpisanie do pliku pomyslne");
+				atrybuty[ktory_katalog(nazwa)].rozmiar = data.length();
+
+			}
+			else std::cout << ("Za malo miejsca na dysku");
+		}
+		else  std::cout << ("Nie mozna nadpisac danych");
+	}
+	else std::cout << ("Blad! Plik nie istnieje");
+	iloscWolnegoMiejsca();
+
+}
 /*public void dopiszDoPliku(std::string nazwa, std::string ext, std::string data)//naprawoc
 {
 if(file_jap(nazwa,ext) != -1)
