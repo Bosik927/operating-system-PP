@@ -18,7 +18,7 @@ Rozkazy convert(const string& operacja) // Funkcja dla konwersji rozkazow dla sw
 	else if (operacja == "DF") return DF;
 	else if (operacja == "RF") return RF;
 	else if (operacja == "AF") return AF;
-	else if (operacja == "OF") return FC;
+	else if (operacja == "FC") return FC;
 	else if (operacja == "CP") return CP;
 	else if (operacja == "DP") return DP;
 	else if (operacja == "RP") return RP;
