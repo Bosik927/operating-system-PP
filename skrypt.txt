@@ -1,0 +1,4 @@
+cf plik1
+wf plik1 Potezna wichura lamiac duze drzewa trzcina zaledwie tylko kolysze.
+ls
+rf plik1
