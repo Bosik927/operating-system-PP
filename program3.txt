@@ -4,6 +4,7 @@ CF plik2
 WF plik2 Tworzymy nowy plik, zmieniamy jego nazwe.
 CF plik3
 RF plik3 zmieniony_plik
+AF zmieniony_plik dopisanie do pustego
 DF plik
 DF plik2
 HL
