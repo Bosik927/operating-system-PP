@@ -394,7 +394,7 @@ void Interpreter::run(PCB* PCBbox)
 		case HL:
 		{
 			processmanagement->DeleteProcess(PCBbox->ID);
-			cout << "KONIEC PROCEUS" << endl;
+			cout << "KONIEC PROCESU" << endl;
 			break;
 		}
 		default:

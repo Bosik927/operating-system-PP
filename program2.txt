@@ -1,6 +1,8 @@
+CP p3 program2.txt
 SM p2 msg
 SM p2 msg2
-RM p2 3
+RM p3 3
 SM p2 lastmessage
 RM p2 10
+DP p3
 HL
