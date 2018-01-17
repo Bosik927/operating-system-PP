@@ -17,6 +17,7 @@ Rozkazy convert(const string& operacja) // Funkcja dla konwersji rozkazow dla sw
 	else if (operacja == "WF") return WF;
 	else if (operacja == "DF") return DF;
 	else if (operacja == "RF") return RF;
+	else if (operacja == "AF") return AF;
 	else if (operacja == "CP") return CP;
 	else if (operacja == "DP") return DP;
 	else if (operacja == "RP") return RP;
@@ -240,7 +241,6 @@ void Interpreter::run(PCB* PCBbox)
 			if (program.substr(2, 1) == " ")
 			{
 				string name;
-				cout << name;
 				name = program.substr(3, program.size() - 3).c_str();
 				disc->tworzeniaPliku(name);
 			}
@@ -307,6 +307,7 @@ void Interpreter::run(PCB* PCBbox)
 			{
 				cout << "Niepoprawny rozkaz" << endl;
 			}
+			break;
 		}
 		case CP:
 		{
