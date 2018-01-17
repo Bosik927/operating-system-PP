@@ -16,6 +16,7 @@ Polecenia Shell::convert(const std::string &str)
 	else if (str == "cf" | str == "CF") return Polecenia::cf;
 	else if (str == "wf" | str == "WF") return Polecenia::wf;
 	else if (str == "df" | str == "DF") return Polecenia::df;
+	else if (str == "shf" | str == "SHF") return Polecenia::shf;
 	else if (str == "sproc" | str == "SPROC") return Polecenia::sproc;
 	else if (str == "sprocn" | str == "SPROCN") return Polecenia::sprocn;
 	else if (str == "sprocid" | str == "SPROCID") return Polecenia::sprocid;
@@ -181,6 +182,18 @@ void Shell::interpret(std::string a)
 			if (this->vector_str.size() - 1 == 1)
 			{
 				ram.memoryContent();
+			}
+			else
+			{
+				throw 2;
+			}
+			break;
+		}
+		case shf:
+		{
+			if (this->vector_str.size() - 1 == 1)
+			{
+				ram.showFIFO();
 			}
 			else
 			{
