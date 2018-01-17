@@ -15,6 +15,7 @@ private:
 	std::list<PCB> Processes;
 	void addFirstProcess(std::string path);
 	Scheduler scheduler;
+	int lastRunningProcesID;
 public:
 	RAM *ram;
 
@@ -26,6 +27,7 @@ public:
 	{
 		this->ram = ram;
 		srand(time(0));//potrzebne do losowego priorytetu
+		lastRunningProcesID = 0;
 		addFirstProcess("idle.txt");
 	}
 
