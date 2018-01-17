@@ -227,9 +227,24 @@ void Shell::interpret(std::string a)
 		}
 		case wf:
 		{
-			if (this->vector_str.size() - 1 == 3)
+			if (this->vector_str.size() - 1 >= 3)
 			{
-				disc.wpisywanieDoPliku(this->vector_str[1], this->vector_str[2]);
+				this->pom2.erase();
+
+				if (this->vector_str.size() - 1 == 3)
+				{
+					this->pom2 = this->vector_str[2];
+				}
+				else
+				{
+					for (int i = 2; i <= this->vector_str.size() - 3; i++)
+					{
+						this->pom2 += this->vector_str[i] + ' ';
+					}
+					this->pom2 += this->vector_str[this->vector_str.size() - 2];
+				}
+
+				disc.wpisywanieDoPliku(this->vector_str[1], this->pom2);
 			}
 			else
 			{
@@ -273,9 +288,25 @@ void Shell::interpret(std::string a)
 		}
 		case apf:
 		{
-			if (this->vector_str.size() - 1 == 3)
+			if (this->vector_str.size() - 1 >= 3)
 			{
-				disc.dopiszDoPliku(this->vector_str[1], this->vector_str[2]);
+
+				this->pom2.erase();
+
+				if (this->vector_str.size() - 1 == 3)
+				{
+					this->pom2 = this->vector_str[2];
+				}
+				else
+				{
+					for (int i = 2; i <= this->vector_str.size() - 3; i++)
+					{
+						this->pom2 += this->vector_str[i] + ' ';
+					}
+					this->pom2 += this->vector_str[this->vector_str.size() - 2];
+				}
+
+				disc.dopiszDoPliku(this->vector_str[1], this->pom2);
 			}
 			else
 			{
