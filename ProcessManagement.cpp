@@ -33,13 +33,13 @@ std::string ProcessManagement::CreateProces(std::string Name, std::string Path, 
 		{
 			Processes.push_back(temp);
 			SetState(ID, PCB::processState::ready);
-			scheduler.addProcess(this->getPCB(ID), BasePriority);
+			scheduler.addProcess(this->getPCB(ID), programLength);
 			ram->pageTables.push_back(PageTable(ram->exchangeFile.getRozmiar(temp.name), temp.name)); //Artur tu by³, tak musi byæ
 			return "Utworzono proces: \"" + Name + "\" o identyfikatorze: " + std::to_string(ID) + " i priorytecie wg. Windows: " + std::to_string(prior) + "\n";
 		}
 		else
 		{
-			return "Nie udalo sie pobrac kodu programu\n";
+			return "Nie udalo sie pobrac kodu programu, tworzenie procesu zostalo przerwane\n";
 		}
 	}
 	return "Nieznany blad przy tworzeniu procesu\n";
