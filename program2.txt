@@ -1,1 +1,6 @@
-JP 0
+SM p2 msg
+SM p2 msg2
+RM p2 3
+SM p2 lastmessage
+RM p2 10
+HL

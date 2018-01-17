@@ -21,7 +21,7 @@ public:
 	RAM ram;
 	ProcessManagement pm = ProcessManagement(&ram);;
 	Disc disc;
-	Komunikacja kom;
+	Komunikacja kom = Komunikacja(&pm);
 	Interpreter interpreter;
 
 	Polecenia k;
@@ -36,7 +36,7 @@ public:
 	{
 		interpreter = Interpreter(&pm, &kom,&disc,&ram);
 		this->a = true;
-		
+	
 	}
 	Polecenia convert(const std::string &str);
 	bool is_number(const std::string &s);

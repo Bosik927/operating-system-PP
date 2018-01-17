@@ -74,7 +74,6 @@ void Shell::interpret(std::string a)
 			{
 				auto proces = pm.AssignProcessor();
 				interpreter.run(proces);
-				std::cout << "Poszlo go" << std::endl;
 			}
 			else
 			{
@@ -105,7 +104,6 @@ void Shell::interpret(std::string a)
 			}
 			else
 			{
-				std::cout << "NIE Poszlo cp" << std::endl;
 				throw 2;
 			}
 			break;
@@ -308,9 +306,8 @@ void Shell::interpret(std::string a)
 			{
 				if (this->vector_str[1] == "C")
 				{
-					system("COLOR 01");
-					
-					
+					//??
+	
 				}
 				
 			}
@@ -355,7 +352,7 @@ void Shell::interpret(std::string a)
 			}
 			break;
 		default:
-			std::cout << "nie ma komendy" << std::endl;
+			std::cout << "Nieznane polecenie" << std::endl;
 			break;
 		}
 		}
@@ -372,23 +369,23 @@ void Shell::interpret(std::string a)
 		}
 		if (error_no == 3)
 		{
-			std::cout << "rozmiar musi byc liczba" << std::endl;
+			std::cout << "Rozmiar musi byc liczba" << std::endl;
 		}
 		if (error_no == 4)
 		{
-			std::cout << "adres i rozmiar musi byc liczba" << std::endl;
+			std::cout << "Adres i rozmiar musza byc liczba" << std::endl;
 		}
 		if (error_no == 5)
 		{
-			std::cout << "prioryten przyjmuje wartosc od 0 do 14" << std::endl;
+			std::cout << "Priorytet przyjmuje wartosc od 0 do 14" << std::endl;
 		}
 		if (error_no == 6)
 		{
-			std::cout << "id procesu musi byc liczba" << std::endl;
+			std::cout << "Id procesu musi byc liczba" << std::endl;
 		}
 		if (error_no == 7)
 		{
-			std::cout << "plik nie zostal otworzony" << std::endl;
+			std::cout << "Plik nie zostal otworzony" << std::endl;
 		}
 	}
 
@@ -403,7 +400,7 @@ void Shell::shell()
 
 	}
 }
-void Shell::logo() {//lol
+void Shell::logo() {
 	int i = 50;
 	std::cout << "         GGGGGGGGGGG          RRRRRRRRRRRRRR          AAAAAAAAAAAAAAAAA   \n";
 	Sleep(i);
