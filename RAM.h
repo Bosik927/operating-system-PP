@@ -222,7 +222,7 @@ private:
 public:
 
 	char *ram = new char[256];
-	std::vector<Ramka> framesTable;;
+	std::vector<Ramka> framesTable;
 	std::string *processNameInFrame = new std::string[16]; //NO NIBY SPOKO ZMIENNA, ALE POWINIENEM TO CHYBA POBIERAÆ OD ADAMA
 	std::queue<int> FIFO;
 	ExchangeFile exchangeFile;
@@ -325,16 +325,19 @@ public:
 		while (FIFO.size() > 0)
 		{
 			if (FIFO.front() != ramka)
-				bufor.push(FIFO.front());
+			bufor.push(FIFO.front());
 			FIFO.pop();
 		}
+		//bufor.push(ramka);
+		FIFO = bufor;
 		// odwracam kolejkê
-		while (FIFO.size() > 0)
-		{
-			FIFO.push(bufor.front());
-			bufor.pop();
-		}
+		//while (bufor.size() > 0)
+		//{
+		//	FIFO.push(bufor.front());
+		//	bufor.pop();
+		//}
 	}
+
 
 	int ktora_ramke_zwolnic()
 	{
