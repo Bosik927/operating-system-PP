@@ -93,7 +93,6 @@ std::string ProcessManagement::DeleteProcess(int ID) {
 			{
 				scheduler.deleteProcess(ID);//metoda Stasia
 				ram->deleteProcessData(iter->name);
-				ram->exchangeFile.deleteData(iter->name);
 				Processes.erase(iter);
 				IdManager.ClearID(ID);
 				deleted = 1;

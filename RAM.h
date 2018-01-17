@@ -114,17 +114,21 @@ public:
 	{
 		std::cout << "Usuwanie z pliku wymiany stron procesu: " << processName;
 		int j = 0;
+		std::vector<int> pom;
 		for (struktura i : exchangeFile)
 		{
 			if (i.procName == processName)
 			{
-				exchangeFile.erase(exchangeFile.begin()+j);
+				pom.push_back(j);
 			}
-			j++;
+		 	j++;
 		}
-		
+		if (pom.size() > 0)
 		{
-			
+			for (int i = pom.size()-1; i>=0;i--)
+			{
+				exchangeFile.erase(exchangeFile.begin() + i);
+			}
 		}
 	}
 
@@ -312,13 +316,19 @@ public:
 
 	void zwolnij_ramkê(int ramka)
 	{
+		std::cout << "Zwolnij ramke" << std::endl;
 		freeFrames.push(ramka); //oznaczam ramkê jako woln¹
 								//z kolejki FIFO muszê teraz usun¹æ tê ramkê:
 		for (int i = 0; i < pageTables.size(); i++)
 		{
 			if (pageTables[i].processName == processNameInFrame[ramka])
+			{
+				pageTables[i].inRAM[pageTables[i].getIndex(ramka)] = false;
 				if (framesTable[ramka].bit_modyfikacji == 1) exchangeFile.saveTo(processNameInFrame[ramka], odczytaj_ramkê(ramka), pageTables[i].getIndex(ramka));
+			}
+				
 		}// tutaj do poprawienia nadpisywanie pliku wymiany
+
 		std::queue<int> bufor; //tworzê tymczasow¹ kolejkê pomocnicz¹
 		framesTable[ramka].bit_modyfikacji = 0;
 		framesTable[ramka].bit_odniesienia = 0;
@@ -341,6 +351,7 @@ public:
 
 	int ktora_ramke_zwolnic()
 	{
+		std::cout << "Ktora ramke zwolnic" << std::endl;
 		int pierwsza_ramka = FIFO.front();
 		if (framesTable[pierwsza_ramka].bit_modyfikacji == 0 && framesTable[pierwsza_ramka].bit_odniesienia == 0)
 		{
@@ -408,11 +419,13 @@ public:
 
 	void strona_w_ramke(int nrStrony, std::string procName)
 	{
+		std::cout << "Strona w ramke" << std::endl;
 		if (freeFrames.size() <= 0) zwolnij_ramkê(ktora_ramke_zwolnic());
 		for (int i = 0; i < pageTables.size(); i++)
 		{
 			if (pageTables[i].processName == procName)
 			{
+				processNameInFrame[freeFrames.top()] = procName;
 				pageTables[i].framesNumber[nrStrony] = freeFrames.top();
 				framesTable[freeFrames.top()].bit_odniesienia = 1;
 				pageTables[i].inRAM[nrStrony] = true;
@@ -425,6 +438,7 @@ public:
 
 	std::string getCommand(int programCounter, std::string &processName)
 	{
+		std::cout << "GetCommand" << std::endl;
 		PageTable ktora_tablica;
 		int pageIndex;
 		if ((programCounter) % 16 == 0) pageIndex = ((programCounter + 1) / 16);
@@ -439,6 +453,7 @@ public:
 		}
 		if (ktora_tablica.inRAM[pageIndex])
 		{
+			std::cout << "czy tu jest b³¹d?" << std::endl;
 			framesTable[ktora_tablica.framesNumber[pageIndex]].bit_odniesienia = 1;
 			return zwroc_rozkaz(ktora_tablica.framesNumber[pageIndex], programCounter, processName);
 		}
@@ -449,22 +464,22 @@ public:
 
 	// usuwanie danego procesu z pamieci
 	void deleteProcessData(std::string procName) {
-
+		std::cout << "Delete data process" << std::endl;
 		// usuniecie danych z pamieci ram
 		// ??? Do poprawienia
 		for (int i = 0; i < 16; i++) {
 			if (processNameInFrame[i] == (procName)) {
 				freeFrames.push(i);
-				for (int j = 0; j < pageTables.size(); j++) {
-					if (pageTables[j].processName == (procName))
-						pageTables.erase(pageTables.begin() + j);
-				}
+				
 
 				for (int j = 0; j < 16; j++)
 					ram[i * 16 + j] = ' ';
 			}
 		}
-
+		for (int j = 0; j < pageTables.size(); j++) {
+			if (pageTables[j].processName == (procName))
+				pageTables.erase(pageTables.begin() + j);
+		}
 		// usuniecie danych z pliku wymiany
 		exchangeFile.deleteData(procName);
 	}
