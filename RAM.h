@@ -331,7 +331,11 @@ public:
 	{
 		int pierwsza_ramka = FIFO.front();
 		if (framesTable[pierwsza_ramka].bit_modyfikacji == 0 && framesTable[pierwsza_ramka].bit_odniesienia == 0)
+		{
+			FIFO.push(FIFO.front());
+			FIFO.pop();
 			return pierwsza_ramka;
+		}
 		else
 		{
 			framesTable[pierwsza_ramka].bit_odniesienia = 0;
@@ -339,7 +343,13 @@ public:
 			FIFO.pop();
 			while (FIFO.front() != pierwsza_ramka)
 			{
-				if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0) return FIFO.front();
+				if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0)
+				{
+					pierwsza_ramka = FIFO.front();
+					FIFO.push(FIFO.front());
+					FIFO.pop();
+					return pierwsza_ramka;
+				}
 				else
 				{
 					framesTable[FIFO.front()].bit_odniesienia = 0;
@@ -347,17 +357,35 @@ public:
 					FIFO.pop();
 				}
 			}
-			while (FIFO.front() != pierwsza_ramka)
+
+			if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0) 
 			{
-				if (framesTable[FIFO.front()].bit_odniesienia == 0) return FIFO.front();
-				else
+				pierwsza_ramka = FIFO.front();
+				FIFO.push(FIFO.front());
+				FIFO.pop();
+				return pierwsza_ramka;
+			}
+			else
+			{
+				while (FIFO.front() != pierwsza_ramka)
 				{
-					framesTable[FIFO.front()].bit_odniesienia = 0;
-					FIFO.push(FIFO.front());
-					FIFO.pop();
+					if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0) 
+					{
+						pierwsza_ramka = FIFO.front();
+						FIFO.push(FIFO.front());
+						FIFO.pop();
+						return pierwsza_ramka;
+					}
+					else
+					{
+						FIFO.push(FIFO.front());
+						FIFO.pop();
+					}
 				}
 			}
+			
 		}
+		return FIFO.front();
 	}
 
 	void writeToRam(int index, const char content[16]) {
