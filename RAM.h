@@ -285,7 +285,7 @@ public:
 			}
 			temp.push_back(ram[ramka * 16 + i]); //odczytujê rozkaz
 		}
-		temp += (getCommand(ramka + 16, procName));
+		temp += (getCommand(adres + temp.size(), procName));
 		return temp;
 	}
 
