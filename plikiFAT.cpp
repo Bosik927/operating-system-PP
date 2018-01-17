@@ -39,7 +39,7 @@ void Disc::otworzPlik(std::string nazwa, PCB* process)
 {
 	for (int i = 0; i < 64; i++)
 	{
-		if (atrybuty[i].nazwa == (nazwa))
+		if (atrybuty[i].nazwa == nazwa && atrybuty[i].zamek.isBlock==false)
 		{
 			atrybuty[i].zamek.lock(*process);
 		}
@@ -49,7 +49,7 @@ void Disc::zamknijPlik(std::string nazwa, PCB*process)
 {
 	for (int i = 0; i < 64; i++)
 	{
-		if (atrybuty[i].nazwa == (nazwa))
+		if (atrybuty[i].nazwa == nazwa && atrybuty[i].zamek.isBlock==true)
 		{
 			atrybuty[i].zamek.unlock(*process);
 		}
