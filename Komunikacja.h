@@ -43,8 +43,9 @@ struct mkfifo
 	//	cout << endl;
 	//	fifo.close();
 	//}
-	void odczytaj(int iloscz)
+	string odczytaj(int iloscz)
 	{
+		string temp3;
 		ifstream fifo(sciezka);
 		string linia;
 		if (fifo.is_open())
@@ -54,11 +55,12 @@ struct mkfifo
 				temp += linia;
 			}
 		}
-		for (int i = 0; i < iloscz; i++)
-			cout << temp[i];
-		cout << endl;
+		temp3 = temp;
+		temp3=temp3.substr(0,iloscz);
+
 		temp = temp.substr(iloscz, temp.size());
 		fifo.close();
+		return temp3;
 	}
 };
 
@@ -69,12 +71,12 @@ public:
 	ProcessManagement * Proces;
 	Mutex lock;
 public:
-	//Komunikacja();
+	Komunikacja();
 	Komunikacja(ProcessManagement *Proces);
 	vector<string> tab;
 	mkfifo mkfif;
 	void write(string id, string msg);
 	//void read(string id);
-	void read(string id, int iloscz);
+	string read(string id, int iloscz);
 };
 
