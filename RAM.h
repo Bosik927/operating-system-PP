@@ -267,6 +267,7 @@ public:
 			ramka.adres_koncowy = i * 16 + 16 - 1;
 			ramka.nr_ramki = i;
 			framesTable.push_back(ramka);
+			FIFO.push(i);
 		}
 	}
 
@@ -344,14 +345,9 @@ public:
 		std::queue<int> bufor; //tworzê tymczasow¹ kolejkê pomocnicz¹
 		framesTable[ramka].bit_modyfikacji = 0;
 		framesTable[ramka].bit_odniesienia = 0;
-		while (FIFO.size() > 0)
-		{
-			if (FIFO.front() != ramka)
-			bufor.push(FIFO.front());
-			FIFO.pop();
-		}
+		FIFO.push(FIFO.front());
+		FIFO.pop();
 		//bufor.push(ramka);
-		FIFO = bufor;
 		// odwracam kolejkê
 		//while (bufor.size() > 0)
 		//{
@@ -363,63 +359,79 @@ public:
 
 	int ktora_ramke_zwolnic()
 	{
-		int pierwsza_ramka = FIFO.front();
-		if (framesTable[pierwsza_ramka].bit_modyfikacji == 0 && framesTable[pierwsza_ramka].bit_odniesienia == 0)
+		int pom;
+		do
+		if (framesTable[FIFO.front()].bit_odniesienia == 0)
 		{
+			pom = FIFO.front();
 			FIFO.push(FIFO.front());
 			FIFO.pop();
-			return pierwsza_ramka;
+			return pom;
 		}
 		else
 		{
-			framesTable[pierwsza_ramka].bit_odniesienia = 0;
-			FIFO.push(pierwsza_ramka);
+			framesTable[FIFO.front()].bit_odniesienia = 0;
+			FIFO.push(FIFO.front());
 			FIFO.pop();
-			while (FIFO.front() != pierwsza_ramka)
-			{
-				if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0)
-				{
-					pierwsza_ramka = FIFO.front();
-					FIFO.push(FIFO.front());
-					FIFO.pop();
-					return pierwsza_ramka;
-				}
-				else
-				{
-					framesTable[FIFO.front()].bit_odniesienia = 0;
-					FIFO.push(FIFO.front());
-					FIFO.pop();
-				}
-			}
-
-			if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0) 
-			{
-				pierwsza_ramka = FIFO.front();
-				FIFO.push(FIFO.front());
-				FIFO.pop();
-				return pierwsza_ramka;
-			}
-			else
-			{
-				while (FIFO.front() != pierwsza_ramka)
-				{
-					if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0) 
-					{
-						pierwsza_ramka = FIFO.front();
-						FIFO.push(FIFO.front());
-						FIFO.pop();
-						return pierwsza_ramka;
-					}
-					else
-					{
-						FIFO.push(FIFO.front());
-						FIFO.pop();
-					}
-				}
-			}
-			
 		}
-		return FIFO.front();
+		while (true);
+		//int pierwsza_ramka = FIFO.front();
+		//if (framesTable[pierwsza_ramka].bit_modyfikacji == 0 && framesTable[pierwsza_ramka].bit_odniesienia == 0)
+		//{
+		//	FIFO.push(FIFO.front());
+		//	FIFO.pop();
+		//	return pierwsza_ramka;
+		//}
+		//else
+		//{
+		//	framesTable[pierwsza_ramka].bit_odniesienia = 0;
+		//	FIFO.push(pierwsza_ramka);
+		//	FIFO.pop();
+		//	while (FIFO.front() != pierwsza_ramka)
+		//	{
+		//		if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0)
+		//		{
+		//			pierwsza_ramka = FIFO.front();
+		//			FIFO.push(FIFO.front());
+		//			FIFO.pop();
+		//			return pierwsza_ramka;
+		//		}
+		//		else
+		//		{
+		//			framesTable[FIFO.front()].bit_odniesienia = 0;
+		//			FIFO.push(FIFO.front());
+		//			FIFO.pop();
+		//		}
+		//	}
+
+		//	if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0) 
+		//	{
+		//		pierwsza_ramka = FIFO.front();
+		//		FIFO.push(FIFO.front());
+		//		FIFO.pop();
+		//		return pierwsza_ramka;
+		//	}
+		//	else
+		//	{
+		//		while (FIFO.front() != pierwsza_ramka)
+		//		{
+		//			if (framesTable[FIFO.front()].bit_odniesienia == 0 && framesTable[FIFO.front()].bit_modyfikacji == 0) 
+		//			{
+		//				pierwsza_ramka = FIFO.front();
+		//				FIFO.push(FIFO.front());
+		//				FIFO.pop();
+		//				return pierwsza_ramka;
+		//			}
+		//			else
+		//			{
+		//				FIFO.push(FIFO.front());
+		//				FIFO.pop();
+		//			}
+		//		}
+		//	}
+		//	
+		//}
+		//return FIFO.front();
 	}
 
 	void writeToRam(int index, const char content[16]) {
@@ -439,7 +451,6 @@ public:
 				pageTables[i].framesNumber[nrStrony] = freeFrames.top();
 				framesTable[freeFrames.top()].bit_odniesienia = 1;
 				pageTables[i].inRAM[nrStrony] = true;
-				FIFO.push(freeFrames.top());
 				freeFrames.pop();
 				writeToRam(pageTables[i].framesNumber[nrStrony], exchangeFile.readFrom(procName, nrStrony, 0));
 			}
@@ -474,19 +485,31 @@ public:
 	void deleteProcessData(std::string procName) {
 		// usuniecie danych z pamieci ram
 		// ??? Do poprawienia
+		std::vector<int> pom;
+		PageTable ktora_tablica;
+		int x = 0;
+		for (auto a : pageTables)
+		{
+			if (procName == a.processName)
+			{
+				pom.push_back(x);
+			}
+			x++;
+		}
+		if (pom.size() > 0)
+		{
+			for (int i = pom.size() - 1; i >= 0; i--)
+			{
+				pageTables.erase(pageTables.begin() + pom[i]);
+			}
+		}
 		for (int i = 0; i < 16; i++) {
 			if (processNameInFrame[i] == (procName)) {
 				freeFrames.push(i);
-				
-
+				processNameInFrame[i] == "";
 				for (int j = 0; j < 16; j++)
 					ram[i * 16 + j] = ' ';
 			}
-		}
-		for (int j = 0; j < processNameInFrame->size(); j++) 
-		{
-			if (processNameInFrame[j] == procName)
-				processNameInFrame[j] = "";
 		}
 		// usuniecie danych z pliku wymiany
 		exchangeFile.deleteData(procName);
@@ -500,12 +523,16 @@ public:
 
 	void showFIFO()
 	{
-		for (int i = 0; i < 16; i++)
+		if (FIFO.size() > 0)
 		{
-			std::cout << FIFO.front() << std::endl;
-			FIFO.push(FIFO.front());
-			FIFO.pop();
-		}
+			for (int i = 0; i < 16; i++)
+			{
+				std::cout << FIFO.front() << " ";
+				FIFO.push(FIFO.front());
+				FIFO.pop();
+			}
+		};
+		std::cout << std::endl;
 	}
 
 	void memoryContent() //coutowaæ wszystko
@@ -524,7 +551,7 @@ public:
 
 			std::cout << "RAM[" << i * 16 << "-" << i * 16 + 15 << "]:" << pom << " ";
 			pom = "";
-			std::cout << "  proces: " << processNameInFrame[i];
+			std::cout << "  bit odniesienia: " << framesTable[i].bit_odniesienia;
 			std::cout << std::endl;
 		}
 	}
