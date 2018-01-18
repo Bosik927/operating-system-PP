@@ -26,10 +26,12 @@ void Komunikacja::write(string id, string msg)
 void Komunikacja::read(string id, int iloscz)
 {
 	if (lock.lock(*(Proces)->getPCB(Proces->getIdFromName(id)))) {
-		mkfif.odczytaj(iloscz);
+		string tempo;
+		tempo=mkfif.odczytaj(iloscz);
 		mkfif.fifo.open(mkfif.sciezka, ios::trunc);
 		mkfif.fifo.close();
 	}lock.unlock(*(Proces)->getPCB(Proces->getIdFromName(id)));
+		return tempo;
 }
 
 
