@@ -1,8 +1,8 @@
 CF plik
-WF plik Wpis do pliku pierwszego.
+WF plik Wpis
 FC plik
 CF plik2
-WF plik2 Tworzymy nowy plik, zmieniamy jego nazwe.
+WF plik2 Nowynazwa
 FC plik2
 CF plik3
 RF plik3 zmieniony_plik

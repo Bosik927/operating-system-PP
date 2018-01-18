@@ -1,5 +1,4 @@
 # operating system PP:
-##Nazwa: *Grazia.os*
 ## Zarządzanie procesorem
 Autor: Stanisław Fiuta
 ## Metody synchronizacji: Mutex Locks

@@ -483,9 +483,10 @@ public:
 					ram[i * 16 + j] = ' ';
 			}
 		}
-		for (int j = 0; j < pageTables.size(); j++) {
-			if (pageTables[j].processName == (procName))
-				pageTables.erase(pageTables.begin() + j);
+		for (int j = 0; j < processNameInFrame->size(); j++) 
+		{
+			if (processNameInFrame[j] == procName)
+				processNameInFrame[j] = "";
 		}
 		// usuniecie danych z pliku wymiany
 		exchangeFile.deleteData(procName);
