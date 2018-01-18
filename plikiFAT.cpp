@@ -39,7 +39,7 @@ void Disc::otworzPlik(std::string nazwa, PCB* process)
 {
 	for (int i = 0; i < 64; i++)
 	{
-		if (atrybuty[i].nazwa == nazwa && atrybuty[i].zamek.isBlock()==false)
+		if (atrybuty[i].nazwa == nazwa )
 		{
 			atrybuty[i].zamek.lock(*process);
 		}
@@ -49,7 +49,7 @@ void Disc::zamknijPlik(std::string nazwa, PCB* process)
 {
 	for (int i = 0; i < 64; i++)
 	{
-		if (atrybuty[i].nazwa == nazwa && atrybuty[i].zamek.isBlock()==true)
+		if (atrybuty[i].nazwa == nazwa )
 		{
 			atrybuty[i].zamek.unlock(*process);
 		}
@@ -276,7 +276,7 @@ void Disc::wpisywanieDoPliku(std::string nazwa, std::string data, PCB* process)
 						}
 						std::cout << "Wpisanie do pliku pomyslne" << std::endl;
 						atrybuty[ktory_katalog(nazwa)].rozmiar = data.length();
-						atrybuty[ktory_katalog(nazwa)].zamek.unlock(*process);
+					//	atrybuty[ktory_katalog(nazwa)].zamek.unlock(*process);
 					}
 					else std::cout << "Za malo miejsca na dysku" << std::endl;
 				}
