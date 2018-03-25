@@ -79,11 +79,11 @@ public:
 			{
 				for (int j = 0; j < exchangeFile.size() - i; j++)
 				{
-					if (j == pageIndex) return exchangeFile[i+j].data.data();
+					if (j == pageIndex) return exchangeFile[i + j].data.data();
 				}
 			}
 		}
-		
+
 
 		// ???? JESZCZE OBS£UGA B£ÊDU ????
 	}
@@ -134,11 +134,11 @@ public:
 			{
 				pom.push_back(j);
 			}
-		 	j++;
+			j++;
 		}
 		if (pom.size() > 0)
 		{
-			for (int i = pom.size()-1; i>=0;i--)
+			for (int i = pom.size() - 1; i >= 0; i--)
 			{
 				exchangeFile.erase(exchangeFile.begin() + pom[i]);
 			}
@@ -252,7 +252,7 @@ public:
 		for (int i = 0; i < 16; i++) {
 			processNameInFrame[i] = "";
 			for (int j = 0; j < 16; j++)
-				ram[i *16+ j] = ' ';
+				ram[i * 16 + j] = ' ';
 
 		}
 		inicjalizacja_tabeli_ramek();
@@ -294,7 +294,7 @@ public:
 	{
 		std::string temp = ""; //tworzê bufor na odczytane dane
 
-		for (int i = adres%16; i < 16; i++)
+		for (int i = adres % 16; i < 16; i++)
 		{
 			if (ram[ramka * 16 + i] == '\n')
 			{
@@ -339,7 +339,7 @@ public:
 				pageTables[i].inRAM[pageTables[i].getIndex(ramka)] = false;
 				if (framesTable[ramka].bit_modyfikacji == 1) exchangeFile.saveTo(processNameInFrame[ramka], odczytaj_ramkê(ramka), pageTables[i].getIndex(ramka));
 			}
-				
+
 		}// tutaj do poprawienia nadpisywanie pliku wymiany
 
 		std::queue<int> bufor; //tworzê tymczasow¹ kolejkê pomocnicz¹
@@ -361,19 +361,19 @@ public:
 	{
 		int pom;
 		do
-		if (framesTable[FIFO.front()].bit_odniesienia == 0)
-		{
-			pom = FIFO.front();
-			FIFO.push(FIFO.front());
-			FIFO.pop();
-			return pom;
-		}
-		else
-		{
-			framesTable[FIFO.front()].bit_odniesienia = 0;
-			FIFO.push(FIFO.front());
-			FIFO.pop();
-		}
+			if (framesTable[FIFO.front()].bit_odniesienia == 0)
+			{
+				pom = FIFO.front();
+				FIFO.push(FIFO.front());
+				FIFO.pop();
+				return pom;
+			}
+			else
+			{
+				framesTable[FIFO.front()].bit_odniesienia = 0;
+				FIFO.push(FIFO.front());
+				FIFO.pop();
+			}
 		while (true);
 		//int pierwsza_ramka = FIFO.front();
 		//if (framesTable[pierwsza_ramka].bit_modyfikacji == 0 && framesTable[pierwsza_ramka].bit_odniesienia == 0)

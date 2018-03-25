@@ -56,7 +56,7 @@ struct mkfifo
 			}
 		}
 		temp3 = temp;
-		temp3=temp3.substr(0,iloscz);
+		temp3 = temp3.substr(0, iloscz);
 
 		temp = temp.substr(iloscz, temp.size());
 		fifo.close();

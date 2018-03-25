@@ -8,6 +8,7 @@
 #include "Komunikacja.h"
 #include "RAM.h"
 using namespace std;
+
 enum Rozkazy {
 	AD, // AD A B					(dodaje do rejestrA zawartoœæ rejestrB) +
 	AX, // AX A 10					(dodaje liczby do rejestru) +

@@ -6,8 +6,8 @@ Mutex::Mutex() : using_process(), waiting_processes(), is_lock(false) {}
 Mutex::~Mutex() {}
 
 bool Mutex::lock(PCB &process) {
-	
-	if(using_process != nullptr && is_lock == true && using_process != &process) {
+
+	if (using_process != nullptr && is_lock == true && using_process != &process) {
 		process.Sleep();
 		waiting_processes.push_back(&process);
 		return false;
@@ -20,8 +20,8 @@ bool Mutex::lock(PCB &process) {
 }
 
 bool Mutex::try_lock(PCB &process) {
-	if(using_process == &process) return true;
-	if(using_process == nullptr && is_lock == false) {
+	if (using_process == &process) return true;
+	if (using_process == nullptr && is_lock == false) {
 		using_process = &process;
 		is_lock = true;
 		return true;
@@ -30,10 +30,10 @@ bool Mutex::try_lock(PCB &process) {
 }
 
 void Mutex::unlock(PCB &process) {
-	if(using_process == &process && is_lock == true) {
+	if (using_process == &process && is_lock == true) {
 		using_process = nullptr;
 		is_lock = false;
-		if(waiting_processes.size() != 0) {
+		if (waiting_processes.size() != 0) {
 			using_process = waiting_processes[0];
 			waiting_processes.erase(waiting_processes.begin());
 			is_lock = true;

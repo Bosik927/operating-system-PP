@@ -23,15 +23,16 @@ void Komunikacja::write(string id, string msg)
 //	lock->unlock(*(Proces)->getPCB(Proces->getIdFromName(id)));
 //}
 
-void Komunikacja::read(string id, int iloscz)
-{
+string Komunikacja::read(string id, int iloscz)
+{	
+	string tempo;
 	if (lock.lock(*(Proces)->getPCB(Proces->getIdFromName(id)))) {
-		string tempo;
-		tempo=mkfif.odczytaj(iloscz);
+	
+		tempo = mkfif.odczytaj(iloscz);
 		mkfif.fifo.open(mkfif.sciezka, ios::trunc);
 		mkfif.fifo.close();
 	}lock.unlock(*(Proces)->getPCB(Proces->getIdFromName(id)));
-		return tempo;
+	return tempo;
 }
 
 

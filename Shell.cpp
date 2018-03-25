@@ -1,9 +1,5 @@
 #include "Shell.h"
 
-
-
-
-
 Polecenia Shell::convert(const std::string &str)
 {
 	if (str == "go" | str == "GO") return Polecenia::go;
@@ -170,7 +166,7 @@ void Shell::interpret(std::string a)
 		{
 			if (this->vector_str.size() - 1 == 2) {
 				disc.stan_zamka(this->vector_str[1]);
-				
+
 			}
 			else
 			{
@@ -333,7 +329,7 @@ void Shell::interpret(std::string a)
 			{
 				this->vector_skrypt.clear();
 				Shell::odczyt_z_pliku(this->vector_str[1]);
-				for(int i=0;i<this->vector_skrypt.size();i++)
+				for (int i = 0; i<this->vector_skrypt.size(); i++)
 				{
 					Shell::interpret(this->vector_skrypt[i]);
 				}
@@ -361,23 +357,22 @@ void Shell::interpret(std::string a)
 			if (this->vector_str.size() - 1 == 1)
 			{
 				std::cout << "GO" << std::endl;
-				std::cout << "CP(nazwa)(sciezka)(prioryter) - tworzy proces" << std::endl;
-				std::cout << "DP(nazwa) - usuwa proces" << std::endl;
-				std::cout << "MC - wyswietla zawartosc pamieci" << std::endl;
-				std::cout << "SPROC - wyswietla liste procesow" << std::endl;
-				std::cout << "SPROCN(nazwa) - wyswietla proces" << std::endl;
-				std::cout << "SPROCID(ID) - wyswietla proces" << std::endl;
-				std::cout << "EF - wyswietla plik wymiany" << std::endl;
-				std::cout << "RUN(sciezka do pliku ze skryptem)" << std::endl;
-				std::cout << "LS - wyswielta liste plikow" << std::endl;
-				std::cout << "CF(nazwa) - tworzy plik" << std::endl;
-				std::cout << "WF(nazwa)(tekst) -wpisuje do pustego pliku" << std::endl;
-				std::cout << "DF(nazwa) - usuwa plik" << std::endl;
-				std::cout << "RF(nazwa) - wyswietla zawartosc pliku" << std::endl;
-				std::cout << "REF(nazwa)(nowa nazwa) - zmienia nazwe pliku" << std::endl;
-				std::cout << "APF(nazwa)(tekst) - dopisuje do pliku" << std::endl;
+				std::cout << "CP (nazwa) (sciezka) (prioryter)		- tworzy proces" << std::endl;
+				std::cout << "DP (nazwa)					- usuwa proces" << std::endl;
+				std::cout << "MC						- wyswietla zawartosc pamieci" << std::endl;
+				std::cout << "SPROC						- wyswietla liste procesow" << std::endl;
+				std::cout << "SPROCN (nazwa)     				- wyswietla proces" << std::endl;
+				std::cout << "SPROCID (ID)					- wyswietla proces" << std::endl;
+				std::cout << "EF						- wyswietla plik wymiany" << std::endl;
+				std::cout << "RUN (sciezka do pliku ze skryptem)" << std::endl;
+				std::cout << "LS						- wyswielta liste plikow" << std::endl;
+				std::cout << "CF (nazwa)					- tworzy plik" << std::endl;
+				std::cout << "WF (nazwa) (tekst)				- wpisuje do pustego pliku" << std::endl;
+				std::cout << "DF (nazwa)					- usuwa plik" << std::endl;
+				std::cout << "RF (nazwa)					- wyswietla zawartosc pliku" << std::endl;
+				std::cout << "REF (nazwa) (nowa nazwa)			- zmienia nazwe pliku" << std::endl;
+				std::cout << "APF (nazwa) (tekst)				- dopisuje do pliku" << std::endl;
 				std::cout << "EXIT" << std::endl;
-
 			}
 			else
 			{

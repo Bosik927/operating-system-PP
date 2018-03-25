@@ -1,5 +1,6 @@
 #pragma once
 #include "Interpreter.h"
+
 Rozkazy convert(const string& operacja) // Funkcja dla konwersji rozkazow dla switcha
 {
 	if (operacja == "AD") return AD;
@@ -39,7 +40,7 @@ bool Interpreter::isLabel(string &program)
 }
 void Interpreter::run(PCB* PCBbox)
 {
-	program = ram->getCommand(PCBbox->commandCounter,PCBbox->name);
+	program = ram->getCommand(PCBbox->commandCounter, PCBbox->name);
 	if (!program.size())
 	{
 		cout << "Nie udalo sie pobrac rozkazu!" << endl;
@@ -61,15 +62,15 @@ void Interpreter::run(PCB* PCBbox)
 			{
 				if (program.substr(3, 1) == "B")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A')+processmanagement->GetReg(PCBbox->ID, 'B'));
+					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A') + processmanagement->GetReg(PCBbox->ID, 'B'));
 				}
 				else if (program.substr(3, 1) == "C")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A')+processmanagement->GetReg(PCBbox->ID, 'C'));
+					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A') + processmanagement->GetReg(PCBbox->ID, 'C'));
 				}
 				else if (program.substr(3, 1) == "D")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A')+processmanagement->GetReg(PCBbox->ID, 'D'));
+					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A') + processmanagement->GetReg(PCBbox->ID, 'D'));
 				}
 			}
 			else
@@ -86,19 +87,19 @@ void Interpreter::run(PCB* PCBbox)
 				liczba = atoi(program.substr(4, program.size() - 4).c_str());
 				if (program.substr(3, 1) == "A")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A')+liczba);
+					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A') + liczba);
 				}
 				else if (program.substr(3, 1) == "B")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'B', processmanagement->GetReg(PCBbox->ID, 'B')+liczba);
+					processmanagement->SetReg(PCBbox->ID, 'B', processmanagement->GetReg(PCBbox->ID, 'B') + liczba);
 				}
 				else if (program.substr(3, 1) == "C")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'C', processmanagement->GetReg(PCBbox->ID, 'C')+liczba);
+					processmanagement->SetReg(PCBbox->ID, 'C', processmanagement->GetReg(PCBbox->ID, 'C') + liczba);
 				}
 				else if (program.substr(3, 1) == "D")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'D', processmanagement->GetReg(PCBbox->ID, 'D')+liczba);
+					processmanagement->SetReg(PCBbox->ID, 'D', processmanagement->GetReg(PCBbox->ID, 'D') + liczba);
 				}
 			}
 			else
@@ -116,15 +117,15 @@ void Interpreter::run(PCB* PCBbox)
 				liczba = atoi(program.substr(4, program.size() - 4).c_str());
 				if (program.substr(3, 1) == "A")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A')-liczba);
+					processmanagement->SetReg(PCBbox->ID, 'A', processmanagement->GetReg(PCBbox->ID, 'A') - liczba);
 				}
 				else if (program.substr(3, 1) == "B")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'B', processmanagement->GetReg(PCBbox->ID, 'B')-liczba);
+					processmanagement->SetReg(PCBbox->ID, 'B', processmanagement->GetReg(PCBbox->ID, 'B') - liczba);
 				}
 				else if (program.substr(3, 1) == "C")
 				{
-					processmanagement->SetReg(PCBbox->ID, 'C', processmanagement->GetReg(PCBbox->ID, 'C')-liczba);
+					processmanagement->SetReg(PCBbox->ID, 'C', processmanagement->GetReg(PCBbox->ID, 'C') - liczba);
 				}
 			}
 			else
@@ -254,7 +255,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name, data;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				data = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc->wpisywanieDoPliku(name,data, PCBbox);
+				disc->wpisywanieDoPliku(name, data, PCBbox);
 			}
 			else
 			{
@@ -283,7 +284,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name, newname;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				newname = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc->zmianaNazwy(name,newname, PCBbox);
+				disc->zmianaNazwy(name, newname, PCBbox);
 			}
 			else
 			{
@@ -298,7 +299,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name, data;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy z rozszerzeniem
 				data = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie danych
-				disc->dopiszDoPliku(name,data, PCBbox);
+				disc->dopiszDoPliku(name, data, PCBbox);
 			}
 			else
 			{
@@ -327,7 +328,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name, path;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy
 				path = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie sciezki																								// processmanagement.CreateProcess(name,path);
-				processmanagement->CreateProces(name,path,5);
+				processmanagement->CreateProces(name, path, 5);
 			}
 			else
 			{
@@ -342,7 +343,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name;
 				int ID;
 				name = program.substr(3, program.size() - 3).c_str();
-				ID=processmanagement->getIdFromName(name);
+				ID = processmanagement->getIdFromName(name);
 				processmanagement->DeleteProcess(ID);
 			}
 			else
@@ -356,20 +357,20 @@ void Interpreter::run(PCB* PCBbox)
 		/*
 		case RP:
 		{
-			if (program.substr(2, 1) == " ")
-			{
-				string name;
-				int ID;
-				name = program.substr(3, program.size() - 3).c_str();
-				// ID=Processes.getIdFromName(name); 
-				// processesmanagment.setState(ID,1);
-				// processesmanagment.SetPriority(ID, MAKSYMALNY_PRIORYTET + 1);
-			}
-			else
-			{
-				cout << "Niepoprawny rozkaz" << endl;
-			}
-			break;
+		if (program.substr(2, 1) == " ")
+		{
+		string name;
+		int ID;
+		name = program.substr(3, program.size() - 3).c_str();
+		// ID=Processes.getIdFromName(name);
+		// processesmanagment.setState(ID,1);
+		// processesmanagment.SetPriority(ID, MAKSYMALNY_PRIORYTET + 1);
+		}
+		else
+		{
+		cout << "Niepoprawny rozkaz" << endl;
+		}
+		break;
 		}
 		*/
 		case RM:
@@ -377,10 +378,10 @@ void Interpreter::run(PCB* PCBbox)
 			if (program.substr(2, 1) == " ")
 			{
 				string name;
-				int ilosc_znakow=0;
+				int ilosc_znakow = 0;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str();
 				ilosc_znakow = atoi(program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str());
-				komunikacja->read(name,ilosc_znakow); 
+				komunikacja->read(name, ilosc_znakow);
 			}
 			else
 			{
@@ -395,7 +396,7 @@ void Interpreter::run(PCB* PCBbox)
 				string name, data;
 				name = program.substr(3, program.find(" ", 4) - 3).c_str(); // wyciagniecie nazwy
 				data = program.substr(program.find(" ", 3) + 1, program.size() - program.find(" ", 4)).c_str(); // wyciagniecie sciezki
-				komunikacja->write(name,data); 
+				komunikacja->write(name, data);
 			}
 			else
 			{

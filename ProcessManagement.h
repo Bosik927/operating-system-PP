@@ -17,13 +17,13 @@ private:
 	Scheduler scheduler;
 	int lastRunningProcesID;
 public:
-	RAM *ram;
+	RAM * ram;
 
-	ProcessManagement() 
+	ProcessManagement()
 	{
 		//ram = nullptr;
 	}
-	ProcessManagement(RAM* ram) 
+	ProcessManagement(RAM* ram)
 	{
 		this->ram = ram;
 		srand(time(0));//potrzebne do losowego priorytetu
@@ -50,15 +50,6 @@ public:
 	PCB* getPCB(int ID);
 	//JEŒLI NIE ZNAJDZIE DANEGO PROCESU ZWRACA NULLPTR
 	//KONIECZNA OBS£UGA B£EDU!!!
-
-	//INTERPRETER
-	PCB* GetRunningProcess();
-	//OB£SUGA B£ÊDOW W CHUJ!!!
-
-	//SCHEDULER
-	//void Run();
-	void DisplayScheduler();
-
 
 	//SHELL
 	//Nie podanie BasePriority, lub podanie 0 powoduje wybranie losowego priorytetu z grupy priorytetów normalnych

@@ -11,9 +11,10 @@
 #include "Interpreter.h"
 #include "RAM.h"
 #include "ProcessManagement.h"
+
 enum Polecenia
 {
-	go, cp, dp, mc, BLAD, sproc, sprocn, sprocid,ef,run,sz,shf,
+	go, cp, dp, mc, BLAD, sproc, sprocn, sprocid, ef, run, sz, shf,
 	ls, cf, wf, df, rf, reff, apf, EXIT, HELP
 };
 class Shell {
@@ -32,11 +33,11 @@ public:
 	bool a;
 
 
-	Shell() 
+	Shell()
 	{
-		interpreter = Interpreter(&pm, &kom,&disc,&ram);
+		interpreter = Interpreter(&pm, &kom, &disc, &ram);
 		this->a = true;
-	
+
 	}
 	Polecenia convert(const std::string &str);
 	bool is_number(const std::string &s);
